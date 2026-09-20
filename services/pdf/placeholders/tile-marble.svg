@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#f7f3ec"/>
+  <g stroke="#d6c4ac" stroke-width="4" fill="none" opacity=".8">
+    <path d="M0 160 C210 120 260 300 450 250 S740 80 1200 180"/>
+    <path d="M40 520 C260 420 380 610 580 520 S880 420 1160 520"/>
+    <path d="M180 0 C230 200 155 350 300 510 S420 720 370 900"/>
+    <path d="M830 0 C750 170 870 280 810 440 S680 700 720 900"/>
+  </g>
+  <g stroke="#eee8df" stroke-width="2">
+    <path d="M400 0v900"/><path d="M800 0v900"/><path d="M0 300h1200"/><path d="M0 600h1200"/>
+  </g>
+  <text x="70" y="800" font-family="Arial" font-size="48" fill="#6c6258" opacity=".52">calm marble tile</text>
+</svg>

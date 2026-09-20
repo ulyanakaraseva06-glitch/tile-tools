@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#f5f1eb"/>
+  <g transform="translate(90 80)">
+    <rect width="1020" height="740" rx="12" fill="#fffaf4" stroke="#d9cbb8" stroke-width="4"/>
+    <g stroke="#ded2c2" stroke-width="3">
+      <path d="M255 0v740"/><path d="M510 0v740"/><path d="M765 0v740"/>
+      <path d="M0 185h1020"/><path d="M0 370h1020"/><path d="M0 555h1020"/>
+    </g>
+    <g opacity=".55" stroke="#bca58a" stroke-width="3" fill="none">
+      <path d="M20 120 C80 70 135 150 230 105"/>
+      <path d="M270 320 C330 260 400 350 490 300"/>
+      <path d="M540 90 C610 30 700 160 742 110"/>
+      <path d="M800 520 C870 465 950 590 1010 535"/>
+    </g>
+  </g>
+  <text x="90" y="860" font-family="Arial" font-size="42" fill="#6c6258" opacity=".5">tile grid placeholder</text>
+</svg>

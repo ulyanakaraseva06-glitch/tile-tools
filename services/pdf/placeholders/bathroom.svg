@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#f2eee8"/>
+  <g stroke="#ddd2c5" stroke-width="4">
+    <path d="M0 300h1200"/><path d="M0 600h1200"/><path d="M0 900h1200"/><path d="M400 0v1500"/><path d="M800 0v1500"/>
+  </g>
+  <rect x="160" y="860" width="880" height="260" rx="24" fill="#d9c6ad"/>
+  <rect x="220" y="920" width="760" height="48" fill="#c9af90" opacity=".55"/>
+  <circle cx="610" cy="560" r="230" fill="none" stroke="#3b3f44" stroke-width="18" opacity=".75"/>
+  <ellipse cx="610" cy="805" rx="230" ry="80" fill="#f8f6f2" stroke="#d8d0c5" stroke-width="10"/>
+  <rect x="790" y="700" width="36" height="116" rx="16" fill="#303338"/>
+  <path d="M820 705 c80 -120 185 -92 180 20" fill="none" stroke="#303338" stroke-width="24" stroke-linecap="round"/>
+  <rect x="445" y="720" width="84" height="180" rx="18" fill="#e8ddd0"/>
+  <path d="M485 730 C450 640 390 575 320 520" fill="none" stroke="#68745e" stroke-width="8"/>
+  <text x="110" y="1370" font-family="Arial" font-size="42" fill="#6c6258" opacity=".52">bathroom placeholder</text>
+</svg>

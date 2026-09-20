@@ -1,0 +1,20 @@
+# User and generated data
+storage/users/*
+!storage/users/.gitkeep
+storage/sessions/*
+!storage/sessions/.gitkeep
+storage/runtime/*
+!storage/runtime/.gitkeep
+storage/system/uploads/*
+!storage/system/uploads/.gitkeep
+
+# Local/runtime files
+.env
+*.log
+node_modules/
+dist/
+build-cache/
+coverage/
+config.php
+private/
+var/log/
