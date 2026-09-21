@@ -1,0 +1,60 @@
+.saved-projects-panel {
+  grid-row: span 2;
+}
+
+.contacts-panel {
+  grid-column: 2;
+}
+
+.saved-project-list {
+  display: grid;
+  gap: 10px;
+}
+
+.saved-project-card {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.saved-project-card span,
+.settings-preview small {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.saved-project-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.saved-project-actions button {
+  min-height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  transition: background var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.saved-project-actions button:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.saved-project-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent), var(--shadow);
+}
+
+.saved-project-card strong {
+  color: var(--text);
+  font-weight: 800;
+}

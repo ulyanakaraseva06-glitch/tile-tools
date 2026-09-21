@@ -1,0 +1,713 @@
+/* stylevis.css — Визуализатор плитки v2 */
+
+/* ============================================================
+   CSS VARIABLES
+============================================================ */
+:root {
+  --primary:       #A385C4;
+  --primary-light: #F2EBF9;
+  --primary-mid:   #C0A0DC;
+  --primary-dark:  #8A6AAE;
+  --bg:            #F4F4F6;
+  --bg-white:      #FFFFFF;
+  --border:        #E8E8EC;
+  --border-dark:   #D0D0D8;
+  --text:          #18181E;
+  --text-sec:      #6B6B80;
+  --text-light:    #ABABBE;
+  --render-bg:     #E8E6E2;          /* letterbox за фото рендера */
+  /* Поверх фотографии рендера — всегда «светлая плашка / тёмный текст», тему НЕ меняем */
+  --on-photo:      #18181E;
+  --on-photo-sec:  #6B6B80;
+  --header-h:      58px;
+  --radius:        12px;
+  --radius-sm:     8px;
+  --shadow:        0 2px 10px rgba(0,0,0,0.07);
+  --shadow-md:     0 6px 28px rgba(0,0,0,0.12);
+  --transition:    0.18s ease;
+  --strip-h:       116px;
+}
+
+/* === БЕЖЕВАЯ ТЕМА === */
+html[data-theme="beige"] {
+  --primary:       #A385C4;
+  --primary-light: #ECE3F2;
+  --primary-mid:   #C0A0DC;
+  --primary-dark:  #8A6AAE;
+  --bg:            #EAE3D8;
+  --bg-white:      #F7F2EA;
+  --border:        #E0D5C4;
+  --border-dark:   #CBBDA6;
+  --text:          #2B2519;
+  --text-sec:      #7C6F5A;
+  --text-light:    #AD9F88;
+  --render-bg:     #E2D8C8;
+  --shadow:        0 2px 10px rgba(80,60,30,0.08);
+  --shadow-md:     0 6px 28px rgba(80,60,30,0.14);
+}
+
+/* === ТЁМНАЯ ТЕМА === */
+html[data-theme="dark"] {
+  --primary:       #B79BE0;
+  --primary-light: #2C2640;
+  --primary-mid:   #9B7FCB;
+  --primary-dark:  #CBB5EE;
+  --bg:            #15151E;
+  --bg-white:      #20202C;
+  --border:        #2F2F3D;
+  --border-dark:   #3D3D4E;
+  --text:          #ECECF3;
+  --text-sec:      #A6A6BC;
+  --text-light:    #6E6E84;
+  --render-bg:     #101018;
+  --shadow:        0 2px 10px rgba(0,0,0,0.4);
+  --shadow-md:     0 6px 28px rgba(0,0,0,0.55);
+}
+
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+button { cursor: pointer; border: none; background: none; font-family: inherit; font-size: inherit; }
+input  { font-family: inherit; font-size: inherit; outline: none; border: none; background: none; }
+svg    { display: block; flex-shrink: 0; }
+
+/* ============================================================
+   HEADER
+============================================================ */
+.app-header {
+  height: var(--header-h);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px 0 20px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+.header-logo { display: flex; align-items: center; gap: 10px; user-select: none; }
+.header-logo img { height: 36px; width: auto; display: block; }
+
+/* Левая группа: логотип + переключатель тем */
+.header-left { display: flex; align-items: center; gap: 16px; }
+.theme-switch {
+  display: flex; align-items: center; gap: 3px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px;
+}
+.theme-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.theme-btn:hover { transform: scale(1.08); }
+.theme-btn.active { box-shadow: 0 0 0 2px var(--primary); }
+.theme-dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.18); }
+.theme-dot--light { background: #FFFFFF; }
+.theme-dot--beige { background: #E2D2B5; }
+.theme-dot--dark  { background: #24242E; border-color: rgba(255,255,255,0.25); }
+.logo-text { display: flex; flex-direction: column; line-height: 1.05; letter-spacing: 0.06em; }
+.logo-top    { font-size: 12px; font-weight: 800; color: var(--text); }
+.logo-bottom { font-size: 12px; font-weight: 800; color: var(--primary); }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+/* Все кнопки шапки — в одном стиле с «Сброс освещения» (.hl-btn) */
+.header-btn,
+.header-btn--export,
+.header-btn--user {
+  display: flex; align-items: center; gap: 7px;
+  height: 34px; padding: 0 13px;
+  background: var(--primary-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--primary); font: inherit; font-size: 13px; font-weight: 700;
+  white-space: nowrap; cursor: pointer;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+.header-btn:hover,
+.header-btn--export:hover,
+.header-btn--user:hover { border-color: var(--primary); }
+.header-btn svg,
+.header-btn--export svg,
+.header-btn--user svg { color: var(--primary); transition: color var(--transition); }
+.header-btn--export.is-busy { opacity: 0.65; pointer-events: none; }
+/* Кнопка кабинета — только иконка, тот же стиль, квадратной формы */
+.header-btn--user { padding: 0; width: 34px; justify-content: center; }
+
+/* ============================================================
+   APP BODY — flexbox: main(60%) + catalog(40%)
+============================================================ */
+.app-body {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sidebar { display: none; }
+
+/* ============================================================
+   MAIN CONTENT — left 60%
+============================================================ */
+.main-content {
+  flex: 0 0 60%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+  padding: 14px;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* ============================================================
+   RENDER WRAPPER
+============================================================ */
+.render-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--render-bg);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.render-scene {
+  width: 100%; height: 100%;
+  position: relative; overflow: hidden;
+  transition: transform 0.18s ease;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.render-wrapper.pannable { cursor: grab; }
+.render-wrapper.pannable.panning { cursor: grabbing; }
+.render-wrapper.panning .render-scene { transition: none; }
+.render-scene > svg,
+.render-scene > div { width: 100%; height: 100%; display: block; }
+
+/* Zone overlays */
+@keyframes dashAnim { to { stroke-dashoffset: -28; } }
+
+.zone-overlay { cursor: pointer; }
+/* Hover: only a thin solid stroke, zero fill */
+.zone-overlay:not(.zone--selected):hover {
+  fill: transparent !important;
+  stroke: rgba(163,133,196,0.7) !important;
+  stroke-width: 3 !important;
+  vector-effect: non-scaling-stroke;
+}
+/* Selected: animated dashed border, no fill */
+.zone-overlay.zone--selected {
+  fill: transparent !important;
+  stroke: rgba(163,133,196,1) !important;
+  stroke-width: 4 !important;
+  stroke-dasharray: 14 8 !important;
+  animation: dashAnim 1.6s linear infinite !important;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Controls bottom-left */
+.render-controls {
+  position: absolute; bottom: 14px; left: 14px;
+  display: flex; gap: 6px; z-index: 20;
+}
+.ctrl-btn {
+  width: 34px; height: 34px;
+  background: rgba(255,255,255,0.92);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-photo-sec); box-shadow: var(--shadow);
+  transition: background var(--transition), color var(--transition);
+}
+.ctrl-btn:hover { background: #fff; color: var(--primary); }
+
+/* ============================================================
+   ROOMS STRIP
+============================================================ */
+.rooms-strip {
+  flex-shrink: 0;
+  min-height: var(--strip-h);
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 8px 12px;
+  display: flex; align-items: stretch; gap: 12px;
+}
+.rooms-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.rooms-col--info { border-left: 1px solid var(--border); padding-left: 12px; }
+.rooms-list {
+  display: flex; gap: 10px;
+  overflow-x: auto; padding: 5px 3px 7px;
+  scrollbar-width: thin; scrollbar-color: var(--border-dark) transparent;
+}
+.room-thumb { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; }
+.room-thumb__img {
+  width: 96px; height: 66px;
+  border-radius: var(--radius-sm); overflow: hidden;
+  border: 2px solid var(--border);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  background: var(--bg);
+}
+.room-thumb:hover .room-thumb__img { border-color: var(--primary-mid); }
+.room-thumb.active .room-thumb__img { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+.room-thumb__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.room-thumb__label { font-size: 10.5px; font-weight: 600; color: var(--text-sec); transition: color var(--transition); }
+.room-thumb:hover .room-thumb__label,
+.room-thumb.active .room-thumb__label { color: var(--primary); }
+
+/* ============================================================
+   CATALOG PANEL — right 40%
+============================================================ */
+.catalog-panel {
+  flex: 0 0 40%;
+  display: flex; flex-direction: column;
+  background: var(--bg-white);
+  border-left: 1px solid var(--border);
+  padding: 14px 12px 10px;
+  gap: 10px;
+  overflow: hidden; min-width: 0;
+}
+
+/* ============================================================
+   CATALOG TABS
+============================================================ */
+.catalog-tabs {
+  flex-shrink: 0;
+  display: flex; gap: 4px;
+  background: var(--bg); border-radius: var(--radius-sm); padding: 3px;
+}
+.catalog-tab {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  padding: 7px 8px; border-radius: 6px;
+  font-size: 12px; font-weight: 600; color: var(--text-sec);
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+}
+.catalog-tab:hover { color: var(--primary); }
+.catalog-tab.active { background: var(--bg-white); color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.09); }
+.tab-badge {
+  min-width: 16px; height: 16px;
+  background: var(--primary); color: #fff;
+  font-size: 9px; font-weight: 700; border-radius: 8px; padding: 0 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   SEARCH BAR
+============================================================ */
+.search-bar {
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 0 12px; height: 38px;
+  transition: border-color var(--transition);
+}
+.search-bar:focus-within { border-color: var(--primary); }
+.search-bar svg { color: var(--text-light); flex-shrink: 0; }
+.search-bar input { flex: 1; color: var(--text); font-size: 12.5px; }
+.search-bar input::placeholder { color: var(--text-light); }
+
+/* ============================================================
+   FILTERS
+============================================================ */
+.filters-grid { flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.filter-dropdown {
+  position: relative;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 10px;
+  cursor: pointer; user-select: none;
+  transition: border-color var(--transition);
+}
+.filter-dropdown:hover,
+.filter-dropdown.open { border-color: var(--primary); }
+.filter-label { flex: 1; font-size: 12px; font-weight: 500; color: var(--text-sec); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.filter-dropdown > svg { flex-shrink: 0; color: var(--text-light); transition: transform var(--transition); }
+.filter-dropdown.open > svg { transform: rotate(180deg); }
+.filter-dropdown__menu {
+  display: none;
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: var(--bg-white); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-md);
+  z-index: 200; max-height: 200px; overflow-y: auto; padding: 4px 0;
+}
+.filter-dropdown.open .filter-dropdown__menu { display: block; }
+.filter-option {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 11px; font-size: 12px; color: var(--text);
+  cursor: pointer; transition: background var(--transition);
+}
+.filter-option:hover  { background: var(--primary-light); color: var(--primary); }
+.filter-option.selected { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.filter-option--all { border-bottom: 1px solid var(--border); font-weight: 600; }
+.color-dot { width: 13px; height: 13px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.09); flex-shrink: 0; }
+
+.filter-meta { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; }
+.clear-filters-btn {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 500; color: var(--text-sec);
+  transition: color var(--transition); padding: 2px 0;
+}
+.clear-filters-btn:hover { color: var(--primary); }
+.clear-filters-btn svg { color: inherit; }
+.found-count { font-size: 11.5px; color: var(--text-sec); }
+.found-count strong { color: var(--primary); font-weight: 700; }
+
+/* ============================================================
+   TILE GRID
+============================================================ */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: min-content;
+  gap: 7px;
+  overflow-y: auto; overflow-x: hidden;
+  flex: 1; min-height: 0;
+  padding: 3px 4px 4px 3px;
+  align-content: start;
+}
+
+.tile-card {
+  display: flex; flex-direction: column;
+  border-radius: 9px; border: 2px solid var(--border);
+  overflow: hidden; cursor: pointer;
+  background: var(--bg-white);
+  align-self: start; /* prevent grid from stretching card */
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.tile-card:hover { border-color: var(--border-dark); box-shadow: 0 0 0 3px rgba(163,133,196,0.12), 0 4px 14px rgba(0,0,0,0.07); }
+.tile-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+
+/* 1:1 image frame via padding-top trick — bulletproof, no aspect-ratio needed */
+.tile-card__img {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  border-radius: 7px 7px 0 0;
+  background: var(--bg);
+}
+/* All direct children fill the padded area absolutely */
+.tile-card__img > svg,
+.tile-card__img > img,
+.tile-card__img > div {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+}
+.tile-card__img > svg { display: block; }
+.tile-card__img > img { object-fit: contain; display: block; }
+.tile-card__img > div { display: flex; align-items: center; justify-content: center; }
+
+.tile-card__fav {
+  position: absolute; top: 5px; right: 5px;
+  width: 26px; height: 26px;
+  background: rgba(255,255,255,0.88); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition), transform var(--transition); z-index: 2;
+}
+.tile-card__fav:hover { background: #fff; transform: scale(1.1); }
+.tile-card__fav svg { width: 13px; height: 13px; color: var(--text-light); }
+.tile-card__fav.active svg { color: var(--primary); fill: var(--primary); }
+
+.tile-card__info-btn {
+  position: absolute; bottom: 5px; right: 5px;
+  width: 26px; height: 26px;
+  background: rgba(255,255,255,0.9); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition), transform var(--transition); z-index: 3;
+}
+.tile-card__info-btn:hover { background: #fff; transform: scale(1.12); }
+.tile-card__info-btn svg { width: 14px; height: 14px; color: var(--primary); }
+
+.tile-card__info { padding: 5px 7px 7px; flex-shrink: 0; }
+.tile-card__name { display: block; font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tile-card__apply {
+  display: block; width: 100%; margin-top: 5px;
+  padding: 5px 6px; border-radius: 6px;
+  border: 1px solid var(--primary); background: var(--primary-light);
+  color: var(--primary); font-size: 9.5px; font-weight: 700;
+  line-height: 1.2; text-align: center;
+  transition: background var(--transition), color var(--transition);
+}
+.tile-card__apply:hover { background: var(--primary); color: #fff; }
+.tile-card__apply.is-applied { border-color: var(--primary); background: var(--primary); color: #fff; }
+.tile-card__meta { display: block; font-size: 9.5px; color: var(--text-sec); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.tile-empty { grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 40px 16px; color: var(--text-light); text-align: center; }
+.tile-empty svg { color: var(--border-dark); }
+.tile-empty p { font-size: 13px; font-weight: 500; }
+
+/* ============================================================
+   PAGINATION
+============================================================ */
+/* Серая зона низа панели: основной фон проходит между пагинацией и рекламой,
+   делая их отдельными карточками (как блоки в левой колонке). Full-bleed к краям панели. */
+.catalog-foot {
+  flex-shrink: 0;
+  margin: 0 -12px -10px;
+  padding: 10px 12px;
+  background: var(--bg);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.pagination {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 4px;
+  background: var(--bg-white); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: 8px;
+}
+.pagination:empty { display: none; }
+.page-btn { min-width: 32px; height: 32px; border-radius: 7px; font-size: 12px; font-weight: 600; color: var(--text-sec); display: flex; align-items: center; justify-content: center; transition: background var(--transition), color var(--transition), box-shadow var(--transition); flex-shrink: 0; padding: 0 4px; }
+.page-btn:hover { background: var(--primary-light); color: var(--primary); }
+.page-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(163,133,196,0.35); }
+.page-btn.page-arrow { padding: 0 6px; }
+.page-btn.disabled { opacity: 0.3; pointer-events: none; }
+.page-ellipsis { min-width: 24px; text-align: center; color: var(--text-light); font-size: 13px; }
+
+/* ============================================================
+   POPUP
+============================================================ */
+.popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.42); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+.popup-overlay.open { opacity: 1; pointer-events: all; }
+.popup { background: var(--bg-white); border-radius: 16px; min-width: 380px; max-width: 520px; width: 90%; overflow: hidden; position: relative; transform: scale(0.94) translateY(10px); transition: transform 0.22s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+.popup-overlay.open .popup { transform: scale(1) translateY(0); }
+.popup__content { max-height: 82vh; overflow-y: auto; padding: 28px 28px 24px; }
+.popup__close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--text-sec); transition: background var(--transition), color var(--transition); }
+.popup__close:hover { background: var(--border-dark); color: var(--text); }
+.popup__title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 6px; padding-right: 32px; }
+.popup__subtitle { font-size: 13px; color: var(--text-sec); line-height: 1.65; margin-bottom: 18px; }
+
+.popup-action-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; background: var(--bg); color: var(--text-sec); border: 1.5px solid var(--border); transition: all var(--transition); }
+.popup-action-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.popup-action-btn--active { color: var(--primary); border-color: var(--primary); background: var(--primary-light); }
+.popup-action-btn--primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.popup-action-btn--primary:hover { background: var(--primary-dark); }
+.popup-action-btn:disabled { cursor: default; opacity: 0.9; }
+
+.popup-apply { margin-bottom: 18px; }
+.popup-apply__all { width: 100%; justify-content: center; padding: 11px 14px; font-size: 13px; }
+
+.tile-info-preview { position: relative; width: 90px; height: 90px; flex-shrink: 0; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); background: var(--bg); display: flex; align-items: center; justify-content: center; }
+.tile-info-preview > img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; display: block; }
+.tile-info-preview > svg,
+.tile-info-preview > div { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.tile-info-props { display: flex; flex-direction: column; gap: 8px; }
+.tile-info-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; background: var(--bg); border-radius: var(--radius-sm); font-size: 12.5px; gap: 16px; }
+.tile-info-row span { color: var(--text-sec); flex-shrink: 0; }
+.tile-info-row strong { color: var(--text); font-weight: 600; text-align: right; }
+
+/* ============================================================
+   FULLSCREEN VIEW — просмотр готового результата
+============================================================ */
+.fs-overlay {
+  position: fixed; inset: 0; z-index: 1500;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+.fs-overlay.open { opacity: 1; pointer-events: all; }
+
+.fs-stage {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;               /* обрезаем при увеличении масштаба */
+  display: flex; align-items: center; justify-content: center;
+}
+/* «Рука» для перемещения, когда изображение приближено */
+.fs-stage.pannable { cursor: grab; }
+.fs-stage.pannable.panning { cursor: grabbing; }
+.fs-scene { width: 100%; height: 100%; will-change: transform; transition: transform 0.18s ease; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.fs-stage.panning .fs-scene { transition: none; }
+/* никаких скруглений у изображения в этом режиме */
+.fs-scene > svg,
+.fs-scene > div { width: 100%; height: 100%; display: block; border-radius: 0; }
+
+.fs-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-photo); z-index: 1510;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+.fs-close:hover { background: #fff; color: var(--primary); transform: scale(1.06); }
+
+.fs-controls {
+  position: absolute; bottom: 3vh; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 7px; z-index: 1510;
+}
+
+/* ============================================================
+   SCROLLBARS
+============================================================ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-dark); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-light); }
+
+/* ============================================================
+   ОСВЕЩЕНИЕ (температура света) — компактный регулятор в шапке
+============================================================ */
+/* Панель освещения — серая подложка */
+.header-light {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 6px 9px 6px 13px;
+}
+.hl-btn {
+  display: flex; align-items: center; gap: 6px; flex: 0 0 auto;
+  height: 34px; padding: 0 14px;
+  background: var(--primary-light); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--primary); font: inherit; font-size: 13px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  transition: background var(--transition), border-color var(--transition);
+}
+.hl-btn:hover { border-color: var(--primary); }
+.hl-control { display: flex; align-items: center; gap: 10px; }
+.hl-slider-wrap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.hl-label { font-size: 11px; font-weight: 600; color: var(--text-sec); white-space: nowrap; line-height: 1; }
+/* Фиксированная ширина под самую длинную подпись («≈ 6400K · холоднее» / «темнее −100%») —
+   чтобы при перетаскивании слайдера кнопка «Сброс» не ездила от смены длины текста. */
+.hl-readout { font-size: 11px; font-weight: 600; color: var(--text-sec);
+  flex: 0 0 124px; width: 124px; text-align: center; white-space: nowrap; }
+
+/* Кастомный слайдер температуры: градиент тёплый→нейтральный→холодный, без белого трека */
+.hl-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 160px; max-width: 30vw; height: 8px; margin: 0;
+  background: transparent; cursor: pointer;
+}
+.hl-slider::-webkit-slider-runnable-track {
+  height: 8px; border-radius: 6px;
+  background: linear-gradient(90deg,#E8A24C 0%,#EAD9BE 38%,#ECEAF2 50%,#CBDCE6 62%,#7FB0C8 100%);
+}
+.hl-slider::-moz-range-track {
+  height: 8px; border-radius: 6px;
+  background: linear-gradient(90deg,#E8A24C 0%,#EAD9BE 38%,#ECEAF2 50%,#CBDCE6 62%,#7FB0C8 100%);
+}
+.hl-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 16px; height: 16px; margin-top: -4px; border-radius: 50%;
+  background: #FFFFFF; border: 2px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.28); cursor: pointer;
+}
+.hl-slider::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #FFFFFF; border: 2px solid var(--primary);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.28); cursor: pointer;
+}
+.hl-slider:focus { outline: none; }
+.hl-slider:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--primary-light); }
+.hl-slider:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px var(--primary-light); }
+
+/* Слайдер экспозиции: тёмно-серый → нейтральный → белый (начинается чуть позже) */
+.hl-slider--exp::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg,#5A5A5A 0%,#A8A8A8 42%,#FFFFFF 84%,#FFFFFF 100%);
+}
+.hl-slider--exp::-moz-range-track {
+  background: linear-gradient(90deg,#5A5A5A 0%,#A8A8A8 42%,#FFFFFF 84%,#FFFFFF 100%);
+}
+/* Две панели в шапке — пораньше ужимаем слайдеры, чтобы не теснили правые кнопки */
+@media (max-width: 1100px) { .hl-slider { width: 130px; } }
+@media (max-width: 900px) { .hl-readout { display: none; } }
+@media (max-width: 760px) { .hl-label { display: none; } .hl-slider { width: 120px; } }
+@media (max-width: 520px) { .hl-btn span { display: none; } .hl-btn { padding: 0 9px; } .hl-slider { width: 92px; } }
+
+/* ============================================================
+   ШАПКА — горизонтальная прокрутка на узких экранах
+   ============================================================ */
+.app-header { position: relative; }
+.header-scroll {
+  flex: 1 1 auto; min-width: 0;
+  overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+.header-scroll::-webkit-scrollbar { height: 0; width: 0; display: none; }
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; min-width: 100%; width: max-content;
+}
+/* Затухания у краёв — видно, что контент уходит за край (только при переполнении) */
+.app-header::before, .app-header::after {
+  content: ''; position: absolute; top: 1px; bottom: 1px; width: 36px;
+  pointer-events: none; z-index: 5; opacity: 0; transition: opacity 0.2s ease;
+}
+.app-header::before { left: 0;  background: linear-gradient(90deg,  var(--bg-white) 30%, transparent); }
+.app-header::after  { right: 0; background: linear-gradient(270deg, var(--bg-white) 30%, transparent); }
+.app-header.has-overflow:not(.at-start)::before { opacity: 1; }
+.app-header.has-overflow:not(.at-end)::after    { opacity: 1; }
+
+/* ============================================================
+   ПАНЕЛЬ СООБЩЕНИЙ СЕРВИСА (правая половина плашки миниатюр)
+   ============================================================ */
+.svc-panel {
+  flex: 1 1 auto; display: flex; align-items: center; min-height: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 12px;
+}
+.svc-msg { font-size: 13px; font-weight: 600; color: var(--text-sec); line-height: 1.4; }
+.svc-msg.svc-anim { animation: svcIn 0.34s ease; }
+.svc-msg.svc-flash { color: var(--primary-dark); }
+@keyframes svcIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================================
+   ВИДЕО В ПОП-АПЕ («Как тут работать?») — почти во весь экран
+   ============================================================ */
+.popup--video {
+  background: transparent; box-shadow: none;
+  min-width: 0; max-width: none; width: auto;
+  border-radius: 12px; overflow: visible;
+}
+.popup--video .popup__content.is-video {
+  padding: 0; max-height: none; overflow: visible; display: flex;
+}
+.popup__content.is-video { padding: 0; }
+/* Видео сохраняет исходные пропорции (16:9), вписываясь в экран с небольшими полями */
+.popup__video {
+  display: block; width: auto; height: auto;
+  max-width: 96vw; max-height: 92vh;
+  border-radius: 12px; background: #000;
+}
+.popup--video .popup__close { top: 8px; right: 8px; z-index: 3; }
+/* Затемняем фон под видео для «кино»-эффекта */
+.popup-overlay:has(.popup--video) { background: rgba(0,0,0,0.86); }
+
+/* ============================================================
+   ПРОМО КОНТЕНТ-СТУДИИ VILRAY (под пагинацией)
+   ============================================================ */
+/* Промо Контент-студии — отдельный статичный фрейм (без ховера/сдвига).
+   Кликабельны только ссылки: фиолетовый CTA и vilraystudio.ru. */
+.promo-card {
+  flex-shrink: 0; min-height: var(--strip-h);
+  display: flex; align-items: center;
+  background: var(--bg-white); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+}
+/* Логотип на чёрной подложке #000000 — читается во всех темах */
+.promo-card__logo {
+  flex: 0 0 40%; align-self: stretch; display: flex; align-items: center; justify-content: center;
+  padding: 8px 10px; background: #000000;
+}
+.promo-card__logo img { width: 100%; height: auto; max-height: 72px; object-fit: contain; display: block; }
+.promo-card__body { flex: 1 1 auto; min-width: 0; padding: 8px 14px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.promo-card__text { font-size: 11.5px; font-weight: 500; color: var(--text-sec); line-height: 1.35; }
+.promo-card__text a { color: var(--text-sec); text-decoration: underline; text-underline-offset: 2px; }
+.promo-card__text a:hover { color: var(--primary); }
+.promo-card__cta { align-self: flex-start; font-size: 12.5px; font-weight: 700; color: var(--primary); text-decoration: none; }
+.promo-card__cta:hover { text-decoration: underline; text-underline-offset: 2px; }

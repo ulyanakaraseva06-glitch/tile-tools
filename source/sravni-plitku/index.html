@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>СравниПлитку — Визуализатор плитки</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="stylevis.css"/>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="app-header" id="appHeader">
+  <div class="header-scroll" id="headerScroll">
+  <div class="header-inner">
+  <div class="header-left">
+    <div class="header-logo">
+      <img src="images/logo.svg" alt="СравниПлитку"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <!-- Fallback logo if SVG not found -->
+      <div style="display:none;align-items:center;gap:10px">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect x="1" y="1" width="15" height="15" rx="2.5" fill="#6C47D4"/>
+          <rect x="20" y="1" width="15" height="15" rx="2.5" fill="#6C47D4" opacity="0.55"/>
+          <rect x="1" y="20" width="15" height="15" rx="2.5" fill="#6C47D4" opacity="0.55"/>
+          <rect x="20" y="20" width="15" height="15" rx="2.5" fill="#6C47D4"/>
+        </svg>
+        <div class="logo-text">
+          <span class="logo-top">СРАВНИ</span>
+          <span class="logo-bottom">ПЛИТКУ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Регулятор освещения (температура) — слева в шапке, всегда виден -->
+    <div class="header-light" id="headerLight">
+      <div class="hl-control">
+        <div class="hl-slider-wrap">
+          <span class="hl-label">Настроить освещение</span>
+          <input type="range" id="lightSlider" class="hl-slider" min="-100" max="100" value="0" step="1" aria-label="Температура освещения" title="Температура освещения: теплее ← → холоднее">
+        </div>
+        <span class="hl-readout" id="lightReadout">нейтрально</span>
+      </div>
+      <button class="hl-btn" id="btnLightReset" title="Сбросить освещение к нейтрали">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18h6"/><path d="M10 22h4"/>
+          <path d="M15.1 14c.2-1 .7-1.7 1.4-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.8 1.2 1.5 1.4 2.5"/>
+        </svg>
+        <span>Сброс</span>
+      </button>
+    </div>
+
+    <!-- Регулятор экспозиции (яркость/контраст) — рядом с освещением -->
+    <div class="header-light" id="headerExposure">
+      <div class="hl-control">
+        <div class="hl-slider-wrap">
+          <span class="hl-label">Настроить экспозицию</span>
+          <input type="range" id="expSlider" class="hl-slider hl-slider--exp" min="-100" max="100" value="0" step="1" aria-label="Экспозиция" title="Экспозиция: темнее ← → ярче">
+        </div>
+        <span class="hl-readout" id="expReadout">нейтрально</span>
+      </div>
+      <button class="hl-btn" id="btnExpReset" title="Сбросить экспозицию к нейтрали">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+        </svg>
+        <span>Сброс</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="header-btn" id="btnReset" title="Сбросить расставленную плитку во всех зонах текущего интерьера">
+      <svg width="15" height="15" viewBox="0 0 7.18 6.44" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" fill-rule="nonzero" d="M0 2.42l0.69 1.77 1.23 -1.45 -0.8 -0.14c0.29,-1.33 1.46,-2.29 2.84,-2.29 1.6,0 2.91,1.31 2.91,2.91 0,1.61 -1.31,2.91 -2.91,2.91 -0.83,0 -1.62,-0.36 -2.17,-0.98l-0.24 0.21c0.61,0.69 1.48,1.08 2.41,1.08 1.79,-0.01 3.21,-1.43 3.22,-3.22 -0.01,-1.79 -1.43,-3.21 -3.22,-3.22 -1.18,0.01 -2.24,0.63 -2.82,1.66 -0.15,0.28 -0.26,0.58 -0.33,0.89l-0.81 -0.13z"/>
+      </svg>
+      <span>Сбросить зоны</span>
+    </button>
+    <button class="header-btn" id="btnHowto" title="Видео-инструкция: как пользоваться">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.5 9.3a2.6 2.6 0 0 1 4.8 1.1c0 1.7-2.4 2-2.4 3.3" stroke-linecap="round"/>
+        <line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="2.4"/>
+      </svg>
+      <span>Как тут работать?</span>
+    </button>
+    <button class="header-btn header-btn--export" id="btnExport" title="Сформировать единое изображение в JPG">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 3v5h5"/>
+        <text x="12" y="18" font-size="6.2" font-weight="800" fill="currentColor" stroke="none" text-anchor="middle" font-family="Manrope, sans-serif">JPG</text>
+      </svg>
+      <span>Сформировать изображение</span>
+    </button>
+    <button class="header-btn header-btn--user" id="btnUser" title="Личный кабинет">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </button>
+  </div>
+  </div><!-- /.header-inner -->
+  </div><!-- /.header-scroll -->
+</header>
+
+<!-- ===== APP BODY ===== -->
+<div class="app-body">
+
+  <!-- LEFT SIDEBAR — hidden per design -->
+  <aside class="sidebar" style="display:none"></aside>
+
+  <!-- MAIN: Render + Rooms strip -->
+  <main class="main-content">
+
+    <div class="render-wrapper">
+      <!-- SVG scene (filled by JS) -->
+      <div id="renderScene" class="render-scene"></div>
+
+      <!-- Controls (bottom-left) -->
+      <div class="render-controls">
+        <button class="ctrl-btn" id="btnZoomOut" title="Уменьшить">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="ctrl-btn" id="btnZoomIn" title="Увеличить">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="ctrl-btn" id="btnFullscreen" title="На весь экран">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Rooms strip: слева миниатюры комнат, справа панель статуса/сообщений -->
+    <div class="rooms-strip">
+      <div class="rooms-col rooms-col--thumbs">
+        <div id="roomsList" class="rooms-list"></div>
+      </div>
+      <div class="rooms-col rooms-col--info">
+        <div class="svc-panel">
+          <span class="svc-msg" id="svcMsg">Выберите зону на рендере, затем плитку из каталога</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT: Catalog panel (30%) -->
+  <aside class="catalog-panel">
+
+    <!-- TABS: Каталог / Избранное -->
+    <div class="catalog-tabs">
+      <button class="catalog-tab active" data-tab="catalog">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Каталог
+      </button>
+      <button class="catalog-tab" data-tab="favorites">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        Избранное
+        <span class="tab-badge" id="tabFavBadge" style="display:none">0</span>
+      </button>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Поиск плитки…" autocomplete="off"/>
+    </div>
+
+    <!-- Filter dropdowns -->
+    <div class="filters-grid">
+      <div class="filter-dropdown" data-filter="color">
+        <span class="filter-label">Цвет</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="filter-dropdown__menu" id="dropdown-color"></div>
+      </div>
+      <div class="filter-dropdown" data-filter="size">
+        <span class="filter-label">Размер</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="filter-dropdown__menu" id="dropdown-size"></div>
+      </div>
+      <div class="filter-dropdown" data-filter="surface">
+        <span class="filter-label">Поверхность</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="filter-dropdown__menu" id="dropdown-surface"></div>
+      </div>
+      <div class="filter-dropdown" data-filter="design">
+        <span class="filter-label">Дизайн</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="filter-dropdown__menu" id="dropdown-design"></div>
+      </div>
+    </div>
+
+    <!-- Filter meta -->
+    <div class="filter-meta">
+      <button class="clear-filters-btn" id="clearFilters">
+        <svg width="13" height="13" viewBox="0 0 7.18 6.44" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" fill-rule="nonzero" d="M0 2.42l0.69 1.77 1.23 -1.45 -0.8 -0.14c0.29,-1.33 1.46,-2.29 2.84,-2.29 1.6,0 2.91,1.31 2.91,2.91 0,1.61 -1.31,2.91 -2.91,2.91 -0.83,0 -1.62,-0.36 -2.17,-0.98l-0.24 0.21c0.61,0.69 1.48,1.08 2.41,1.08 1.79,-0.01 3.21,-1.43 3.22,-3.22 -0.01,-1.79 -1.43,-3.21 -3.22,-3.22 -1.18,0.01 -2.24,0.63 -2.82,1.66 -0.15,0.28 -0.26,0.58 -0.33,0.89l-0.81 -0.13z"/>
+        </svg>
+        Очистить фильтры
+      </button>
+      <span class="found-count">Найдено: <strong id="foundCount">—</strong></span>
+    </div>
+
+    <!-- Tile grid -->
+    <div class="tile-grid" id="tileGrid"></div>
+
+    <!-- Низ панели: серая зона основного фона; пагинация и реклама — отдельные карточки на ней -->
+    <div class="catalog-foot">
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+
+      <!-- Промо Контент-студии Vilray (отдельная карточка, не кликается целиком) -->
+      <div class="promo-card">
+        <div class="promo-card__logo">
+          <img src="images/logo-vilray.svg" alt="Vilray Studio"/>
+        </div>
+        <div class="promo-card__body">
+          <p class="promo-card__text">Контент-студия <a href="https://vilraystudio.ru" target="_blank" rel="noopener">vilraystudio.ru</a> — профессиональные 3D-рендерные визуализации и рекламный контент.</p>
+          <a class="promo-card__cta" href="https://vilraystudio.ru" target="_blank" rel="noopener">Заказать персональный контент</a>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /.app-body -->
+
+<!-- ===== FULLSCREEN VIEW (просмотр готового результата) ===== -->
+<div class="fs-overlay" id="fsOverlay">
+  <button class="fs-close" id="fsClose" title="Закрыть">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="fs-stage">
+    <div class="fs-scene" id="fsScene"></div>
+  </div>
+
+  <div class="fs-controls">
+    <button class="ctrl-btn" id="fsZoomOut" title="Уменьшить">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="ctrl-btn" id="fsZoomIn" title="Увеличить">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="ctrl-btn" id="fsExit" title="Свернуть">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
+        <line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ===== POPUP ===== -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup">
+    <button class="popup__close" id="popupClose">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div id="popupContent" class="popup__content"></div>
+  </div>
+</div>
+
+<script src="export-image.js"></script>
+<script src="betavis.js"></script>
+</body>
+</html>

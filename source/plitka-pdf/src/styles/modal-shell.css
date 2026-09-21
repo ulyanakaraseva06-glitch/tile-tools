@@ -1,0 +1,31 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--topbar-height, 68px) + 12px) 28px 28px;
+  background: rgba(20, 20, 25, 0.48);
+}
+
+.modal-title h2 {
+  margin: 0 0 7px;
+  font-size: 26px;
+}
+
+.modal-title p {
+  margin: 0 0 26px;
+  color: var(--text-muted);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.modal-backdrop {
+  background: rgba(24, 24, 30, 0.42);
+  backdrop-filter: blur(3px);
+}

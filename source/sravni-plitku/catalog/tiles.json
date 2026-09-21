@@ -1,0 +1,803 @@
+[
+    {
+        "id": "k-2002",
+        "folder": "k-2002",
+        "hasRealImg": true,
+        "name": "K-2002/LR/600x1200x10",
+        "shortName": "Айсберг K-2002/LR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2002/R0_k-2002.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2002/R1_k-2002.jpg",
+            "bathroom_xl": "images/tiles/k-2002/R2_k-2002.jpg",
+            "bathroom_s": "images/tiles/k-2002/R3_k-2002.jpg",
+            "hall": "images/tiles/k-2002/R4_k-2002.jpg",
+            "kitchen": "images/tiles/k-2002/R5_k-2002.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Айсберг"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2002/LR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2003",
+        "folder": "k-2003",
+        "hasRealImg": true,
+        "name": "K-2003/LR/600x1200x10",
+        "shortName": "Айсберг K-2003/LR",
+        "brand": "Kerranova",
+        "color": [
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2003/R0_k-2003.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2003/R1_k-2003.jpg",
+            "bathroom_xl": "images/tiles/k-2003/R2_k-2003.jpg",
+            "bathroom_s": "images/tiles/k-2003/R3_k-2003.jpg",
+            "hall": "images/tiles/k-2003/R4_k-2003.jpg",
+            "kitchen": "images/tiles/k-2003/R5_k-2003.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Айсберг"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2003/LR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2001lr1",
+        "folder": "k-2001lr1",
+        "hasRealImg": true,
+        "name": "K-2001/LR/600x1200x10",
+        "shortName": "Айсберг K-2001/LR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2001lr1/R0_k-2001lr1.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2001lr1/R1_k-2001lr1.jpg",
+            "bathroom_xl": "images/tiles/k-2001lr1/R2_k-2001lr1.jpg",
+            "bathroom_s": "images/tiles/k-2001lr1/R3_k-2001lr1.jpg",
+            "hall": "images/tiles/k-2001lr1/R4_k-2001lr1.jpg",
+            "kitchen": "images/tiles/k-2001lr1/R5_k-2001lr1.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Айсберг"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2001/LR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2021",
+        "folder": "k-2021",
+        "hasRealImg": true,
+        "name": "K-2021/LR/600x1200x10",
+        "shortName": "Бутик K-2021/LR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2021/R0_k-2021.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2021/R1_k-2021.jpg",
+            "bathroom_xl": "images/tiles/k-2021/R2_k-2021.jpg",
+            "bathroom_s": "images/tiles/k-2021/R3_k-2021.jpg",
+            "hall": "images/tiles/k-2021/R4_k-2021.jpg",
+            "kitchen": "images/tiles/k-2021/R5_k-2021.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Бутик"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2021/LR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2021mr",
+        "folder": "k-2021mr",
+        "hasRealImg": true,
+        "name": "K-2021/MR/600x1200x10",
+        "shortName": "Бутик K-2021/MR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2021mr/R0_k-2021mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2021mr/R1_k-2021mr.jpg",
+            "bathroom_xl": "images/tiles/k-2021mr/R2_k-2021mr.jpg",
+            "bathroom_s": "images/tiles/k-2021mr/R3_k-2021mr.jpg",
+            "hall": "images/tiles/k-2021mr/R4_k-2021mr.jpg",
+            "kitchen": "images/tiles/k-2021mr/R5_k-2021mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Бутик"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2021/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2020",
+        "folder": "k-2020",
+        "hasRealImg": true,
+        "name": "K-2020/LR/600x1200x10",
+        "shortName": "Бутик K-2020/LR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2020/R0_k-2020.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2020/R1_k-2020.jpg",
+            "bathroom_xl": "images/tiles/k-2020/R2_k-2020.jpg",
+            "bathroom_s": "images/tiles/k-2020/R3_k-2020.jpg",
+            "hall": "images/tiles/k-2020/R4_k-2020.jpg",
+            "kitchen": "images/tiles/k-2020/R5_k-2020.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Бутик"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2020/LR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2020-mr",
+        "folder": "k-2020-mr",
+        "hasRealImg": true,
+        "name": "K-2020/MR/600x1200x10",
+        "shortName": "Бутик K-2020/MR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2020-mr/R0_k-2020-mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2020-mr/R1_k-2020-mr.jpg",
+            "bathroom_xl": "images/tiles/k-2020-mr/R2_k-2020-mr.jpg",
+            "bathroom_s": "images/tiles/k-2020-mr/R3_k-2020-mr.jpg",
+            "hall": "images/tiles/k-2020-mr/R4_k-2020-mr.jpg",
+            "kitchen": "images/tiles/k-2020-mr/R5_k-2020-mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Бутик"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2020/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2071mr",
+        "folder": "k-2071mr",
+        "hasRealImg": true,
+        "name": "K-2071/MR/600x1200x10",
+        "shortName": "Белое Озеро K-2071/MR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2071mr/R0_k-2071mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2071mr/R1_k-2071mr.jpg",
+            "bathroom_xl": "images/tiles/k-2071mr/R2_k-2071mr.jpg",
+            "bathroom_s": "images/tiles/k-2071mr/R3_k-2071mr.jpg",
+            "hall": "images/tiles/k-2071mr/R4_k-2071mr.jpg",
+            "kitchen": "images/tiles/k-2071mr/R5_k-2071mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Белое Озеро"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2071/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2140mr",
+        "folder": "k-2140mr",
+        "hasRealImg": true,
+        "name": "K-2140/MR/600x1200x10",
+        "shortName": "Мгновение K-2140/MR",
+        "brand": "Kerranova",
+        "color": [
+            "бежевый",
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2140mr/R0_k-2140mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2140mr/R1_k-2140mr.jpg",
+            "bathroom_xl": "images/tiles/k-2140mr/R2_k-2140mr.jpg",
+            "bathroom_s": "images/tiles/k-2140mr/R3_k-2140mr.jpg",
+            "hall": "images/tiles/k-2140mr/R4_k-2140mr.jpg",
+            "kitchen": "images/tiles/k-2140mr/R5_k-2140mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Мгновение"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2140/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2141mr",
+        "folder": "k-2141mr",
+        "hasRealImg": true,
+        "name": "K-2141/MR/600x1200x10",
+        "shortName": "Мгновение K-2141/MR",
+        "brand": "Kerranova",
+        "color": [
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-2141mr/R0_k-2141mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2141mr/R1_k-2141mr.jpg",
+            "bathroom_xl": "images/tiles/k-2141mr/R2_k-2141mr.jpg",
+            "bathroom_s": "images/tiles/k-2141mr/R3_k-2141mr.jpg",
+            "hall": "images/tiles/k-2141mr/R4_k-2141mr.jpg",
+            "kitchen": "images/tiles/k-2141mr/R5_k-2141mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Мгновение"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2141/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2401mr",
+        "folder": "k-2401mr",
+        "hasRealImg": true,
+        "name": "K-2401/MR/600x1200x10",
+        "shortName": "Берег K-2401/MR",
+        "brand": "Kerranova",
+        "color": [
+            "бежевый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2401mr/R0_k-2401mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2401mr/R1_k-2401mr.jpg",
+            "bathroom_xl": "images/tiles/k-2401mr/R2_k-2401mr.jpg",
+            "bathroom_s": "images/tiles/k-2401mr/R3_k-2401mr.jpg",
+            "hall": "images/tiles/k-2401mr/R4_k-2401mr.jpg",
+            "kitchen": "images/tiles/k-2401mr/R5_k-2401mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Берег"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2401/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2402mr",
+        "folder": "k-2402mr",
+        "hasRealImg": true,
+        "name": "K-2402/MR/600x1200x10",
+        "shortName": "Берег K-2402/MR",
+        "brand": "Kerranova",
+        "color": [
+            "бежевый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2402mr/R0_k-2402mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2402mr/R1_k-2402mr.jpg",
+            "bathroom_xl": "images/tiles/k-2402mr/R2_k-2402mr.jpg",
+            "bathroom_s": "images/tiles/k-2402mr/R3_k-2402mr.jpg",
+            "hall": "images/tiles/k-2402mr/R4_k-2402mr.jpg",
+            "kitchen": "images/tiles/k-2402mr/R5_k-2402mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Берег"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2402/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2403mr",
+        "folder": "k-2403mr",
+        "hasRealImg": true,
+        "name": "K-2403/MR/600x1200x10",
+        "shortName": "Берег K-2403/MR",
+        "brand": "Kerranova",
+        "color": [
+            "бежевый",
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2403mr/R0_k-2403mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2403mr/R1_k-2403mr.jpg",
+            "bathroom_xl": "images/tiles/k-2403mr/R2_k-2403mr.jpg",
+            "bathroom_s": "images/tiles/k-2403mr/R3_k-2403mr.jpg",
+            "hall": "images/tiles/k-2403mr/R4_k-2403mr.jpg",
+            "kitchen": "images/tiles/k-2403mr/R5_k-2403mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Берег"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2403/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2404mr",
+        "folder": "k-2404mr",
+        "hasRealImg": true,
+        "name": "K-2404/MR/600x1200x10",
+        "shortName": "Берег K-2404/MR",
+        "brand": "Kerranova",
+        "color": [
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2404mr/R0_k-2404mr.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2404mr/R1_k-2404mr.jpg",
+            "bathroom_xl": "images/tiles/k-2404mr/R2_k-2404mr.jpg",
+            "bathroom_s": "images/tiles/k-2404mr/R3_k-2404mr.jpg",
+            "hall": "images/tiles/k-2404mr/R4_k-2404mr.jpg",
+            "kitchen": "images/tiles/k-2404mr/R5_k-2404mr.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Берег"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2404/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-2405",
+        "folder": "k-2405",
+        "hasRealImg": true,
+        "name": "K-2405/MR/600x1200x10",
+        "shortName": "Берег K-2405/MR",
+        "brand": "Kerranova",
+        "color": [
+            "серый"
+        ],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [
+            "камень"
+        ],
+        "tileImg": "images/tiles/k-2405/R0_k-2405.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-2405/R1_k-2405.jpg",
+            "bathroom_xl": "images/tiles/k-2405/R2_k-2405.jpg",
+            "bathroom_s": "images/tiles/k-2405/R3_k-2405.jpg",
+            "hall": "images/tiles/k-2405/R4_k-2405.jpg",
+            "kitchen": "images/tiles/k-2405/R5_k-2405.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Берег"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-2405/MR/600x1200x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-900",
+        "folder": "k-900",
+        "hasRealImg": true,
+        "name": "K-900/LR/600x600x10",
+        "shortName": "Каньон K-900/LR",
+        "brand": "Kerranova",
+        "color": [
+            "белый"
+        ],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-900/R0_k-900.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-900/R1_k-900.jpg",
+            "bathroom_xl": "images/tiles/k-900/R2_k-900.jpg",
+            "bathroom_s": "images/tiles/k-900/R3_k-900.jpg",
+            "hall": "images/tiles/k-900/R4_k-900.jpg",
+            "kitchen": "images/tiles/k-900/R5_k-900.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Каньон"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-900/LR/600x600x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    },
+    {
+        "id": "k-905",
+        "folder": "k-905",
+        "hasRealImg": true,
+        "name": "K-905/LR/600x600x10",
+        "shortName": "Каньон K-905/LR",
+        "brand": "Kerranova",
+        "color": [
+            "серый"
+        ],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "лаппатированная"
+        ],
+        "design": [
+            "мрамор"
+        ],
+        "tileImg": "images/tiles/k-905/R0_k-905.jpg",
+        "renders": {
+            "bathroom_m": "images/tiles/k-905/R1_k-905.jpg",
+            "bathroom_xl": "images/tiles/k-905/R2_k-905.jpg",
+            "bathroom_s": "images/tiles/k-905/R3_k-905.jpg",
+            "hall": "images/tiles/k-905/R4_k-905.jpg",
+            "kitchen": "images/tiles/k-905/R5_k-905.jpg"
+        },
+        "hex": "#d9d5ce",
+        "attribute1": {
+            "name": "Коллекция",
+            "values": [
+                "Каньон"
+            ]
+        },
+        "attribute2": {
+            "name": "Артикул/модель",
+            "values": [
+                "K-905/LR/600x600x10"
+            ]
+        },
+        "attribute3": {
+            "name": "Толщина, мм",
+            "values": [
+                "10"
+            ]
+        }
+    }
+]

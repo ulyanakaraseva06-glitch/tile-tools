@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#4d5155"/><stop offset="1" stop-color="#1f2226"/></linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g)"/>
+  <g opacity=".28" stroke="#c4c2bd" stroke-width="3" fill="none">
+    <path d="M0 250 C210 160 320 360 520 300 S850 150 1200 250"/>
+    <path d="M100 720 C280 600 480 730 690 650 S960 560 1200 660"/>
+    <path d="M780 0 C690 180 820 320 760 520 S650 760 690 900"/>
+  </g>
+  <text x="70" y="800" font-family="Arial" font-size="48" fill="#f7f3ec" opacity=".55">graphite stone tile</text>
+</svg>

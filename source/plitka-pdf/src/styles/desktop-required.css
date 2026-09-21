@@ -1,0 +1,64 @@
+.desktop-required-shell {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 100dvh;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at top, rgba(155, 121, 198, 0.16), transparent 38%),
+    var(--bg);
+}
+
+.desktop-required-card {
+  width: min(560px, 100%);
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: 0 24px 54px rgba(15, 23, 42, 0.14);
+}
+
+.desktop-required-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.desktop-required-card h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.08;
+}
+
+.desktop-required-card p {
+  margin: 14px 0 0;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.desktop-required-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.desktop-required-actions .btn {
+  min-width: 180px;
+}
+
+.cabinet-note {
+  margin: 16px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.cabinet-note a {
+  color: var(--accent);
+}

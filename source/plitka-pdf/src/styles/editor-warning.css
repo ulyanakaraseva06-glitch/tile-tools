@@ -1,0 +1,14 @@
+.editor-warning {
+  padding: 10px;
+  margin: 0 0 12px;
+  border: 1px solid rgba(233, 161, 58, 0.35);
+  border-radius: 8px;
+  background: rgba(233, 161, 58, 0.08);
+  color: #8a5b12;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.editor-warning {
+  color: color-mix(in srgb, var(--warning) 80%, var(--text));
+}

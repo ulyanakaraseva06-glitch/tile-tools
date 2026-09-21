@@ -1,0 +1,13 @@
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {createProject,visiblePresetSummaries,getPresetPreferredSchemeId,getPresetPresentationOverrides} from '../src/data/createProject';
+import {applyDocumentSchemeToProject} from '../src/app/projectDesignOperations';
+import {PdfPageRenderer} from '../src/components/PdfPageRenderer/PdfPageRenderer';
+import '../src/styles/globals.css';
+import '../src/styles/themes.css';
+const index=Number(new URLSearchParams(location.search).get('index')||0);
+const preset=visiblePresetSummaries[index];
+const project={...applyDocumentSchemeToProject(createProject(preset.id),getPresetPreferredSchemeId(preset.id)),...getPresetPresentationOverrides(preset.id)};
+const landscape=project.pageFormat==='a4_landscape';
+const scale=.25,width=landscape?1123:794,height=landscape?794:1123;
+createRoot(document.getElementById('root')!).render(<><style>{`body{overflow:auto!important;background:#dadadd;padding:20px}.review-grid{width:1280px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.review-card{background:white;padding:12px}.review-card h2{font:12px Segoe UI;height:32px}.review-page{width:${width*scale}px;height:${height*scale}px;position:relative}.review-page>.pdf-page{transform:scale(${scale});transform-origin:top left;box-shadow:none}`}</style><h1>{preset.label} · {project.pages.length} страниц</h1><nav>{visiblePresetSummaries.map((p,i)=><a style={{marginRight:12}} href={`?index=${i}`}>{p.label}</a>)}</nav><div className="review-grid">{project.pages.map((p,i)=><article className="review-card" key={p.id}><h2>{i+1}. {p.title}</h2><div className="review-page"><PdfPageRenderer page={p} renderSettings={project} /></div></article>)}</div></>);

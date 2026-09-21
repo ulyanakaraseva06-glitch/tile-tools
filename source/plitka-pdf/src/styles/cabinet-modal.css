@@ -1,0 +1,46 @@
+.cabinet-modal {
+  width: min(1120px, 96vw);
+  padding: 0;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 5%, var(--surface)) 0%, var(--surface) 210px),
+    var(--surface);
+}
+
+.empty-saved-list {
+  padding: 16px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+}
+
+.cabinet-promo-wide {
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  margin: 0 34px 30px;
+  padding: 18px;
+}
+
+.cabinet-promo-wide strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.cabinet-promo-wide p {
+  margin: 7px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cabinet-modal > .close-btn {
+  position: absolute;
+  top: 24px;
+  right: 26px;
+  z-index: 4;
+}
+
+.cabinet-promo-wide {
+  grid-template-columns: minmax(0, 1fr) auto;
+}

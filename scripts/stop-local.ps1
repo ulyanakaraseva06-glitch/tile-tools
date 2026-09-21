@@ -6,7 +6,7 @@ if (-not (Test-Path -LiteralPath $pidFile)) {
     Write-Host 'No Tile Tools process list found.'
     exit 0
 }
-$processIds = @(Get-Content -Raw -LiteralPath $pidFile | ConvertFrom-Json)
+$processIds = Get-Content -Raw -LiteralPath $pidFile | ConvertFrom-Json
 foreach ($processId in $processIds) {
     $process = Get-Process -Id ([int]$processId) -ErrorAction SilentlyContinue
     if ($process -and $process.ProcessName -eq 'php') {

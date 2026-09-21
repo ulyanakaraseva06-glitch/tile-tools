@@ -1,0 +1,40 @@
+.cabinet-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 660px;
+}
+
+.cabinet-tabs button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.cabinet-tabs button.active {
+  border-color: color-mix(in srgb, var(--accent) 46%, var(--border));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.cabinet-tab-panel {
+  display: grid;
+  gap: 16px;
+  padding: 18px 34px;
+}
+
+.cabinet-tab-panel .cabinet-card {
+  min-height: 330px;
+}
+
+.cabinet-tab-panel .admin-analytics-access {
+  min-height: 0;
+  background: color-mix(in srgb, var(--accent-soft) 38%, var(--surface));
+}

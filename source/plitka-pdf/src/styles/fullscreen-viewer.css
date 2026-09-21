@@ -1,0 +1,17 @@
+.fullscreen-page-view {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 72px 32px 32px;
+  overflow: auto;
+  background: rgba(24, 25, 28, 0.78);
+}
+
+.fullscreen-page-view > .btn {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 2;
+}

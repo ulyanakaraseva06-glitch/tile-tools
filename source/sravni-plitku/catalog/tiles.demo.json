@@ -1,0 +1,1702 @@
+[
+ {
+  "id": "demo-001",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Selene D-7098/ST/120x60",
+  "shortName": "Selene D-7098",
+  "brand": "Atlas Concorde",
+  "color": [
+   "бежевый"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#CFC09F",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Selene"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-7098"
+   ]
+  }
+ },
+ {
+  "id": "demo-002",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Onyx D-4153/ST/120x60",
+  "shortName": "Onyx D-4153",
+  "brand": "Atlas Concorde",
+  "color": [
+   "бежевый"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#C4BDA5",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Onyx"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4153"
+   ]
+  }
+ },
+ {
+  "id": "demo-003",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Sabbia D-5109/LP/120x60",
+  "shortName": "Sabbia D-5109",
+  "brand": "Cersanit",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "лаппатированная"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#77A476",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Sabbia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-5109"
+   ]
+  }
+ },
+ {
+  "id": "demo-004",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Velluto D-3669/ST/30x60",
+  "shortName": "Velluto D-3669",
+  "brand": "Laparet",
+  "color": [
+   "голубой"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#86A5CB",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Velluto"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3669"
+   ]
+  }
+ },
+ {
+  "id": "demo-005",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Bianco D-2263/ST/30x60",
+  "shortName": "Bianco D-2263",
+  "brand": "Italon",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#273028",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Bianco"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-2263"
+   ]
+  }
+ },
+ {
+  "id": "demo-006",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Velluto D-1960/PL/20x20",
+  "shortName": "Velluto D-1960",
+  "brand": "Kerranova",
+  "color": [
+   "серый"
+  ],
+  "size": [
+   "20x20"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#AEB1AE",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Velluto"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1960"
+   ]
+  }
+ },
+ {
+  "id": "demo-007",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Travertino D-8905/ST/20x80",
+  "shortName": "Travertino D-8905",
+  "brand": "Atlas Concorde",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "20x80"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#262A28",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Travertino"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8905"
+   ]
+  }
+ },
+ {
+  "id": "demo-008",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Sabbia D-3252/LR/20x40",
+  "shortName": "Sabbia D-3252",
+  "brand": "Atlas Concorde",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#21322D",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Sabbia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3252"
+   ]
+  }
+ },
+ {
+  "id": "demo-009",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Calacatta D-9111/RF/20x40",
+  "shortName": "Calacatta D-9111",
+  "brand": "Gracia",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#799580",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Calacatta"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9111"
+   ]
+  }
+ },
+ {
+  "id": "demo-010",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dune D-3260/LR/60x60",
+  "shortName": "Dune D-3260",
+  "brand": "Cersanit",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#645D60",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dune"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3260"
+   ]
+  }
+ },
+ {
+  "id": "demo-011",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dolomiti D-9338/PL/30x60",
+  "shortName": "Dolomiti D-9338",
+  "brand": "Gracia",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#F6F7E4",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dolomiti"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9338"
+   ]
+  }
+ },
+ {
+  "id": "demo-012",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dune D-8045/ST/60x60",
+  "shortName": "Dune D-8045",
+  "brand": "Gracia",
+  "color": [
+   "бежевый"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#C2B3A2",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dune"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8045"
+   ]
+  }
+ },
+ {
+  "id": "demo-013",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Travertino D-4235/ST/20x40",
+  "shortName": "Travertino D-4235",
+  "brand": "Laparet",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#6F6967",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Travertino"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4235"
+   ]
+  }
+ },
+ {
+  "id": "demo-014",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Rovere D-7426/LR/60x60",
+  "shortName": "Rovere D-7426",
+  "brand": "Gracia",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#6C6964",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Rovere"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-7426"
+   ]
+  }
+ },
+ {
+  "id": "demo-015",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Nordic D-9212/MR/120x60",
+  "shortName": "Nordic D-9212",
+  "brand": "Atlas Concorde",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "матовый"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#D07C53",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Nordic"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9212"
+   ]
+  }
+ },
+ {
+  "id": "demo-016",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Mistral D-5063/RF/20x20",
+  "shortName": "Mistral D-5063",
+  "brand": "Gracia",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "20x20"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#736969",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Mistral"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-5063"
+   ]
+  }
+ },
+ {
+  "id": "demo-017",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dune D-6295/RF/20x20",
+  "shortName": "Dune D-6295",
+  "brand": "Italon",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "20x20"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#646F6B",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dune"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-6295"
+   ]
+  }
+ },
+ {
+  "id": "demo-018",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Velluto D-3008/LR/20x120",
+  "shortName": "Velluto D-3008",
+  "brand": "Cersanit",
+  "color": [
+   "бежевый"
+  ],
+  "size": [
+   "20x120"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#D6CA98",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Velluto"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3008"
+   ]
+  }
+ },
+ {
+  "id": "demo-019",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Rovere D-2879/LP/20x120",
+  "shortName": "Rovere D-2879",
+  "brand": "Gracia",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "20x120"
+  ],
+  "surface": [
+   "лаппатированная"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#655F6B",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Rovere"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-2879"
+   ]
+  }
+ },
+ {
+  "id": "demo-020",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Savoia D-4114/RF/30x30",
+  "shortName": "Savoia D-4114",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#FEF6F2",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Savoia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4114"
+   ]
+  }
+ },
+ {
+  "id": "demo-021",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Terra D-7000/CV/20x40",
+  "shortName": "Terra D-7000",
+  "brand": "Estima",
+  "color": [
+   "коричневый"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#836447",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Terra"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-7000"
+   ]
+  }
+ },
+ {
+  "id": "demo-022",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dolomiti D-2280/LR/20x40",
+  "shortName": "Dolomiti D-2280",
+  "brand": "Estima",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#BC7644",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dolomiti"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-2280"
+   ]
+  }
+ },
+ {
+  "id": "demo-023",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Brera D-8683/ST/20x80",
+  "shortName": "Brera D-8683",
+  "brand": "Laparet",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "20x80"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#82998B",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Brera"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8683"
+   ]
+  }
+ },
+ {
+  "id": "demo-024",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Cristallo D-4107/RF/20x80",
+  "shortName": "Cristallo D-4107",
+  "brand": "Laparet",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "20x80"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#86A18B",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Cristallo"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4107"
+   ]
+  }
+ },
+ {
+  "id": "demo-025",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Velluto D-7053/SG/20x120",
+  "shortName": "Velluto D-7053",
+  "brand": "Cersanit",
+  "color": [
+   "кремовый"
+  ],
+  "size": [
+   "20x120"
+  ],
+  "surface": [
+   "шугар"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#E1E4C6",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Velluto"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-7053"
+   ]
+  }
+ },
+ {
+  "id": "demo-026",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Corso D-3647/ST/30x60",
+  "shortName": "Corso D-3647",
+  "brand": "Gracia",
+  "color": [
+   "антрацит"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#61676B",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Corso"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3647"
+   ]
+  }
+ },
+ {
+  "id": "demo-027",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Calacatta D-7340/ST/15x15",
+  "shortName": "Calacatta D-7340",
+  "brand": "Atlas Concorde",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "15x15"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#71A682",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Calacatta"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-7340"
+   ]
+  }
+ },
+ {
+  "id": "demo-028",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Calacatta D-8902/ST/30x60",
+  "shortName": "Calacatta D-8902",
+  "brand": "Italon",
+  "color": [
+   "коричневый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "текстурированный"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#94724A",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Calacatta"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8902"
+   ]
+  }
+ },
+ {
+  "id": "demo-029",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Travertino D-4743/CV/60x60",
+  "shortName": "Travertino D-4743",
+  "brand": "Kerranova",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#2B2B34",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Travertino"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4743"
+   ]
+  }
+ },
+ {
+  "id": "demo-030",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Pietra D-9200/LR/20x120",
+  "shortName": "Pietra D-9200",
+  "brand": "Kerranova",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "20x120"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#D06D3E",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Pietra"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9200"
+   ]
+  }
+ },
+ {
+  "id": "demo-031",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Sabbia D-8424/LR/20x40",
+  "shortName": "Sabbia D-8424",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#F8FBF6",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Sabbia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8424"
+   ]
+  }
+ },
+ {
+  "id": "demo-032",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Dolomiti D-5549/RF/15x15",
+  "shortName": "Dolomiti D-5549",
+  "brand": "Kerranova",
+  "color": [
+   "жёлтый"
+  ],
+  "size": [
+   "15x15"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#E3CC5C",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Dolomiti"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-5549"
+   ]
+  }
+ },
+ {
+  "id": "demo-033",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Cemento D-3357/MR/20x20",
+  "shortName": "Cemento D-3357",
+  "brand": "Italon",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "20x20"
+  ],
+  "surface": [
+   "матовый"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#C47956",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Cemento"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-3357"
+   ]
+  }
+ },
+ {
+  "id": "demo-034",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Nordic D-1064/LP/120x60",
+  "shortName": "Nordic D-1064",
+  "brand": "Italon",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "лаппатированная"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#C76D55",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Nordic"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1064"
+   ]
+  }
+ },
+ {
+  "id": "demo-035",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Sabbia D-9432/PL/120x60",
+  "shortName": "Sabbia D-9432",
+  "brand": "Laparet",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#203224",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Sabbia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9432"
+   ]
+  }
+ },
+ {
+  "id": "demo-036",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Mistral D-4839/PL/60x60",
+  "shortName": "Mistral D-4839",
+  "brand": "Italon",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#F6E6E3",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Mistral"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4839"
+   ]
+  }
+ },
+ {
+  "id": "demo-037",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Brera D-1867/CV/120x60",
+  "shortName": "Brera D-1867",
+  "brand": "Laparet",
+  "color": [
+   "жёлтый"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#DCCD54",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Brera"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1867"
+   ]
+  }
+ },
+ {
+  "id": "demo-038",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Pietra D-8748/LP/30x30",
+  "shortName": "Pietra D-8748",
+  "brand": "Estima",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "лаппатированная"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#CE7D53",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Pietra"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8748"
+   ]
+  }
+ },
+ {
+  "id": "demo-039",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Atrio D-1762/LR/20x40",
+  "shortName": "Atrio D-1762",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "бежевый"
+  ],
+  "size": [
+   "20x40"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#D4B7A0",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Atrio"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1762"
+   ]
+  }
+ },
+ {
+  "id": "demo-040",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Bianco D-9494/MR/30x30",
+  "shortName": "Bianco D-9494",
+  "brand": "Kerranova",
+  "color": [
+   "терракот"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "матовый"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#CC694E",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Bianco"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9494"
+   ]
+  }
+ },
+ {
+  "id": "demo-041",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Travertino D-5029/SG/30x60",
+  "shortName": "Travertino D-5029",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "шугар"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#FFFCF0",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Travertino"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-5029"
+   ]
+  }
+ },
+ {
+  "id": "demo-042",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Corso D-1397/PL/30x60",
+  "shortName": "Corso D-1397",
+  "brand": "Estima",
+  "color": [
+   "белый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#EFF3E9",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Corso"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1397"
+   ]
+  }
+ },
+ {
+  "id": "demo-043",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Quarzo D-8187/SG/30x30",
+  "shortName": "Quarzo D-8187",
+  "brand": "Laparet",
+  "color": [
+   "зелёный"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "шугар"
+  ],
+  "design": [
+   "геометрический"
+  ],
+  "hex": "#6F9B89",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Quarzo"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-8187"
+   ]
+  }
+ },
+ {
+  "id": "demo-044",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Calacatta D-5876/CV/30x60",
+  "shortName": "Calacatta D-5876",
+  "brand": "Laparet",
+  "color": [
+   "жёлтый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "дерево"
+  ],
+  "hex": "#DBE265",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Calacatta"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-5876"
+   ]
+  }
+ },
+ {
+  "id": "demo-045",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Brera D-9902/CV/60x120",
+  "shortName": "Brera D-9902",
+  "brand": "Atlas Concorde",
+  "color": [
+   "голубой"
+  ],
+  "size": [
+   "60x120"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "камень"
+  ],
+  "hex": "#729CB4",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Brera"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9902"
+   ]
+  }
+ },
+ {
+  "id": "demo-046",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Sabbia D-9609/PL/30x60",
+  "shortName": "Sabbia D-9609",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "кремовый"
+  ],
+  "size": [
+   "30x60"
+  ],
+  "surface": [
+   "полированный"
+  ],
+  "design": [
+   "бетон"
+  ],
+  "hex": "#DCE8C3",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Sabbia"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-9609"
+   ]
+  }
+ },
+ {
+  "id": "demo-047",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Velluto D-2787/LR/120x60",
+  "shortName": "Velluto D-2787",
+  "brand": "Gracia",
+  "color": [
+   "голубой"
+  ],
+  "size": [
+   "120x60"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#82A9C0",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Velluto"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-2787"
+   ]
+  }
+ },
+ {
+  "id": "demo-048",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Brera D-1201/RF/60x60",
+  "shortName": "Brera D-1201",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "коричневый"
+  ],
+  "size": [
+   "60x60"
+  ],
+  "surface": [
+   "рельефная"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#866C51",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Brera"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-1201"
+   ]
+  }
+ },
+ {
+  "id": "demo-049",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Terra D-4724/LR/30x30",
+  "shortName": "Terra D-4724",
+  "brand": "Kerama Marazzi",
+  "color": [
+   "жёлтый"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "глянцевый"
+  ],
+  "design": [
+   "мрамор"
+  ],
+  "hex": "#DFCC5F",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Terra"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-4724"
+   ]
+  }
+ },
+ {
+  "id": "demo-050",
+  "demo": true,
+  "hasRealImg": false,
+  "name": "Travertino D-6431/CV/30x30",
+  "shortName": "Travertino D-6431",
+  "brand": "Laparet",
+  "color": [
+   "чёрный"
+  ],
+  "size": [
+   "30x30"
+  ],
+  "surface": [
+   "карвинг"
+  ],
+  "design": [
+   "однотонный"
+  ],
+  "hex": "#323231",
+  "renders": {},
+  "attribute1": {
+   "name": "Коллекция",
+   "values": [
+    "Travertino"
+   ]
+  },
+  "attribute2": {
+   "name": "Артикул/модель",
+   "values": [
+    "D-6431"
+   ]
+  }
+ }
+]

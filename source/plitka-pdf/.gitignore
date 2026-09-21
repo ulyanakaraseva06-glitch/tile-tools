@@ -1,0 +1,13 @@
+node_modules/
+dist/
+test-results/
+.tmp/
+outputs/reference-library/
+
+*.log
+
+docs/chatgpt-export/chrome-profile/
+docs/chatgpt-export/edge-profile/
+
+.DS_Store
+Thumbs.db

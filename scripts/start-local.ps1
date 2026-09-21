@@ -1,12 +1,15 @@
 $ErrorActionPreference = 'Stop'
 
 $tileToolsRoot = Split-Path -Parent $PSScriptRoot
-$desktopRoot = Split-Path -Parent $tileToolsRoot
-$visualizerRoot = Join-Path $desktopRoot 'sravni-plitku'
+$visualizerRoot = Join-Path $tileToolsRoot 'source\sravni-plitku'
 $sessionPath = Join-Path $tileToolsRoot 'storage\sessions'
 $runtimePath = Join-Path $tileToolsRoot 'storage\runtime'
 
 New-Item -ItemType Directory -Force -Path $sessionPath, $runtimePath | Out-Null
+
+if (-not (Test-Path -LiteralPath $visualizerRoot)) {
+    throw "Visualizer source not found: $visualizerRoot"
+}
 
 function Start-PhpService {
     param([int]$Port, [string]$DocumentRoot, [string]$Name, [string]$Router = '')

@@ -4,11 +4,10 @@ declare(strict_types=1);
 /*
  * Integration-only router for the original sravni-plitku application.
  * It bypasses the marketing landing for / and /index.php, but serves all
- * original HTML, CSS, JS, catalogue data and images from the source folder.
- * The source project itself is never edited.
+ * original HTML, CSS, JS, catalogue data and images from the unified source folder.
  */
 
-$sourceRoot = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'sravni-plitku';
+$sourceRoot = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR . 'sravni-plitku';
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
 if ($path === '/landing.php') {

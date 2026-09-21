@@ -5,6 +5,7 @@ storage/sessions/*
 !storage/sessions/.gitkeep
 storage/runtime/*
 !storage/runtime/.gitkeep
+storage/runtime/npm-cache/
 storage/system/uploads/*
 !storage/system/uploads/.gitkeep
 

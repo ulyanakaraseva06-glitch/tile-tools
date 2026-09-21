@@ -1,0 +1,114 @@
+import { describe, expect, it } from 'vitest';
+import { templates } from '../config/appConfig';
+import { createContourFromTemplate, createSurfaces, isSegmentWithinContour, moveWall, updateSegmentLength, validateContour, validateRoomHeight } from './geometry';
+
+describe('room geometry', () => {
+  it('creates a rectangular contour from a template size', () => {
+    const template = templates.find((item) => item.id === 'rectangle')!;
+    expect(createContourFromTemplate(template, [1700, 2000])).toEqual([
+      { x: 0, y: 0 },
+      { x: 1700, y: 0 },
+      { x: 1700, y: 2000 },
+      { x: 0, y: 2000 },
+    ]);
+  });
+
+  it('creates orthogonal l-shape and projection contours', () => {
+    for (const id of ['l-shape', 'projection']) {
+      const template = templates.find((item) => item.id === id)!;
+      const contour = createContourFromTemplate(template, template.sizes[0]);
+      expect(contour.length).toBeGreaterThan(4);
+      expect(validateContour(contour).ok).toBe(true);
+    }
+  });
+
+  it('generates floor and wall surfaces from the contour', () => {
+    const contour = createContourFromTemplate(templates[0], [1700, 2000]);
+    const surfaces = createSurfaces(contour, 2700, 'material-primary', { groutMm: 2, reservePercent: 10, criticalCutMm: 80 });
+    expect(surfaces[0]).toMatchObject({ id: 'surface-floor', type: 'floor', widthMm: 1700, heightMm: 2000 });
+    expect(surfaces[0].zones[0]).toMatchObject({ id: 'surface-floor-base-zone', materialId: 'material-primary' });
+    expect(surfaces.slice(1).map((surface) => [surface.name, surface.widthMm, surface.heightMm])).toEqual([
+      ['Стена 1', 1700, 2700],
+      ['Стена 2', 2000, 2700],
+      ['Стена 3', 1700, 2700],
+      ['Стена 4', 2000, 2700],
+    ]);
+  });
+
+  it('accepts diagonal walls and uses their real length', () => {
+    const contour = [{ x: 0, y: 0 }, { x: 3000, y: 0 }, { x: 2000, y: 2000 }, { x: 0, y: 1500 }];
+    expect(validateContour(contour).ok).toBe(true);
+    const surfaces = createSurfaces(contour, 2700);
+    expect(surfaces[2].widthMm).toBe(2236);
+  });
+
+  it('accepts complex room contours with more than twelve walls', () => {
+    const contour = Array.from({ length: 24 }, (_, index) => {
+      const angle = (Math.PI * 2 * index) / 24;
+      return {
+        x: Math.round(6000 + Math.cos(angle) * 5000),
+        y: Math.round(6000 + Math.sin(angle) * 5000),
+      };
+    });
+
+    expect(validateContour(contour)).toEqual({ ok: true });
+    expect(createSurfaces(contour, 2700)).toHaveLength(25);
+  });
+
+  it('rejects self-intersecting room contours', () => {
+    const contour = [{ x: 0, y: 0 }, { x: 2000, y: 2000 }, { x: 0, y: 2000 }, { x: 2000, y: 0 }];
+    expect(validateContour(contour)).toMatchObject({ ok: false, message: 'Линии помещения не могут пересекаться.' });
+  });
+
+  it('clamps room height to MVP limits', () => {
+    expect(validateRoomHeight(1200)).toBe(1800);
+    expect(validateRoomHeight(5000)).toBe(4500);
+    expect(validateRoomHeight(2688)).toBe(2688);
+  });
+
+  it('updates one side length while keeping an orthogonal contour', () => {
+    const contour = createContourFromTemplate(templates[0], [1700, 2000]);
+    const updated = updateSegmentLength(contour, 0, 2400);
+    expect(updated[1]).toEqual({ x: 2400, y: 0 });
+    expect(updated[2]).toEqual({ x: 2400, y: 2000 });
+    expect(validateContour(updated).ok).toBe(true);
+  });
+
+  it('accepts exact millimeter side lengths without rounding to grid steps', () => {
+    const contour = createContourFromTemplate(templates[0], [1700, 2000]);
+    const updated = updateSegmentLength(contour, 0, 162);
+    expect(updated[1]).toEqual({ x: 162, y: 0 });
+    expect(updated[2]).toEqual({ x: 162, y: 2000 });
+    expect(validateContour(updated).ok).toBe(true);
+  });
+
+  it('moves a wall on its axis and keeps the contour orthogonal', () => {
+    const contour = createContourFromTemplate(templates[0], [1700, 2000]);
+    const updated = moveWall(contour, 1, 300);
+    expect(updated[1].x).toBe(2000);
+    expect(updated[2].x).toBe(2000);
+    expect(validateContour(updated).ok).toBe(true);
+  });
+
+  it('rejects a partition segment that crosses a wall of a concave room', () => {
+    const contour = [
+      { x: 0, y: 0 },
+      { x: 3000, y: 0 },
+      { x: 3000, y: 1000 },
+      { x: 1000, y: 1000 },
+      { x: 1000, y: 3000 },
+      { x: 0, y: 3000 },
+    ];
+
+    expect(isSegmentWithinContour(contour, { x: 500, y: 500 }, { x: 2500, y: 500 })).toBe(true);
+    expect(isSegmentWithinContour(contour, { x: 500, y: 1500 }, { x: 2500, y: 1500 })).toBe(false);
+  });
+
+  it('allows a partition to touch a wall only at its endpoint', () => {
+    const contour = createContourFromTemplate(templates[0], [1700, 2000]);
+
+    expect(isSegmentWithinContour(contour, { x: 0, y: 900 }, { x: 800, y: 900 })).toBe(true);
+    expect(isSegmentWithinContour(contour, { x: -100, y: 900 }, { x: 800, y: 900 })).toBe(false);
+    expect(isSegmentWithinContour(contour, { x: 0, y: 0 }, { x: 1700, y: 0 })).toBe(false);
+  });
+});

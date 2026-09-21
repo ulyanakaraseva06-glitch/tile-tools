@@ -1,0 +1,151 @@
+.add-page-modal-backdrop,
+.add-page-preview-backdrop {
+  align-items: start;
+  justify-items: center;
+  padding: calc(var(--topbar-height, 68px) + 14px) 28px 20px;
+}
+
+.add-page-modal-backdrop {
+  z-index: 250;
+}
+
+.add-page-preview-backdrop {
+  z-index: 260;
+}
+
+.add-page-modal {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 14px;
+  width: min(1120px, 96vw);
+  height: min(calc(100vh - var(--topbar-height, 68px) - 34px), 860px);
+  max-height: calc(100vh - var(--topbar-height, 68px) - 34px);
+  padding: 22px 22px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.24);
+}
+
+.add-page-modal-header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.add-page-blank-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.add-page-modal-header .close-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 2;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.add-page-modal-header span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.add-page-modal-header h2 {
+  margin: 4px 0 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.add-page-modal-search {
+  width: 100%;
+}
+
+.add-page-category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.add-page-category-pills button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.add-page-category-pills button small {
+  color: inherit;
+  font-size: 11px;
+  opacity: 0.78;
+}
+
+.add-page-category-pills button.active,
+.add-page-category-pills button:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.add-page-modal-body {
+  min-height: 0;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.add-page-modal-group {
+  margin-bottom: 18px;
+}
+
+.add-page-modal-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.add-page-modal-group-title small {
+  margin-left: auto;
+  color: var(--accent);
+}
+
+.add-page-modal-grid {
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+}
+
+@media (max-width: 900px) {
+  .add-page-modal-backdrop,
+  .add-page-preview-backdrop {
+    padding: calc(var(--topbar-height, 68px) + 10px) 16px 16px;
+  }
+
+  .add-page-modal {
+    width: min(96vw, 720px);
+    height: min(calc(100vh - var(--topbar-height, 68px) - 26px), 780px);
+    max-height: calc(100vh - var(--topbar-height, 68px) - 26px);
+    padding: 16px;
+  }
+
+  .add-page-modal-grid {
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  }
+}

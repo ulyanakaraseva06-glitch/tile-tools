@@ -1,0 +1,37 @@
+.storage-warning {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(720px, calc(100vw - 32px));
+  padding: 11px 12px 11px 16px;
+  border: 1px solid rgba(233, 161, 58, 0.42);
+  border-radius: var(--radius);
+  background: #fff8ea;
+  color: #6d4a11;
+  box-shadow: var(--shadow-md);
+  transform: translateX(-50%);
+}
+
+.storage-warning span {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.storage-warning button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(109, 74, 17, 0.18);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.72);
+  color: inherit;
+  cursor: pointer;
+}
+
+.storage-warning {
+  background: color-mix(in srgb, var(--warning) 14%, var(--surface));
+  color: var(--text);
+}

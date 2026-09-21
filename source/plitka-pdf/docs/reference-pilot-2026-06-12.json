@@ -1,0 +1,86 @@
+[
+  {
+    "fileName": "generale magnum 2026.pdf",
+    "pages": 400,
+    "market": "Italy",
+    "type": "general_catalog",
+    "focus": ["cover", "series_overview", "interior", "visual_focus"]
+  },
+  {
+    "fileName": "Catalogo_Ape_2026_v13-web.pdf",
+    "pages": 265,
+    "market": "Spain",
+    "type": "general_catalog",
+    "focus": ["cover", "grid", "interior", "specs"]
+  },
+  {
+    "fileName": "FLORIM-stone-lookbook-2025.pdf",
+    "pages": 164,
+    "market": "Italy",
+    "type": "lookbook",
+    "focus": ["moodboard", "editorial", "visual_focus"]
+  },
+  {
+    "fileName": "CERASARDA-MAGAZINE-1.pdf",
+    "pages": 201,
+    "market": "Italy",
+    "type": "editorial_magazine",
+    "focus": ["editorial", "collection_story", "moodboard"]
+  },
+  {
+    "fileName": "WORKBOOK-2026-CIR.pdf",
+    "pages": 177,
+    "market": "Italy",
+    "type": "workbook",
+    "focus": ["specs", "grid", "table", "index"]
+  },
+  {
+    "fileName": "LF_AVA_Outdoor_Catalog_2025.pdf",
+    "pages": 136,
+    "market": "Italy",
+    "type": "outdoor_catalog",
+    "focus": ["outdoor", "application", "installation", "specs"]
+  },
+  {
+    "fileName": "CATALOGO-RESIDENCIAL-EXAGRES-26_LOW.pdf",
+    "pages": 154,
+    "market": "Spain",
+    "type": "residential_catalog",
+    "focus": ["application", "interior", "specs"]
+  },
+  {
+    "fileName": "FAP_Accessories_Collection_2025.pdf",
+    "pages": 31,
+    "market": "Italy",
+    "type": "accessories_catalog",
+    "focus": ["companions", "accessories", "compact_grid"]
+  },
+  {
+    "fileName": "Каталог KERRANOVA 2026.pdf",
+    "pages": 151,
+    "market": "Russia",
+    "type": "general_catalog",
+    "focus": ["local_market", "grid", "series_overview", "specs"]
+  },
+  {
+    "fileName": "30kh60-novinki-tai_mless-i-timeless-2026-_1_.pdf",
+    "pages": 44,
+    "market": "Russia",
+    "type": "novelty_release",
+    "focus": ["new_arrivals", "compact_grid", "sales_pages"]
+  },
+  {
+    "fileName": "organizer Architectural design 2026.pdf",
+    "pages": 228,
+    "market": "Italy",
+    "type": "architect_organizer",
+    "focus": ["architect_flow", "index", "specs", "professional_layout"]
+  },
+  {
+    "fileName": "Marazzi_Triennale_Catalogue.pdf",
+    "pages": 37,
+    "market": "Italy",
+    "type": "design_monograph",
+    "focus": ["hero_pages", "typography", "object_presentation"]
+  }
+]

@@ -1,0 +1,236 @@
+.vilray-promo-violet {
+  --vilray-promo-accent: #7c5aa6;
+  --vilray-promo-soft: #f3eef8;
+}
+
+.vilray-promo-sand {
+  --vilray-promo-accent: #93683d;
+  --vilray-promo-soft: #f7f1e8;
+}
+
+.vilray-promo-blue {
+  --vilray-promo-accent: #2f738c;
+  --vilray-promo-soft: #edf7f8;
+}
+
+.vilray-promo-graphite {
+  --vilray-promo-accent: #495762;
+  --vilray-promo-soft: #eef2f0;
+}
+
+.vilray-cta[class*="vilray-promo-"] {
+  --vilray-promo-accent: var(--accent);
+  --vilray-promo-soft: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+
+.vilray-cta[class*="vilray-promo-"],
+.vilray-promo[class*="vilray-promo-"] {
+  border-color: color-mix(in srgb, var(--vilray-promo-accent) 28%, var(--border));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--vilray-promo-soft) 82%, var(--surface)) 0%, var(--surface) 76%),
+    var(--surface);
+}
+
+.vilray-promo-kicker {
+  display: block;
+  color: var(--vilray-promo-accent);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.vilray-cta[class*="vilray-promo-"] strong,
+.cabinet-promo-wide[class*="vilray-promo-"] strong {
+  overflow-wrap: anywhere;
+}
+
+.vilray-cta[class*="vilray-promo-"] p,
+.cabinet-promo-wide[class*="vilray-promo-"] p {
+  overflow-wrap: anywhere;
+}
+
+.vilray-promo[class*="vilray-promo-"] span {
+  color: var(--vilray-promo-accent);
+}
+
+.cabinet-promo-wide[class*="vilray-promo-"] .btn {
+  white-space: nowrap;
+}
+
+.vilray-materials-modal[class*="vilray-promo-"] {
+  border: 1px solid color-mix(in srgb, var(--vilray-promo-accent) 24%, var(--border));
+}
+
+.vilray-modal-title span {
+  color: var(--vilray-promo-accent);
+  letter-spacing: 0;
+}
+
+.vilray-modal-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--vilray-promo-accent) 22%, var(--border));
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--vilray-promo-soft) 76%, var(--surface)) 0%, var(--surface) 72%),
+    var(--surface);
+}
+
+.vilray-modal-hero strong {
+  display: block;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.vilray-modal-hero p {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.vilray-modal-hero .btn,
+.vilray-materials-modal .modal-actions .btn {
+  white-space: nowrap;
+}
+
+.vilray-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--vilray-promo-soft) 82%, var(--surface));
+  text-align: left;
+}
+
+.vilray-metric strong {
+  color: var(--vilray-promo-accent);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.vilray-metric span {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.vilray-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.vilray-list-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--vilray-promo-accent) 18%, var(--border));
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.vilray-list-item svg {
+  color: var(--vilray-promo-accent);
+  background: var(--vilray-promo-soft);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.vilray-list-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.vilray-list-item p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vilray-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.vilray-gallery-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.vilray-gallery-card img {
+  display: block;
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.vilray-gallery-card div {
+  padding: 12px;
+}
+
+.vilray-gallery-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.vilray-gallery-card span {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.vilray-result {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px dashed color-mix(in srgb, var(--vilray-promo-accent) 32%, var(--border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--vilray-promo-soft) 58%, var(--surface));
+}
+
+.vilray-result strong {
+  color: var(--vilray-promo-accent);
+}
+
+.vilray-result-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.vilray-result-list span {
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--vilray-promo-accent) 18%, var(--border));
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+@media (max-width: 720px) {
+  .cabinet-promo-wide[class*="vilray-promo-"],
+  .vilray-modal-hero,
+  .vilray-result-list {
+    grid-template-columns: 1fr;
+  }
+
+  .cabinet-promo-wide[class*="vilray-promo-"] .btn,
+  .vilray-modal-hero .btn,
+  .vilray-materials-modal .modal-actions .btn {
+    width: 100%;
+    white-space: normal;
+  }
+}

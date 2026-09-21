@@ -1,0 +1,57 @@
+.workspace.resizable-workspace {
+  display: grid;
+  column-gap: 0;
+}
+
+.resizable-workspace > .page-library,
+.resizable-workspace > .right-stack,
+.resizable-workspace > .work-area {
+  min-width: 0;
+}
+
+.resizable-workspace .library-project-title .project-title {
+  width: 100%;
+  max-width: 100%;
+}
+
+.resizable-workspace .right-toolbar,
+.resizable-workspace .layout-toolbar-actions {
+  flex-wrap: wrap;
+}
+
+.workspace-resizer {
+  position: relative;
+  align-self: stretch;
+  cursor: col-resize;
+  touch-action: none;
+  border-radius: 6px;
+  outline-offset: -2px;
+}
+
+.workspace-resizer::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 24px);
+  left: 4px;
+  width: 4px;
+  height: 48px;
+  border-radius: 4px;
+  background: var(--border-strong);
+}
+
+.workspace-resizer:hover,
+.workspace-resizer:focus-visible {
+  background: var(--accent-soft);
+  outline: 2px solid var(--accent);
+}
+
+.workspace-resizer:hover::after,
+.workspace-resizer:focus-visible::after {
+  background: var(--accent);
+}
+
+.resizable-workspace.is-resizing,
+.resizable-workspace.is-resizing * {
+  cursor: col-resize !important;
+  user-select: none !important;
+}

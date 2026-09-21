@@ -1,0 +1,135 @@
+/* auth.css — страницы модуля авторизации и личного кабинета */
+:root{
+  --primary:#A385C4; --primary-dark:#8A6AAE; --primary-light:#F2EBF9;
+  --bg:#F4F4F6; --card:#FFFFFF; --border:#E4E4EA; --text:#18181E; --text-sec:#6B6B80;
+  --ok:#2E7D32; --warn:#E65100; --danger:#C62828;
+  --radius:12px; --shadow:0 6px 30px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Manrope',system-ui,Arial,sans-serif;color:var(--text);background:var(--bg);
+  -webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45;min-height:100vh;
+}
+a{color:var(--primary-dark);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* центрированная карточка (login/register) */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  width:100%;max-width:420px;padding:34px 32px}
+.auth-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:8px}
+.auth-logo .mark{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:34px}
+.auth-logo .mark i{display:block;width:100%;padding-top:100%;border-radius:4px;background:var(--primary)}
+.auth-logo .mark i:nth-child(2),.auth-logo .mark i:nth-child(3){opacity:.5}
+.auth-logo b{font-weight:800;letter-spacing:.04em;font-size:15px;line-height:1;text-transform:uppercase}
+.auth-title{font-size:20px;font-weight:800;text-align:center;margin:14px 0 4px}
+.auth-sub{text-align:center;color:var(--text-sec);margin-bottom:22px;font-size:13px}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text-sec);margin-bottom:5px}
+.field input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;
+  font-family:inherit;font-size:14px;background:var(--card);color:var(--text);transition:border-color .15s}
+.field input:focus{outline:none;border-color:var(--primary)}
+.row2{display:flex;gap:10px}
+.row2 .field{flex:1}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 16px;border:none;border-radius:9px;font-family:inherit;font-size:14px;font-weight:700;
+  cursor:pointer;transition:background .15s,opacity .15s}
+.btn--primary{background:var(--primary);color:#fff;width:100%}
+.btn--primary:hover{background:var(--primary-dark)}
+.btn--ghost{background:var(--primary-light);color:var(--primary-dark)}
+.btn--ghost:hover{background:#e8ddf6}
+.btn--sm{padding:6px 11px;font-size:12px;font-weight:600;border-radius:7px}
+.btn--ok{background:var(--ok);color:#fff}
+.btn--warn{background:var(--warn);color:#fff}
+.btn--danger{background:var(--danger);color:#fff}
+.btn--neutral{background:#EEE;color:#333}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+.auth-foot{text-align:center;margin-top:18px;font-size:13px;color:var(--text-sec)}
+.alert{padding:10px 13px;border-radius:9px;font-size:13px;margin-bottom:16px}
+.alert--err{background:#FDECEC;color:var(--danger)}
+.alert--ok{background:#E9F6EA;color:var(--ok)}
+.alert--info{background:var(--primary-light);color:var(--primary-dark)}
+
+.captcha{display:flex;align-items:center;gap:10px}
+.captcha .q{font-weight:800;font-size:16px;background:var(--bg);padding:9px 12px;border-radius:8px;white-space:nowrap}
+.captcha input{flex:1}
+
+/* верхняя панель внутренних страниц */
+.topbar{background:var(--card);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:12px 22px;position:sticky;top:0;z-index:10}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.topbar nav{display:flex;align-items:center;gap:8px}
+.page{max-width:1080px;margin:24px auto;padding:0 22px}
+.page h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.page .muted{color:var(--text-sec);margin-bottom:20px}
+
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px}
+.panel h2{font-size:15px;font-weight:800;margin-bottom:14px}
+
+.kv{display:grid;grid-template-columns:180px 1fr;gap:10px 16px;font-size:14px}
+.kv div:nth-child(odd){color:var(--text-sec)}
+
+.stat{display:flex;gap:18px;flex-wrap:wrap}
+.stat .box{background:var(--bg);border-radius:10px;padding:14px 18px;min-width:150px}
+.stat .box .n{font-size:24px;font-weight:800;color:var(--primary-dark)}
+.stat .box .l{font-size:12px;color:var(--text-sec);margin-top:2px}
+
+/* таблицы админки */
+.tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.tab{padding:9px 15px;border-radius:9px;background:var(--card);border:1px solid var(--border);
+  font-weight:700;font-size:13px;cursor:pointer}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:var(--radius);overflow:hidden}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+th{background:var(--bg);font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-sec)}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;color:#fff}
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+.dl-edit{display:flex;align-items:center;gap:5px}
+.dl-edit input{width:54px;padding:5px 6px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;text-align:center}
+
+.empty{padding:30px;text-align:center;color:var(--text-sec)}
+
+/* модалка ограничения */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:50}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:var(--radius);padding:24px;width:100%;max-width:380px;box-shadow:var(--shadow)}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:12px}
+.modal .field{margin-bottom:12px}
+.modal .row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+
+/* --- Переключатель темы (в личном кабинете) --- */
+.theme-switch { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.theme-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border: 1px solid var(--border, #E4E4EA);
+  border-radius: 10px; background: var(--card);
+  font: inherit; font-size: 13px; font-weight: 600; color: var(--text, #18181E);
+  cursor: pointer; transition: border-color .15s, box-shadow .15s;
+}
+.theme-btn:hover { border-color: var(--primary, #A385C4); }
+.theme-btn.active { border-color: var(--primary, #A385C4); box-shadow: 0 0 0 2px rgba(163,133,196,.25); }
+.theme-dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.18); display: inline-block; }
+.theme-dot--light { background: #FFFFFF; }
+.theme-dot--beige { background: #E2D2B5; }
+.theme-dot--dark  { background: #24242E; border-color: rgba(255,255,255,0.25); }
+
+/* --- Темы оформления (для кабинета; применяются через html[data-theme]) --- */
+html[data-theme="beige"]{
+  --primary:#A385C4; --primary-dark:#8A6AAE; --primary-light:#ECE3F2;
+  --bg:#EAE3D8; --card:#F7F2EA; --border:#E0D5C4; --text:#2B2519; --text-sec:#7C6F5A;
+  --shadow:0 6px 30px rgba(80,60,30,.12);
+}
+html[data-theme="dark"]{
+  --primary:#B79BE0; --primary-dark:#CBB5EE; --primary-light:#2C2640;
+  --bg:#15151E; --card:#20202C; --border:#2F2F3D; --text:#ECECF3; --text-sec:#A6A6BC;
+  --shadow:0 6px 30px rgba(0,0,0,.5);
+}
+/* Форм-контролы кабинета/админки следуют теме */
+.page select, .page textarea,
+.page input[type="text"], .page input[type="number"], .page input[type="password"]{
+  background:var(--card); color:var(--text); border:1px solid var(--border);
+}

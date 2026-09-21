@@ -1,0 +1,22 @@
+/* analytics.css — стили админских страниц аналитики.
+   Базовые элементы (topbar, page, panel, table, badge, btn) берутся из auth.css. */
+.metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.metric{background:var(--card,#fff);border:1px solid var(--border,#e4e4ea);border-radius:12px;padding:16px 18px}
+.metric .n{font-size:26px;font-weight:800;color:var(--primary-dark,#8A6AAE)}
+.metric .l{font-size:12px;color:var(--text-sec,#6B6B80);margin-top:3px}
+.range{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.range a{padding:7px 13px;border-radius:8px;border:1px solid var(--border,#e4e4ea);background:#fff;font-size:13px;font-weight:600;color:var(--text,#18181E)}
+.range a.active{background:var(--primary,#A385C4);color:#fff;border-color:var(--primary,#A385C4)}
+.soon{display:inline-block;margin-left:8px;font-size:11px;font-weight:700;color:#B8860B;background:#FFF6E0;padding:2px 8px;border-radius:20px}
+
+/* --- ЭТАП 06: дашборд --- */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap table{min-width:480px}
+.table-wrap th{text-align:left}
+.bar{display:inline-block;vertical-align:middle;width:90px;height:8px;border-radius:6px;background:var(--border,#e4e4ea);margin-right:8px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--primary,#A385C4)}
+
+/* --- ЭТАП 08: аналитика плитки --- */
+.tile-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tile-filters select,.tile-filters input[type=text]{padding:7px 10px;border:1px solid var(--border,#e4e4ea);border-radius:8px;font:inherit;background:#fff}
+.tile-filters input[type=text]{min-width:160px}
