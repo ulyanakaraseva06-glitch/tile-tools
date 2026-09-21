@@ -17,6 +17,7 @@ $navigation = [
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Tile Tools — единый сервис для работы с плиткой, проектами и документами.">
+  <meta name="csrf-token" content="<?= tt_escape(tt_csrf_token()) ?>">
   <title><?= tt_escape($title) ?> — Tile Tools</title>
   <link rel="stylesheet" href="/shared/css/app.css">
 </head>
