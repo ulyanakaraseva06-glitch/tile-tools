@@ -13,6 +13,7 @@
   const categoryLabels = { stands: 'Стенды', expositors: 'Экспозиторы', panels: 'Панели', samples: 'Образцы', showrooms: 'Шоурумы', lighting: 'Освещение', accessories: 'Аксессуары' };
   const labels = { category: categoryLabels, availability: { in_stock: 'В наличии', on_order: 'Под заказ' } };
   let latestItems = [];
+  let accountFavorites = new Set();
 
   const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' })[char]);
   const notify = (message) => {
@@ -26,7 +27,7 @@
   const selected = (name) => root.querySelector(`[name="${name}"]`)?.value || '';
   const currentParams = () => new URLSearchParams(Object.fromEntries(['q', 'category', 'brand', 'purpose', 'availability', 'type', 'sort'].map((key) => [key, key === 'q' ? queryInput.value.trim() : selected(key)]).filter(([, value]) => value !== '')));
   const favoriteKey = (id) => `tile-tools.equipment.favorite.${id}`;
-  const isFavorite = (id) => localStorage.getItem(favoriteKey(id)) === '1';
+  const isFavorite = (id) => accountFavorites.has(id) || localStorage.getItem(favoriteKey(id)) === '1';
 
   const options = (name, values, pretty = {}) => {
     const select = root.querySelector(`[name="${name}"]`);
@@ -77,6 +78,13 @@
     }
     return payload;
   };
+  const syncFavorites = async () => {
+    try {
+      const payload = await api('/api/favorites/');
+      accountFavorites = new Set(payload.items.filter((item) => item.entity_type === 'equipment').map((item) => item.entity_id));
+      if (latestItems.length) render(latestItems);
+    } catch (_) { /* Для гостя избранное остаётся локальным до входа в аккаунт. */ }
+  };
   const leadForm = (item) => `<h2>${item ? 'Запросить условия' : 'Подбор оборудования'}</h2><p>${item ? `Оставьте контакты — подготовим условия для «${escapeHtml(item.name)}».` : 'Расскажите о задаче — поможем подобрать оборудование для вашего шоурума.'}</p><form data-equipment-lead-form><input type="hidden" name="equipmentId" value="${item ? escapeHtml(item.id) : ''}"><label>Ваше имя<input class="input" name="name" required minlength="2" placeholder="Алексей"></label><label>Телефон, e-mail или Telegram<input class="input" name="contact" required minlength="3" placeholder="@username или +7 999 123-45-67"></label><label>Комментарий<textarea class="input" name="message" rows="4" placeholder="Например: нужен стенд для крупноформатной плитки"></textarea></label><button class="button button-primary" type="submit">Отправить запрос</button></form>`;
   const details = (item) => `<h2>${escapeHtml(item.name)}</h2><div class="dialog-visual equipment-photo equipment-${escapeHtml(item.visual_key)}"><span class="equipment-brand">${escapeHtml(item.brand)}</span><i></i><b></b></div><dl class="equipment-details"><div><dt>Бренд</dt><dd>${escapeHtml(item.brand)}</dd></div><div><dt>Категория</dt><dd>${escapeHtml(categoryLabels[item.category] || item.category)}</dd></div><div><dt>Назначение</dt><dd>${escapeHtml(item.purpose)}</dd></div><div><dt>Размер</dt><dd>${escapeHtml(item.dimensions || 'Уточняется')}</dd></div></dl><p>${escapeHtml(item.short_description)}</p><div class="button-row"><button class="button button-primary" type="button" data-lead-open data-equipment-id="${escapeHtml(item.id)}">Запросить условия</button><button class="button button-secondary" type="button" data-project-open data-equipment-id="${escapeHtml(item.id)}">В проект</button></div>`;
   const chooseProject = async (equipmentId) => {
@@ -96,7 +104,7 @@
     const close = event.target.closest('[data-dialog-close]');
     if (close) dialog.close();
     const favorite = event.target.closest('[data-equipment-favorite]');
-    if (favorite) { const id = favorite.dataset.equipmentFavorite; const next = !isFavorite(id); localStorage.setItem(favoriteKey(id), next ? '1' : '0'); favorite.classList.toggle('is-favorite', next); favorite.setAttribute('aria-pressed', String(next)); favorite.textContent = next ? '♥' : '♡'; notify(next ? 'Добавлено в избранное на этом устройстве.' : 'Удалено из избранного.'); }
+    if (favorite) { const id = favorite.dataset.equipmentFavorite; const next = !isFavorite(id); localStorage.setItem(favoriteKey(id), next ? '1' : '0'); favorite.classList.toggle('is-favorite', next); favorite.setAttribute('aria-pressed', String(next)); favorite.textContent = next ? '♥' : '♡'; api('/api/favorites/', { method: next ? 'PUT' : 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ csrf, entityType: 'equipment', entityId: id }) }).then(() => { if (next) accountFavorites.add(id); else accountFavorites.delete(id); notify(next ? 'Добавлено в общее избранное.' : 'Удалено из общего избранного.'); }).catch((error) => { if (error.status === 401) notify(next ? 'Добавлено в избранное на этом устройстве. Войдите, чтобы синхронизировать.' : 'Удалено из избранного на этом устройстве.'); else notify(error.message); }); }
     const detail = event.target.closest('[data-equipment-details]');
     if (detail) { const item = latestItems.find((candidate) => candidate.id === detail.dataset.equipmentDetails); if (item) openDialog(details(item)); }
     const action = event.target.closest('[data-equipment-action]');
@@ -118,4 +126,5 @@
     try { const response = await fetch('/api/equipment/lead.php', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) }); const payload = await response.json(); if (!response.ok || !payload.ok) throw new Error(payload.error?.message || 'Не удалось отправить заявку.'); dialog.close(); notify('Заявка сохранена. Мы свяжемся с вами по указанному контакту.'); } catch (error) { notify(error.message); } finally { submit.disabled = false; }
   });
   load();
+  syncFavorites();
 })();
