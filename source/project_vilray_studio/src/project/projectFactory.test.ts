@@ -62,6 +62,7 @@ import {
   updateZoneShape,
   updateZoneTileMaterial,
   updateZoneTileColor,
+  updateZoneCatalogTile,
 } from './projectFactory';
 
 describe('project factory', () => {
@@ -83,6 +84,29 @@ describe('project factory', () => {
 
     expect(getZoneMaterial(bothColored, 'surface-floor', floorZoneId)?.name).toBe('Пудровый');
     expect(getZoneMaterial(bothColored, 'surface-wall-1', wallZoneId)?.id).toBe(getZoneMaterial(bothColored, 'surface-floor', floorZoneId)?.id);
+  });
+
+  it('colours the selected calculator format from media without changing its dimensions', () => {
+    const project = createProjectFromTemplate(templates[0], [1700, 2000]);
+    const zoneId = project.surfaces.find((surface) => surface.id === 'surface-floor')!.zones[0].id;
+    const before = getZoneMaterial(project, 'surface-floor', zoneId)!;
+    const updated = updateZoneCatalogTile(project, 'surface-floor', zoneId, {
+      id: 'catalog-120x60',
+      name: 'Каталожная плитка 120×60',
+      hex: '#D9D5CE',
+      sizes: ['120x60'],
+      previewUrl: '/api/media/file.php?id=preview',
+    });
+    const after = getZoneMaterial(updated, 'surface-floor', zoneId)!;
+
+    expect(after).toMatchObject({
+      widthMm: before.widthMm,
+      heightMm: before.heightMm,
+      presetId: before.presetId,
+      label: before.label,
+      catalogTileId: 'catalog-120x60',
+      swatch: { type: 'color', value: '#D9D5CE' },
+    });
   });
 
   it('locks a ready room after its wall dimensions are confirmed once', () => {
