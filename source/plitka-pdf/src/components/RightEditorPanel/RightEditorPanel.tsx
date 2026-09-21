@@ -19,6 +19,7 @@ import {
 import { DividerZone, EditableZone, FeatureZone, IconZone, ImageZone, PanelZone, TableZone, TextZone, ZoneStyle, ZoneStyleOverrideKey } from '../../types/project';
 import { compressImage } from '../../utils/images';
 import { ColorPickerPopover } from '../ColorPickerPopover/ColorPickerPopover';
+import { SharedTilePicker } from '../SharedTilePicker/SharedTilePicker';
 
 const defaultDocumentColors: TextEditorDocumentColors = {
   documentTheme: 'light',
@@ -630,6 +631,7 @@ function ImageEditor({
 }) {
   const [error, setError] = useState('');
   const [dragActive, setDragActive] = useState(false);
+  const [mediaOpen, setMediaOpen] = useState(false);
   const defaultFit = zone.imageRole === 'product' ? 'contain' : 'fill';
   const currentFit = zone.fit ?? defaultFit;
   const isLogo = isLogoZone(zone);
@@ -692,12 +694,9 @@ function ImageEditor({
             <span>Перетащите файл сюда</span>
           </div>
         </div>
-        <label className="upload-button compact-upload-button">
-          <ImageUp size={16} />
-          Загрузить
-          <input type="file" accept="image/*" onChange={handleFile} />
-        </label>
+        <div className="image-source-actions"><label className="upload-button compact-upload-button"><ImageUp size={16} />Загрузить<input type="file" accept="image/*" onChange={handleFile} /></label><button className="upload-button compact-upload-button" type="button" onClick={()=>setMediaOpen((value)=>!value)}><Shapes size={16}/>Медиатека</button></div>
       </section>
+      {mediaOpen&&<SharedTilePicker onClose={()=>setMediaOpen(false)} onSelect={(tile)=>{if(!tile.previewUrl)return;onChange({...zone,src:tile.previewUrl,alt:tile.shortName||tile.name});setMediaOpen(false);}}/>}
       {error && <div className="editor-warning">{error}</div>}
       <DesignControls
         zone={zone}

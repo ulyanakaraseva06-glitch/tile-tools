@@ -1,0 +1,15 @@
+import { useEffect, useMemo, useState } from 'react';
+
+type CatalogTile={id:string;name:string;shortName:string|null;brand:string|null;sizes:string[];previewUrl:string|null;hex:string;isFavorite:boolean};
+const FAVORITES_KEY='tt_tile_favorites_v1';
+function getLocal(){try{return new Set<string>(JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]'));}catch{return new Set<string>();}}
+function csrf(){return document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content||window.parent?.document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content||'';}
+
+export function SharedTilePicker({onSelect,onClose}:{onSelect:(tile:CatalogTile)=>void;onClose:()=>void}){
+  const [tiles,setTiles]=useState<CatalogTile[]>([]);const [favorites,setFavorites]=useState(getLocal);const [authenticated,setAuthenticated]=useState(false);const [query,setQuery]=useState('');const [brand,setBrand]=useState('');
+  useEffect(()=>{fetch('/api/catalog/tiles.php').then((r)=>r.json()).then((data)=>{const items=data.items||[];setTiles(items);setAuthenticated(Boolean(data.authenticated));if(data.authenticated)setFavorites(new Set(items.filter((tile:CatalogTile)=>tile.isFavorite).map((tile:CatalogTile)=>tile.id)));});},[]);
+  const brands=useMemo(()=>[...new Set(tiles.map((tile)=>tile.brand).filter(Boolean) as string[])].sort(),[tiles]);
+  const visible=useMemo(()=>tiles.filter((tile)=>(!brand||tile.brand===brand)&&(!query||`${tile.name} ${tile.shortName||''} ${tile.brand||''}`.toLocaleLowerCase('ru').includes(query.toLocaleLowerCase('ru')))).sort((a,b)=>Number(favorites.has(b.id))-Number(favorites.has(a.id))||(a.shortName||a.name).localeCompare(b.shortName||b.name,'ru')),[tiles,brand,query,favorites]);
+  async function toggle(id:string){const adding=!favorites.has(id);const next=new Set(favorites);adding?next.add(id):next.delete(id);setFavorites(next);localStorage.setItem(FAVORITES_KEY,JSON.stringify([...next]));await fetch('/api/favorites/index.php',{method:adding?'PUT':'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({csrf:csrf(),entityType:'tile',entityId:id})});}
+  return <div className="shared-media-picker"><div className="shared-media-heading"><strong>Медиатека плитки</strong><button type="button" onClick={onClose}>×</button></div><div className="shared-media-filters"><input placeholder="Поиск" value={query} onChange={(e)=>setQuery(e.target.value)}/><select value={brand} onChange={(e)=>setBrand(e.target.value)}><option value="">Все бренды</option>{brands.map((item)=><option key={item}>{item}</option>)}</select></div><div className="shared-media-grid">{visible.map((tile)=><article key={tile.id}><button type="button" className={favorites.has(tile.id)?'shared-media-heart active':'shared-media-heart'} onClick={()=>void toggle(tile.id)}>{favorites.has(tile.id)?'♥':'♡'}</button><button type="button" className="shared-media-select" onClick={()=>onSelect(tile)}>{tile.previewUrl?<img src={tile.previewUrl} alt=""/>:<span style={{background:tile.hex}}/>}<strong>{tile.shortName||tile.name}</strong><small>{tile.brand||'Без бренда'} · {tile.sizes[0]||''}</small></button></article>)}</div></div>;
+}

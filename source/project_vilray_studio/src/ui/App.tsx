@@ -21,6 +21,7 @@ import {
 import { Circle, Group, Layer, Line, Rect, Shape, Stage, Text } from 'react-konva';
 import type Konva from 'konva';
 import { TileRotationControl } from './TileRotationControl';
+import { SharedTileLibrary, type CatalogTile } from './SharedTileLibrary';
 import { useDraftHistory } from './useDraftHistory';
 import { getVisibleTilePresets, templates } from '../config/appConfig';
 import {
@@ -87,6 +88,7 @@ import {
   updateZoneShape,
   updateZoneTileMaterial,
   updateZoneTileColor,
+  updateZoneCatalogTile,
   type OpeningConnectionCandidate,
 } from '../project/projectFactory';
 import { generatePolygonLayout, generateRectLayout, type LayoutEdgeCuts, type LayoutTilePiece } from '../layout/layoutEngine';
@@ -1318,6 +1320,12 @@ export function App() {
     setProject((current) => updateZoneTileColor(current, activeSurfaceId, activeZoneId, color, name));
   }
 
+  function applyCatalogTile(tile: CatalogTile) {
+    if (!activeSurfaceId || !activeZoneId) return;
+    setHasRoomEdits(true);
+    setProject((current) => updateZoneCatalogTile(current, activeSurfaceId, activeZoneId, tile));
+  }
+
   function downloadProjectFile() {
     const blob = new Blob([serializeProjectFile(project)], { type: 'application/json;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -1802,14 +1810,9 @@ export function App() {
               />
 
               <section className="panel-module tile-color-module">
-                <h1 className="panel-module-title">Цвет плитки</h1>
+                <h1 className="panel-module-title">Плитка из медиатеки</h1>
                 <div className="panel-card panel-section">
-                  <TileColorPicker
-                    activeColor={activeTileMaterial?.swatch.type === 'color' ? activeTileMaterial.swatch.value : '#F2EBF9'}
-                    canApply={Boolean(activeSurfaceId && activeZoneId)}
-                    project={project}
-                    onSelect={applyTileColor}
-                  />
+                  <SharedTileLibrary activeTileId={activeTileMaterial?.catalogTileId} disabled={!activeSurfaceId || !activeZoneId} onSelect={applyCatalogTile} />
                 </div>
               </section>
 

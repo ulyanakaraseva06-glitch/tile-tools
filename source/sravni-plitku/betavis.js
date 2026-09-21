@@ -326,7 +326,7 @@ function loadFavorites() {
     } catch (e) {}
   } else {
     // Гость — локальное хранилище (как раньше)
-    try { const r = localStorage.getItem('sv_fav2'); if (r) JSON.parse(r).forEach(id => { const k = favKey(id); if (k) S.favorites.add(k); }); } catch(e) {}
+    try { const r = localStorage.getItem('tt_tile_favorites_v1') || localStorage.getItem('sv_fav2'); if (r) JSON.parse(r).forEach(id => { const k = favKey(id); if (k) S.favorites.add(k); }); } catch(e) {}
   }
   pruneFavorites();   // убрать «осиротевшие» id (удалённые/несуществующие плитки)
 }
@@ -349,7 +349,7 @@ function saveFavorites() {
     } catch (e) {}
     return;
   }
-  try { localStorage.setItem('sv_fav2', JSON.stringify([...S.favorites])); } catch(e) {}
+  try { localStorage.setItem('tt_tile_favorites_v1', JSON.stringify([...S.favorites])); } catch(e) {}
 }
 
 /* ================================================================
@@ -1028,7 +1028,7 @@ function getFilteredTiles() {
           || (t.collection||'').toLowerCase().includes(q);
     }
     return true;
-  });
+  }).sort((a, b) => Number(S.favorites.has(favKey(b.id))) - Number(S.favorites.has(favKey(a.id))));
 }
 
 /* ================================================================

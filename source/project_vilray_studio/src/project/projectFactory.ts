@@ -450,6 +450,19 @@ export function updateZoneTileColor(project: TileProject, surfaceId: string, zon
   };
 }
 
+export function updateZoneCatalogTile(project: TileProject, surfaceId: string, zoneId: string, tile: { id:string; name:string; shortName?:string|null; hex:string; sizes:string[]; previewUrl?:string|null }): TileProject {
+  const normalized = ensureProjectDefaults(project);
+  const surface = normalized.surfaces.find((item) => item.id === surfaceId);
+  const zone = surface?.zones.find((item) => item.id === zoneId);
+  const source = zone?.materialId ? normalized.materials.find((item) => item.id === zone.materialId) : getPrimaryMaterial(normalized);
+  if (!surface || !zone || !source) return normalized;
+  const match = /^(\d+(?:[.,]\d+)?)\s*[xх×]\s*(\d+(?:[.,]\d+)?)$/i.exec(tile.sizes[0] ?? '');
+  const widthMm = match ? Math.round(Number(match[1].replace(',','.')) * 10) : source.widthMm;
+  const heightMm = match ? Math.round(Number(match[2].replace(',','.')) * 10) : source.heightMm;
+  const material: TileMaterial = { ...source, id:`material-catalog-${tile.id}`, name:tile.shortName || tile.name, widthMm, heightMm, label:`${tile.shortName || tile.name} · ${Math.round(widthMm)}×${Math.round(heightMm)} мм`, swatch:{type:'color',value:/^#[0-9a-f]{6}$/i.test(tile.hex)?tile.hex.toUpperCase():'#E7E3DE'}, catalogTileId:tile.id, previewUrl:tile.previewUrl || undefined };
+  return { ...normalized, updatedAt:new Date().toISOString(), materials:upsertMaterial(normalized.materials,material), surfaces:normalized.surfaces.map((item)=>item.id===surfaceId?{...item,zones:item.zones.map((candidate)=>candidate.id===zoneId?{...candidate,materialId:material.id}:candidate)}:item) };
+}
+
 /** Renames every material that currently uses this swatch color. */
 export function renameTileMaterialsByColor(project: TileProject, color: string, name: string): TileProject {
   const normalized = ensureProjectDefaults(project);

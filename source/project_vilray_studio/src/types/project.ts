@@ -99,6 +99,8 @@ export interface TileMaterial {
   label?: string;
   piecesPerBox?: number;
   boxAreaM2?: number;
+  catalogTileId?: string;
+  previewUrl?: string;
 }
 
 export interface RoomArea {
