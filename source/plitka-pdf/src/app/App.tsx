@@ -224,6 +224,20 @@ export function App() {
     if (!saveProject(snapshot)) {
       setStorageWarning('Автосохранение не выполнено: локальное хранилище браузера переполнено или недоступно.');
     }
+    if (window.parent !== window) {
+      window.parent.postMessage({
+        type: 'tile-tools:project-saved',
+        project: {
+          id: `local:pdf:${snapshot.id}`,
+          type: 'pdf',
+          title: snapshot.title || 'PDF-документ',
+          status: 'active',
+          updatedAt: snapshot.updatedAt,
+          metric: `${snapshot.pages.length} стр. · ${snapshot.mediaAssets.length} медиа`,
+          payload: snapshot
+        }
+      }, '*');
+    }
   }
 
   function persistServiceSnapshot(snapshot: ServiceSettings) {

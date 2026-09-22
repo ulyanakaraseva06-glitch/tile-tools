@@ -5,7 +5,7 @@ require __DIR__ . '/app/page.php';
 
 $allowedPages = [
     'home', 'visualizer', 'calculator', 'pdf', 'equipment', 'media',
-    'projects', 'services', 'partners', 'favorites'
+    'projects', 'services', 'partners', 'favorites', 'account'
 ];
 $page = (string) ($_GET['page'] ?? 'home');
 if (!in_array($page, $allowedPages, true)) {

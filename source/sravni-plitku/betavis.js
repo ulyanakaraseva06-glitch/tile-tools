@@ -1456,6 +1456,21 @@ async function onExport() {
       exposureFilter: exposureFilter(S.exposure), // паритет экспозиции с превью
     });
     toast('Готово — изображение сохранено');
+    if (window.parent !== window) {
+      const roomTitle = (ROOMS.find(room => room.id === S.roomId) || {}).name || 'Интерьер';
+      window.parent.postMessage({
+        type: 'tile-tools:project-saved',
+        project: {
+          id: `local:visualization:${Date.now()}`,
+          type: 'visualization',
+          title: `Визуализация — ${roomTitle}`,
+          status: 'active',
+          updatedAt: new Date().toISOString(),
+          metric: `${Object.keys(selection).length} выбранных зон`,
+          payload: { roomId: S.roomId, selection, lightTemp: S.lightTemp, exposure: S.exposure }
+        }
+      }, '*');
+    }
     confirmDownload('success');
     trackEvent('download_success', { scene_id: S.roomId, selection: selection });
   } catch (e) {
@@ -1676,5 +1691,26 @@ function init() {
   updateZoneBadge();
   updateHint();
 }
+
+window.addEventListener('message', event => {
+  if (event.source !== window.parent || event.data?.type !== 'tile-tools:resume-project') return;
+  const payload = event.data.payload;
+  if (!payload || !ROOMS.some(room => room.id === payload.roomId) || !payload.selection || typeof payload.selection !== 'object') return;
+  S.roomId = payload.roomId;
+  S.zoneId = null;
+  Object.entries(payload.selection).forEach(([zoneId, tileId]) => {
+    if (roomZones(S.roomId).some(zone => zone.id === zoneId) && TILES_DB.some(tile => String(tile.id) === String(tileId))) {
+      S.assignments[assignKey(S.roomId, zoneId)] = String(tileId);
+    }
+  });
+  S.lightTemp = Math.max(-1, Math.min(1, Number(payload.lightTemp) || 0));
+  S.exposure = Math.max(-1, Math.min(1, Number(payload.exposure) || 0));
+  renderRooms();
+  renderScene();
+  renderCatalog();
+  updateZoneBadge();
+  updateHint();
+  toast('Проект восстановлен — можно продолжать работу');
+});
 
 document.addEventListener('DOMContentLoaded', init);

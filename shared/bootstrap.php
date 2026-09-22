@@ -91,6 +91,29 @@ function tt_current_user(): ?array
     return $user ?: null;
 }
 
+function tt_user_display_name(?array $user): string
+{
+    if (!$user) {
+        return 'Гость';
+    }
+    $fullName = trim((string) ($user['first_name'] ?? '') . ' ' . (string) ($user['last_name'] ?? ''));
+    if ($fullName !== '') {
+        return $fullName;
+    }
+    $email = trim((string) ($user['email'] ?? ''));
+    $at = strpos($email, '@');
+    return $at === false ? ($email !== '' ? $email : 'Пользователь') : substr($email, 0, $at);
+}
+
+function tt_user_initials(?array $user): string
+{
+    $name = tt_user_display_name($user);
+    $parts = preg_split('/\s+/u', $name, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+    $first = isset($parts[0]) ? mb_substr($parts[0], 0, 1) : 'Г';
+    $second = isset($parts[1]) ? mb_substr($parts[1], 0, 1) : '';
+    return mb_strtoupper($first . $second);
+}
+
 function tt_require_user(): array
 {
     $user = tt_current_user();

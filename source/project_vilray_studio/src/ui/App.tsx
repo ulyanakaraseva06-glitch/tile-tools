@@ -400,6 +400,20 @@ export function App() {
     if (templatePickerOpen) return;
     const timeoutId = window.setTimeout(() => {
       saveProject(project);
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'tile-tools:project-saved',
+          project: {
+            id: `local:calculation:${project.id}`,
+            type: 'calculation',
+            title: project.name || 'Расчёт плитки',
+            status: 'active',
+            updatedAt: project.updatedAt,
+            metric: `${project.surfaces.length} поверхн. · ${project.materials.length} матер.`,
+            payload: project,
+          },
+        }, '*');
+      }
     }, 250);
     return () => window.clearTimeout(timeoutId);
   }, [project, templatePickerOpen]);

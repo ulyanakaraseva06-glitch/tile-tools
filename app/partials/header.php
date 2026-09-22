@@ -10,6 +10,9 @@ $navigation = [
     'projects' => ['Проекты', '⊟'],
     'services' => ['Услуги', '◇'],
 ];
+$headerUser = tt_current_user();
+$headerUserName = tt_user_display_name($headerUser);
+$headerUserInitials = tt_user_initials($headerUser);
 ?>
 <!doctype html>
 <html lang="ru">
@@ -32,7 +35,7 @@ $navigation = [
     <nav class="account-nav" aria-label="Личный кабинет">
       <a class="nav-link" href="<?= tt_url('favorites') ?>">♡ <span>Избранное</span></a>
       <button class="icon-button" type="button" aria-label="Уведомления">♧<span class="notification-dot">0</span></button>
-      <button class="profile-button" type="button" aria-label="Профиль пользователя"><span class="avatar">Г</span><span class="profile-name">Гость</span><span aria-hidden="true">⌄</span></button>
+      <a class="profile-button <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>" aria-label="Открыть личный кабинет"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><span class="profile-name"><?= tt_escape($headerUserName) ?></span><span aria-hidden="true">⌄</span></a>
     </nav>
   </header>
   <main class="app-main">
