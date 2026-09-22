@@ -6096,7 +6096,7 @@ function WallTileLayout({
   return (
     <Group opacity={opacity}>
       <Group clipX={frame.x} clipY={frame.y} clipWidth={frame.width} clipHeight={frame.height} listening={false}>
-      <TilePiecesCanvas pieces={result.pieces} originX={frame.x} originY={frame.y} color={material.swatch.value} variant="wall" />
+      <TilePiecesCanvas pieces={result.pieces} originX={frame.x} originY={frame.y} color={material.swatch.value} textureUrl={material.previewUrl} variant="wall" />
       {objectBlockers.map((blocker, index) => (
         <Rect
           key={`object-mask-${index}`}
@@ -6590,6 +6590,7 @@ export function WallZoneLayer({
             originX={frame.x + mmToCanvas(bounds.minX)}
             originY={frame.y + mmToCanvas(bounds.minY)}
             color={material.swatch.value}
+            textureUrl={material.previewUrl}
             variant="floor"
           />
           <WallZoneOpeningMasks frame={frame} openings={openings} delta={displayedDelta} />
@@ -6674,7 +6675,7 @@ export function WallZoneLayer({
     >
       <Group clipX={x} clipY={y} clipWidth={width} clipHeight={height} listening={false}>
         <Rect x={x} y={y} width={width} height={height} fill="#FFFFFF" listening={false} />
-        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} variant="floor" />
+        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} variant="floor" />
         <WallZoneOpeningMasks frame={frame} openings={openings} delta={rectDragDelta ?? { x: 0, y: 0 }} />
         {objectBlockers.map((blocker, index) => (
           <Rect
@@ -6740,7 +6741,7 @@ function FloorTileLayout({ blockedObjects, contour, layout, layoutBounds, maskPo
         context.closePath();
       }}
     >
-      <TilePiecesCanvas pieces={result.pieces} originX={view.x(box.minX)} originY={view.y(box.minY)} color={material.swatch.value} variant="floor" />
+      <TilePiecesCanvas pieces={result.pieces} originX={view.x(box.minX)} originY={view.y(box.minY)} color={material.swatch.value} textureUrl={material.previewUrl} variant="floor" />
       {blockedObjects.map((object) => {
         const position = maskPositionFor?.(object) ?? { xMm: object.xMm, yMm: object.yMm, rotationDeg: object.rotationDeg ?? 0 };
         return (
@@ -6922,7 +6923,7 @@ function FloorZoneLayer({
       }}
     >
       <Group clipX={x} clipY={y} clipWidth={width} clipHeight={height} listening={false}>
-        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} variant="wall" />
+        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} variant="wall" />
         {blockedObjects.map((object) => {
           const position = maskPositionFor?.(object) ?? { xMm: object.xMm, yMm: object.yMm, rotationDeg: object.rotationDeg ?? 0 };
           return (
@@ -7291,13 +7292,32 @@ function SmallMetricLabel({ onClick, x, y, text }: { onClick?: () => void; x: nu
  * keeping only the interactive overlays as nodes makes zooming and dragging
  * substantially lighter while preserving the exact fills and seams.
  */
-function TilePiecesCanvas({ color, originX, originY, pieces, variant }: {
+function useTileTexture(textureUrl?: string) {
+  const [texture, setTexture] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    if (!textureUrl) { setTexture(null); return undefined; }
+    let active = true;
+    const image = new Image();
+    image.onload = () => { if (active) setTexture(image); };
+    image.onerror = () => { if (active) setTexture(null); };
+    image.src = textureUrl;
+    return () => { active = false; };
+  }, [textureUrl]);
+  return texture;
+}
+
+function TilePiecesCanvas({ color, originX, originY, pieces, textureUrl, variant }: {
   color: string;
   originX: number;
   originY: number;
   pieces: LayoutTilePiece[];
+  textureUrl?: string;
   variant: 'floor' | 'wall';
 }) {
+  const texture = useTileTexture(textureUrl);
+  const referencePiece = pieces.find((piece) => piece.kind === 'full') ?? pieces[0];
+  const patternScaleX = texture && referencePiece ? Math.max(1, mmToCanvas(referencePiece.widthMm)) / texture.naturalWidth : 1;
+  const patternScaleY = texture && referencePiece ? Math.max(1, mmToCanvas(referencePiece.heightMm)) / texture.naturalHeight : 1;
   return (
     <>
       {(['full', 'cut', 'critical'] as const).map((kind) => (
@@ -7306,6 +7326,13 @@ function TilePiecesCanvas({ color, originX, originY, pieces, variant }: {
           listening={false}
           perfectDrawEnabled={false}
           fill={variant === 'floor' ? getFloorLayoutPieceFill(kind, color) : getLayoutPieceFill(kind, color)}
+          fillPriority={texture ? 'pattern' : 'color'}
+          fillPatternImage={texture ?? undefined}
+          fillPatternRepeat="repeat"
+          fillPatternScaleX={patternScaleX}
+          fillPatternScaleY={patternScaleY}
+          fillPatternOffsetX={originX / patternScaleX}
+          fillPatternOffsetY={originY / patternScaleY}
           stroke={getLayoutPieceStroke(kind)}
           strokeWidth={1}
           sceneFunc={(context, shape) => {

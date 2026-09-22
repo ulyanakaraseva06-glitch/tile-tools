@@ -459,7 +459,8 @@ export function updateZoneCatalogTile(project: TileProject, surfaceId: string, z
   // A media item only colours the already selected calculator tile. Its format,
   // box settings and layout remain untouched, even when the catalogue item has
   // another commercial size.
-  const material: TileMaterial = { ...source, id:`material-catalog-${tile.id}-${Math.round(source.widthMm)}x${Math.round(source.heightMm)}`, name:tile.shortName || tile.name, swatch:{type:'color',value:/^#[0-9a-f]{6}$/i.test(tile.hex)?tile.hex.toUpperCase():'#E7E3DE'}, catalogTileId:tile.id, previewUrl:tile.previewUrl || undefined };
+  const catalogHex = /^#[0-9a-f]{6}$/i.test(tile.hex) ? tile.hex.toUpperCase() : '#E7E3DE';
+  const material: TileMaterial = { ...source, id:`material-catalog-${tile.id}-${Math.round(source.widthMm)}x${Math.round(source.heightMm)}`, name:tile.shortName || tile.name, swatch:{type:'color',value:catalogHex}, catalogTileId:tile.id, catalogHex, previewUrl:tile.previewUrl || undefined };
   return { ...normalized, updatedAt:new Date().toISOString(), materials:upsertMaterial(normalized.materials,material), surfaces:normalized.surfaces.map((item)=>item.id===surfaceId?{...item,zones:item.zones.map((candidate)=>candidate.id===zoneId?{...candidate,materialId:material.id}:candidate)}:item) };
 }
 

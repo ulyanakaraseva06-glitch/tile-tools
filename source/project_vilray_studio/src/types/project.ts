@@ -100,6 +100,7 @@ export interface TileMaterial {
   piecesPerBox?: number;
   boxAreaM2?: number;
   catalogTileId?: string;
+  catalogHex?: string;
   previewUrl?: string;
 }
 

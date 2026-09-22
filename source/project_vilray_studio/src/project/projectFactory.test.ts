@@ -105,6 +105,8 @@ describe('project factory', () => {
       presetId: before.presetId,
       label: before.label,
       catalogTileId: 'catalog-120x60',
+      previewUrl: '/api/media/file.php?id=preview',
+      catalogHex: '#D9D5CE',
       swatch: { type: 'color', value: '#D9D5CE' },
     });
   });
