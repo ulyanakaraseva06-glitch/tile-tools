@@ -436,12 +436,22 @@ export function updateZoneTileColor(project: TileProject, surfaceId: string, zon
   const reusable = normalized.materials.find((item) =>
     item.widthMm === source.widthMm
     && item.heightMm === source.heightMm
+    && !item.catalogTileId
     && item.swatch.type === 'color'
     && item.swatch.value.toUpperCase() === normalizedColor
     && item.name === normalizedName,
   );
   const materialId = reusable?.id ?? `material-color-${Date.now()}-${normalized.materials.length + 1}`;
-  const material: TileMaterial = reusable ?? { ...source, id: materialId, name: normalizedName, swatch: { type: 'color', value: normalizedColor } };
+  const material: TileMaterial = reusable ?? {
+    ...source,
+    id: materialId,
+    name: normalizedName,
+    swatch: { type: 'color', value: normalizedColor },
+    catalogTileId: undefined,
+    catalogHex: undefined,
+    previewUrl: undefined,
+    variantUrls: undefined,
+  };
   return {
     ...normalized,
     updatedAt: new Date().toISOString(),
@@ -450,17 +460,22 @@ export function updateZoneTileColor(project: TileProject, surfaceId: string, zon
   };
 }
 
-export function updateZoneCatalogTile(project: TileProject, surfaceId: string, zoneId: string, tile: { id:string; name:string; shortName?:string|null; hex:string; sizes:string[]; previewUrl?:string|null }): TileProject {
+export function updateZoneCatalogTile(project: TileProject, surfaceId: string, zoneId: string, tile: { id:string; name:string; shortName?:string|null; hex:string; sizes:string[]; previewUrl?:string|null; imageUrls?:string[] }): TileProject {
   const normalized = ensureProjectDefaults(project);
   const surface = normalized.surfaces.find((item) => item.id === surfaceId);
   const zone = surface?.zones.find((item) => item.id === zoneId);
   const source = zone?.materialId ? normalized.materials.find((item) => item.id === zone.materialId) : getPrimaryMaterial(normalized);
   if (!surface || !zone || !source) return normalized;
-  // A media item only colours the already selected calculator tile. Its format,
-  // box settings and layout remain untouched, even when the catalogue item has
-  // another commercial size.
+  const sizeMatch = String(tile.sizes?.[0] || '').match(/(\d+(?:[.,]\d+)?)\D+(\d+(?:[.,]\d+)?)/);
+  const toMillimeters = (value: string) => {
+    const parsed = Number(value.replace(',', '.'));
+    return parsed > 0 && parsed <= 400 ? Math.round(parsed * 10) : Math.round(parsed);
+  };
+  const widthMm = sizeMatch ? toMillimeters(sizeMatch[1]) : source.widthMm;
+  const heightMm = sizeMatch ? toMillimeters(sizeMatch[2]) : source.heightMm;
   const catalogHex = /^#[0-9a-f]{6}$/i.test(tile.hex) ? tile.hex.toUpperCase() : '#E7E3DE';
-  const material: TileMaterial = { ...source, id:`material-catalog-${tile.id}-${Math.round(source.widthMm)}x${Math.round(source.heightMm)}`, name:tile.shortName || tile.name, swatch:{type:'color',value:catalogHex}, catalogTileId:tile.id, catalogHex, previewUrl:tile.previewUrl || undefined };
+  const variantUrls = (tile.imageUrls || []).filter(Boolean);
+  const material: TileMaterial = { ...source, id:`material-catalog-${tile.id}-${widthMm}x${heightMm}`, name:tile.shortName || tile.name, label:`${widthMm} × ${heightMm} мм`, widthMm, heightMm, presetId:undefined, swatch:{type:'color',value:catalogHex}, catalogTileId:tile.id, catalogHex, previewUrl:tile.previewUrl || variantUrls[0] || undefined, variantUrls:variantUrls.length ? variantUrls : undefined };
   return { ...normalized, updatedAt:new Date().toISOString(), materials:upsertMaterial(normalized.materials,material), surfaces:normalized.surfaces.map((item)=>item.id===surfaceId?{...item,zones:item.zones.map((candidate)=>candidate.id===zoneId?{...candidate,materialId:material.id}:candidate)}:item) };
 }
 
@@ -2785,7 +2800,7 @@ function findMatchingMaterial(materials: TileMaterial[], widthMm: number, height
   }
   const width = clampTileSize(widthMm);
   const height = clampTileSize(heightMm);
-  return materials.find((material) => material.widthMm === width && material.heightMm === height && material.presetId === presetId) ?? null;
+  return materials.find((material) => !material.catalogTileId && material.widthMm === width && material.heightMm === height && material.presetId === presetId) ?? null;
 }
 
 function upsertMaterial(materials: TileMaterial[], material: TileMaterial): TileMaterial[] {

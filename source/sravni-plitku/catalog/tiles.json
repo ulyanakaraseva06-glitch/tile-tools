@@ -799,5 +799,2163 @@
                 "10"
             ]
         }
+    },
+    {
+        "id": "31lab-ce0l63m01",
+        "folder": "31lab/ce0l63m01",
+        "hasRealImg": true,
+        "name": "Cemento Ivory Carving",
+        "shortName": "Cemento Ivory Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0l63m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0l63m01/face-01.jpg",
+            "images/tiles/31lab/ce0l63m01/face-02.jpg",
+            "images/tiles/31lab/ce0l63m01/face-03.jpg",
+            "images/tiles/31lab/ce0l63m01/face-04.jpg",
+            "images/tiles/31lab/ce0l63m01/face-05.jpg",
+            "images/tiles/31lab/ce0l63m01/face-06.jpg",
+            "images/tiles/31lab/ce0l63m01/face-07.jpg",
+            "images/tiles/31lab/ce0l63m01/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#e4dacb",
+        "article": "CE0L63M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0L63M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0L63M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0h62m01",
+        "folder": "31lab/ce0h62m01",
+        "hasRealImg": true,
+        "name": "Cemento Perla Matt",
+        "shortName": "Cemento Perla Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0h62m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0h62m01/face-01.jpg",
+            "images/tiles/31lab/ce0h62m01/face-02.jpg",
+            "images/tiles/31lab/ce0h62m01/face-03.jpg",
+            "images/tiles/31lab/ce0h62m01/face-04.jpg",
+            "images/tiles/31lab/ce0h62m01/face-05.jpg",
+            "images/tiles/31lab/ce0h62m01/face-06.jpg",
+            "images/tiles/31lab/ce0h62m01/face-07.jpg",
+            "images/tiles/31lab/ce0h62m01/face-08.jpg",
+            "images/tiles/31lab/ce0h62m01/face-09.jpg",
+            "images/tiles/31lab/ce0h62m01/face-10.jpg",
+            "images/tiles/31lab/ce0h62m01/face-11.jpg",
+            "images/tiles/31lab/ce0h62m01/face-12.jpg",
+            "images/tiles/31lab/ce0h62m01/face-13.jpg",
+            "images/tiles/31lab/ce0h62m01/face-14.jpg",
+            "images/tiles/31lab/ce0h62m01/face-15.jpg",
+            "images/tiles/31lab/ce0h62m01/face-16.jpg"
+        ],
+        "renders": {},
+        "hex": "#d1d1d1",
+        "article": "CE0H62M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0H62M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0H62M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238672",
+        "folder": "31lab/rp-238672",
+        "hasRealImg": true,
+        "name": "Magnum White Carving Matt",
+        "shortName": "Magnum White Carving Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238672/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238672/face-01.jpg",
+            "images/tiles/31lab/rp-238672/face-02.jpg",
+            "images/tiles/31lab/rp-238672/face-03.jpg",
+            "images/tiles/31lab/rp-238672/face-04.jpg",
+            "images/tiles/31lab/rp-238672/face-05.jpg",
+            "images/tiles/31lab/rp-238672/face-06.jpg",
+            "images/tiles/31lab/rp-238672/face-07.jpg",
+            "images/tiles/31lab/rp-238672/face-08.jpg",
+            "images/tiles/31lab/rp-238672/face-09.jpg",
+            "images/tiles/31lab/rp-238672/face-10.jpg",
+            "images/tiles/31lab/rp-238672/face-11.jpg",
+            "images/tiles/31lab/rp-238672/face-12.jpg",
+            "images/tiles/31lab/rp-238672/face-13.jpg",
+            "images/tiles/31lab/rp-238672/face-14.jpg"
+        ],
+        "renders": {},
+        "hex": "#eee9d8",
+        "article": "RP-238672",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238672"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238672"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238671",
+        "folder": "31lab/rp-238671",
+        "hasRealImg": true,
+        "name": "Magnum White Carving Matt",
+        "shortName": "Magnum White Carving Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238671/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238671/face-01.jpg",
+            "images/tiles/31lab/rp-238671/face-02.jpg",
+            "images/tiles/31lab/rp-238671/face-03.jpg",
+            "images/tiles/31lab/rp-238671/face-04.jpg",
+            "images/tiles/31lab/rp-238671/face-05.jpg",
+            "images/tiles/31lab/rp-238671/face-06.jpg",
+            "images/tiles/31lab/rp-238671/face-07.jpg",
+            "images/tiles/31lab/rp-238671/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#ede9d7",
+        "article": "RP-238671",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238671"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238671"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0h59m01",
+        "folder": "31lab/ce0h59m01",
+        "hasRealImg": true,
+        "name": "Cemento Grafito Matt",
+        "shortName": "Cemento Grafito Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0h59m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0h59m01/face-01.jpg",
+            "images/tiles/31lab/ce0h59m01/face-02.jpg",
+            "images/tiles/31lab/ce0h59m01/face-03.jpg",
+            "images/tiles/31lab/ce0h59m01/face-04.jpg",
+            "images/tiles/31lab/ce0h59m01/face-05.jpg",
+            "images/tiles/31lab/ce0h59m01/face-06.jpg",
+            "images/tiles/31lab/ce0h59m01/face-07.jpg",
+            "images/tiles/31lab/ce0h59m01/face-08.jpg",
+            "images/tiles/31lab/ce0h59m01/face-09.jpg",
+            "images/tiles/31lab/ce0h59m01/face-10.jpg",
+            "images/tiles/31lab/ce0h59m01/face-11.jpg",
+            "images/tiles/31lab/ce0h59m01/face-12.jpg",
+            "images/tiles/31lab/ce0h59m01/face-13.jpg",
+            "images/tiles/31lab/ce0h59m01/face-14.jpg",
+            "images/tiles/31lab/ce0h59m01/face-15.jpg",
+            "images/tiles/31lab/ce0h59m01/face-16.jpg"
+        ],
+        "renders": {},
+        "hex": "#818181",
+        "article": "CE0H59M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0H59M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0H59M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0l62m01",
+        "folder": "31lab/ce0l62m01",
+        "hasRealImg": true,
+        "name": "Cemento Perla Matt",
+        "shortName": "Cemento Perla Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0l62m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0l62m01/face-01.jpg",
+            "images/tiles/31lab/ce0l62m01/face-02.jpg",
+            "images/tiles/31lab/ce0l62m01/face-03.jpg",
+            "images/tiles/31lab/ce0l62m01/face-04.jpg",
+            "images/tiles/31lab/ce0l62m01/face-05.jpg",
+            "images/tiles/31lab/ce0l62m01/face-06.jpg",
+            "images/tiles/31lab/ce0l62m01/face-07.jpg",
+            "images/tiles/31lab/ce0l62m01/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#d3d3d3",
+        "article": "CE0L62M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0L62M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0L62M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-236927",
+        "folder": "31lab/rp-236927",
+        "hasRealImg": true,
+        "name": "Prizma Satvario Glossy",
+        "shortName": "Prizma Satvario Glossy",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "глянцевый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-236927/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-236927/face-01.jpg",
+            "images/tiles/31lab/rp-236927/face-02.jpg",
+            "images/tiles/31lab/rp-236927/face-03.jpg",
+            "images/tiles/31lab/rp-236927/face-04.jpg",
+            "images/tiles/31lab/rp-236927/face-05.jpg",
+            "images/tiles/31lab/rp-236927/face-06.jpg",
+            "images/tiles/31lab/rp-236927/face-07.jpg",
+            "images/tiles/31lab/rp-236927/face-08.jpg",
+            "images/tiles/31lab/rp-236927/face-09.jpg",
+            "images/tiles/31lab/rp-236927/face-10.jpg",
+            "images/tiles/31lab/rp-236927/face-11.jpg",
+            "images/tiles/31lab/rp-236927/face-12.jpg",
+            "images/tiles/31lab/rp-236927/face-13.jpg",
+            "images/tiles/31lab/rp-236927/face-14.jpg",
+            "images/tiles/31lab/rp-236927/face-15.jpg",
+            "images/tiles/31lab/rp-236927/face-16.jpg"
+        ],
+        "renders": {},
+        "hex": "#fcfcfc",
+        "article": "RP-236927",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-236927"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "глянцевый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-236927"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "глянцевый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0h63m01",
+        "folder": "31lab/ce0h63m01",
+        "hasRealImg": true,
+        "name": "Cemento Ivory Carving",
+        "shortName": "Cemento Ivory Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0h63m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0h63m01/face-01.jpg",
+            "images/tiles/31lab/ce0h63m01/face-02.jpg",
+            "images/tiles/31lab/ce0h63m01/face-03.jpg",
+            "images/tiles/31lab/ce0h63m01/face-04.jpg",
+            "images/tiles/31lab/ce0h63m01/face-05.jpg",
+            "images/tiles/31lab/ce0h63m01/face-06.jpg",
+            "images/tiles/31lab/ce0h63m01/face-07.jpg",
+            "images/tiles/31lab/ce0h63m01/face-08.jpg",
+            "images/tiles/31lab/ce0h63m01/face-09.jpg",
+            "images/tiles/31lab/ce0h63m01/face-10.jpg",
+            "images/tiles/31lab/ce0h63m01/face-11.jpg",
+            "images/tiles/31lab/ce0h63m01/face-12.jpg",
+            "images/tiles/31lab/ce0h63m01/face-13.jpg",
+            "images/tiles/31lab/ce0h63m01/face-14.jpg",
+            "images/tiles/31lab/ce0h63m01/face-15.jpg",
+            "images/tiles/31lab/ce0h63m01/face-16.jpg"
+        ],
+        "renders": {},
+        "hex": "#e3dbcf",
+        "article": "CE0H63M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0H63M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0H63M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0l59m01",
+        "folder": "31lab/ce0l59m01",
+        "hasRealImg": true,
+        "name": "Cemento Grafito Matt",
+        "shortName": "Cemento Grafito Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0l59m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0l59m01/face-01.jpg",
+            "images/tiles/31lab/ce0l59m01/face-02.jpg",
+            "images/tiles/31lab/ce0l59m01/face-03.jpg",
+            "images/tiles/31lab/ce0l59m01/face-04.jpg",
+            "images/tiles/31lab/ce0l59m01/face-05.jpg",
+            "images/tiles/31lab/ce0l59m01/face-06.jpg",
+            "images/tiles/31lab/ce0l59m01/face-07.jpg",
+            "images/tiles/31lab/ce0l59m01/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#7f7e7c",
+        "article": "CE0L59M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0L59M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0L59M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238575",
+        "folder": "31lab/rp-238575",
+        "hasRealImg": true,
+        "name": "Travertine Stone 4D",
+        "shortName": "Travertine Stone 4D",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238575/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238575/face-01.jpg",
+            "images/tiles/31lab/rp-238575/face-02.jpg",
+            "images/tiles/31lab/rp-238575/face-03.jpg",
+            "images/tiles/31lab/rp-238575/face-04.jpg"
+        ],
+        "renders": {},
+        "hex": "#e7d5bf",
+        "article": "RP-238575",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238575"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238575"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238597",
+        "folder": "31lab/rp-238597",
+        "hasRealImg": true,
+        "name": "Hydro Bianco GLR",
+        "shortName": "Hydro Bianco GLR",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "сатин"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238597/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238597/face-01.jpg",
+            "images/tiles/31lab/rp-238597/face-02.jpg",
+            "images/tiles/31lab/rp-238597/face-03.jpg",
+            "images/tiles/31lab/rp-238597/face-04.jpg",
+            "images/tiles/31lab/rp-238597/face-05.jpg",
+            "images/tiles/31lab/rp-238597/face-06.jpg",
+            "images/tiles/31lab/rp-238597/face-07.jpg"
+        ],
+        "renders": {},
+        "hex": "#f2f1f1",
+        "article": "RP-238597",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238597"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "сатин"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238597"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "сатин"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0h64m01",
+        "folder": "31lab/ce0h64m01",
+        "hasRealImg": true,
+        "name": "Cemento Gris Matt",
+        "shortName": "Cemento Gris Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0h64m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0h64m01/face-01.jpg",
+            "images/tiles/31lab/ce0h64m01/face-02.jpg",
+            "images/tiles/31lab/ce0h64m01/face-03.jpg",
+            "images/tiles/31lab/ce0h64m01/face-04.jpg",
+            "images/tiles/31lab/ce0h64m01/face-05.jpg",
+            "images/tiles/31lab/ce0h64m01/face-06.jpg",
+            "images/tiles/31lab/ce0h64m01/face-07.jpg",
+            "images/tiles/31lab/ce0h64m01/face-08.jpg",
+            "images/tiles/31lab/ce0h64m01/face-09.jpg",
+            "images/tiles/31lab/ce0h64m01/face-10.jpg",
+            "images/tiles/31lab/ce0h64m01/face-11.jpg",
+            "images/tiles/31lab/ce0h64m01/face-12.jpg",
+            "images/tiles/31lab/ce0h64m01/face-13.jpg",
+            "images/tiles/31lab/ce0h64m01/face-14.jpg",
+            "images/tiles/31lab/ce0h64m01/face-15.jpg",
+            "images/tiles/31lab/ce0h64m01/face-16.jpg"
+        ],
+        "renders": {},
+        "hex": "#a5a09c",
+        "article": "CE0H64M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0H64M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0H64M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-gr0l62m01",
+        "folder": "31lab/gr0l62m01",
+        "hasRealImg": true,
+        "name": "Ground Perla Matt",
+        "shortName": "Ground Perla Matt",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/gr0l62m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/gr0l62m01/face-01.jpg",
+            "images/tiles/31lab/gr0l62m01/face-02.jpg",
+            "images/tiles/31lab/gr0l62m01/face-03.jpg",
+            "images/tiles/31lab/gr0l62m01/face-04.jpg",
+            "images/tiles/31lab/gr0l62m01/face-05.jpg",
+            "images/tiles/31lab/gr0l62m01/face-06.jpg"
+        ],
+        "renders": {},
+        "hex": "#c7c7c7",
+        "article": "GR0L62M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "GR0L62M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "GR0L62M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238577",
+        "folder": "31lab/rp-238577",
+        "hasRealImg": true,
+        "name": "Eternal Blanco Carving",
+        "shortName": "Eternal Blanco Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238577/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238577/face-01.jpg",
+            "images/tiles/31lab/rp-238577/face-02.jpg",
+            "images/tiles/31lab/rp-238577/face-03.jpg",
+            "images/tiles/31lab/rp-238577/face-04.jpg",
+            "images/tiles/31lab/rp-238577/face-05.jpg",
+            "images/tiles/31lab/rp-238577/face-06.jpg",
+            "images/tiles/31lab/rp-238577/face-07.jpg",
+            "images/tiles/31lab/rp-238577/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#e1ddd5",
+        "article": "RP-238577",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238577"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238577"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-tz0h60m01",
+        "folder": "31lab/tz0h60m01",
+        "hasRealImg": true,
+        "name": "Terrazzo Clay Carving",
+        "shortName": "Terrazzo Clay Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/tz0h60m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/tz0h60m01/face-01.jpg",
+            "images/tiles/31lab/tz0h60m01/face-02.jpg",
+            "images/tiles/31lab/tz0h60m01/face-03.jpg",
+            "images/tiles/31lab/tz0h60m01/face-04.jpg",
+            "images/tiles/31lab/tz0h60m01/face-05.jpg",
+            "images/tiles/31lab/tz0h60m01/face-06.jpg",
+            "images/tiles/31lab/tz0h60m01/face-07.jpg",
+            "images/tiles/31lab/tz0h60m01/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#eae1d2",
+        "article": "TZ0H60M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "TZ0H60M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "TZ0H60M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-ce0l68m01",
+        "folder": "31lab/ce0l68m01",
+        "hasRealImg": true,
+        "name": "Cemento Blanco Carving",
+        "shortName": "Cemento Blanco Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/ce0l68m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/ce0l68m01/face-01.jpg",
+            "images/tiles/31lab/ce0l68m01/face-02.jpg",
+            "images/tiles/31lab/ce0l68m01/face-03.jpg",
+            "images/tiles/31lab/ce0l68m01/face-04.jpg",
+            "images/tiles/31lab/ce0l68m01/face-05.jpg",
+            "images/tiles/31lab/ce0l68m01/face-06.jpg",
+            "images/tiles/31lab/ce0l68m01/face-07.jpg",
+            "images/tiles/31lab/ce0l68m01/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#f2efeb",
+        "article": "CE0L68M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "CE0L68M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "CE0L68M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238590",
+        "folder": "31lab/rp-238590",
+        "hasRealImg": true,
+        "name": "Alpha Blanco Polish Sugar",
+        "shortName": "Alpha Blanco Polish Sugar",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238590/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238590/face-01.jpg",
+            "images/tiles/31lab/rp-238590/face-02.jpg",
+            "images/tiles/31lab/rp-238590/face-03.jpg",
+            "images/tiles/31lab/rp-238590/face-04.jpg",
+            "images/tiles/31lab/rp-238590/face-05.jpg",
+            "images/tiles/31lab/rp-238590/face-06.jpg",
+            "images/tiles/31lab/rp-238590/face-07.jpg",
+            "images/tiles/31lab/rp-238590/face-08.jpg",
+            "images/tiles/31lab/rp-238590/face-09.jpg",
+            "images/tiles/31lab/rp-238590/face-10.jpg",
+            "images/tiles/31lab/rp-238590/face-11.jpg",
+            "images/tiles/31lab/rp-238590/face-12.jpg"
+        ],
+        "renders": {},
+        "hex": "#d7cabc",
+        "article": "RP-238590",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238590"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238590"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-fo0l69m01",
+        "folder": "31lab/fo0l69m01",
+        "hasRealImg": true,
+        "name": "Forest Oak",
+        "shortName": "Forest Oak",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/fo0l69m01/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/fo0l69m01/face-01.jpg",
+            "images/tiles/31lab/fo0l69m01/face-02.jpg",
+            "images/tiles/31lab/fo0l69m01/face-03.jpg",
+            "images/tiles/31lab/fo0l69m01/face-04.jpg",
+            "images/tiles/31lab/fo0l69m01/face-05.jpg"
+        ],
+        "renders": {},
+        "hex": "#a38a69",
+        "article": "FO0L69M01",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "FO0L69M01"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "FO0L69M01"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-187481",
+        "folder": "31lab/rp-187481",
+        "hasRealImg": true,
+        "name": "Soleste Bianco Rustic Carving",
+        "shortName": "Soleste Bianco Rustic Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-187481/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-187481/face-01.jpg",
+            "images/tiles/31lab/rp-187481/face-02.jpg",
+            "images/tiles/31lab/rp-187481/face-03.jpg",
+            "images/tiles/31lab/rp-187481/face-04.jpg",
+            "images/tiles/31lab/rp-187481/face-05.jpg",
+            "images/tiles/31lab/rp-187481/face-06.jpg"
+        ],
+        "renders": {},
+        "hex": "#f6ebf0",
+        "article": "RP-187481",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-187481"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "120×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-187481"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "120×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-215928",
+        "folder": "31lab/rp-215928",
+        "hasRealImg": true,
+        "name": "Rio Bianco Carving",
+        "shortName": "Rio Bianco Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "120x60"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-215928/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-215928/face-01.jpg",
+            "images/tiles/31lab/rp-215928/face-02.jpg",
+            "images/tiles/31lab/rp-215928/face-03.jpg",
+            "images/tiles/31lab/rp-215928/face-04.jpg"
+        ],
+        "renders": {},
+        "hex": "#ebeae9",
+        "article": "RP-215928",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-215928"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "120×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-215928"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "120×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-249890",
+        "folder": "31lab/rp-249890",
+        "hasRealImg": true,
+        "name": "Bohemia Dove GLR",
+        "shortName": "Bohemia Dove GLR",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-249890/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-249890/face-01.jpg",
+            "images/tiles/31lab/rp-249890/face-02.jpg",
+            "images/tiles/31lab/rp-249890/face-03.jpg",
+            "images/tiles/31lab/rp-249890/face-04.jpg",
+            "images/tiles/31lab/rp-249890/face-05.jpg",
+            "images/tiles/31lab/rp-249890/face-06.jpg",
+            "images/tiles/31lab/rp-249890/face-07.jpg"
+        ],
+        "renders": {},
+        "hex": "#cecdcb",
+        "article": "RP-249890",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-249890"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-249890"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238570",
+        "folder": "31lab/rp-238570",
+        "hasRealImg": true,
+        "name": "Gravelo Beige Carving",
+        "shortName": "Gravelo Beige Carving",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238570/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238570/face-01.jpg",
+            "images/tiles/31lab/rp-238570/face-02.jpg",
+            "images/tiles/31lab/rp-238570/face-03.jpg",
+            "images/tiles/31lab/rp-238570/face-04.jpg",
+            "images/tiles/31lab/rp-238570/face-05.jpg",
+            "images/tiles/31lab/rp-238570/face-06.jpg"
+        ],
+        "renders": {},
+        "hex": "#e8d7c0",
+        "article": "RP-238570",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238570"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238570"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-249891",
+        "folder": "31lab/rp-249891",
+        "hasRealImg": true,
+        "name": "Bohemia Slate GLR",
+        "shortName": "Bohemia Slate GLR",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-249891/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-249891/face-01.jpg",
+            "images/tiles/31lab/rp-249891/face-02.jpg",
+            "images/tiles/31lab/rp-249891/face-03.jpg",
+            "images/tiles/31lab/rp-249891/face-04.jpg",
+            "images/tiles/31lab/rp-249891/face-05.jpg",
+            "images/tiles/31lab/rp-249891/face-06.jpg",
+            "images/tiles/31lab/rp-249891/face-07.jpg"
+        ],
+        "renders": {},
+        "hex": "#958a77",
+        "article": "RP-249891",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-249891"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-249891"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238591",
+        "folder": "31lab/rp-238591",
+        "hasRealImg": true,
+        "name": "Shadestone Nero Polish Sugar",
+        "shortName": "Shadestone Nero Polish Sugar",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x60"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238591/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238591/face-01.jpg",
+            "images/tiles/31lab/rp-238591/face-02.jpg",
+            "images/tiles/31lab/rp-238591/face-03.jpg",
+            "images/tiles/31lab/rp-238591/face-04.jpg",
+            "images/tiles/31lab/rp-238591/face-05.jpg",
+            "images/tiles/31lab/rp-238591/face-06.jpg",
+            "images/tiles/31lab/rp-238591/face-07.jpg",
+            "images/tiles/31lab/rp-238591/face-08.jpg",
+            "images/tiles/31lab/rp-238591/face-09.jpg",
+            "images/tiles/31lab/rp-238591/face-10.jpg"
+        ],
+        "renders": {},
+        "hex": "#59564f",
+        "article": "RP-238591",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238591"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×60"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238591"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×60"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-249895",
+        "folder": "31lab/rp-249895",
+        "hasRealImg": true,
+        "name": "Sandy Stone Cream",
+        "shortName": "Sandy Stone Cream",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-249895/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-249895/face-01.jpg",
+            "images/tiles/31lab/rp-249895/face-02.jpg",
+            "images/tiles/31lab/rp-249895/face-03.jpg",
+            "images/tiles/31lab/rp-249895/face-04.jpg",
+            "images/tiles/31lab/rp-249895/face-05.jpg"
+        ],
+        "renders": {},
+        "hex": "#e7dac4",
+        "article": "RP-249895",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-249895"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-249895"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238586",
+        "folder": "31lab/rp-238586",
+        "hasRealImg": true,
+        "name": "Selena Beige Satin",
+        "shortName": "Selena Beige Satin",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "сатин"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238586/face-01.jpeg",
+        "faces": [
+            "images/tiles/31lab/rp-238586/face-01.jpeg",
+            "images/tiles/31lab/rp-238586/face-02.jpeg",
+            "images/tiles/31lab/rp-238586/face-03.jpeg",
+            "images/tiles/31lab/rp-238586/face-04.jpeg",
+            "images/tiles/31lab/rp-238586/face-05.jpeg",
+            "images/tiles/31lab/rp-238586/face-06.jpeg",
+            "images/tiles/31lab/rp-238586/face-07.jpeg",
+            "images/tiles/31lab/rp-238586/face-08.jpeg"
+        ],
+        "renders": {},
+        "hex": "#e6e1da",
+        "article": "RP-238586",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238586"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "сатин"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238586"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "сатин"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238270",
+        "folder": "31lab/rp-238270",
+        "hasRealImg": true,
+        "name": "Talisman Onyx Sugar",
+        "shortName": "Talisman Onyx Sugar",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238270/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238270/face-01.jpg",
+            "images/tiles/31lab/rp-238270/face-02.jpg",
+            "images/tiles/31lab/rp-238270/face-03.jpg",
+            "images/tiles/31lab/rp-238270/face-04.jpg",
+            "images/tiles/31lab/rp-238270/face-05.jpg",
+            "images/tiles/31lab/rp-238270/face-06.jpg"
+        ],
+        "renders": {},
+        "hex": "#f0efed",
+        "article": "RP-238270",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238270"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238270"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238272",
+        "folder": "31lab/rp-238272",
+        "hasRealImg": true,
+        "name": "Damasco Antracite Sugar",
+        "shortName": "Damasco Antracite Sugar",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238272/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238272/face-01.jpg",
+            "images/tiles/31lab/rp-238272/face-02.jpg",
+            "images/tiles/31lab/rp-238272/face-03.jpg",
+            "images/tiles/31lab/rp-238272/face-04.jpg"
+        ],
+        "renders": {},
+        "hex": "#6c655b",
+        "article": "RP-238272",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238272"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238272"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-249893",
+        "folder": "31lab/rp-249893",
+        "hasRealImg": true,
+        "name": "Charming Aria Punch+GHR",
+        "shortName": "Charming Aria Punch+GHR",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "матовый"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-249893/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-249893/face-01.jpg",
+            "images/tiles/31lab/rp-249893/face-02.jpg",
+            "images/tiles/31lab/rp-249893/face-03.jpg",
+            "images/tiles/31lab/rp-249893/face-04.jpg"
+        ],
+        "renders": {},
+        "hex": "#d5d0cc",
+        "article": "RP-249893",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-249893"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "матовый"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-249893"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "матовый"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238275",
+        "folder": "31lab/rp-238275",
+        "hasRealImg": true,
+        "name": "Worner White Sugar",
+        "shortName": "Worner White Sugar",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "шугар"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238275/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238275/face-01.jpg",
+            "images/tiles/31lab/rp-238275/face-02.jpg",
+            "images/tiles/31lab/rp-238275/face-03.jpg",
+            "images/tiles/31lab/rp-238275/face-04.jpg",
+            "images/tiles/31lab/rp-238275/face-05.jpg",
+            "images/tiles/31lab/rp-238275/face-06.jpg",
+            "images/tiles/31lab/rp-238275/face-07.jpg",
+            "images/tiles/31lab/rp-238275/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#ecebe9",
+        "article": "RP-238275",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238275"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "шугар"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238275"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "шугар"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
+    },
+    {
+        "id": "31lab-rp-238268",
+        "folder": "31lab/rp-238268",
+        "hasRealImg": true,
+        "name": "Scion Grey Reflex Punch",
+        "shortName": "Scion Grey Reflex Punch",
+        "brand": null,
+        "color": [],
+        "size": [
+            "60x120"
+        ],
+        "surface": [
+            "карвинг"
+        ],
+        "design": [],
+        "tileImg": "images/tiles/31lab/rp-238268/face-01.jpg",
+        "faces": [
+            "images/tiles/31lab/rp-238268/face-01.jpg",
+            "images/tiles/31lab/rp-238268/face-02.jpg",
+            "images/tiles/31lab/rp-238268/face-03.jpg",
+            "images/tiles/31lab/rp-238268/face-04.jpg",
+            "images/tiles/31lab/rp-238268/face-05.jpg",
+            "images/tiles/31lab/rp-238268/face-06.jpg",
+            "images/tiles/31lab/rp-238268/face-07.jpg",
+            "images/tiles/31lab/rp-238268/face-08.jpg"
+        ],
+        "renders": {},
+        "hex": "#d9d8d8",
+        "article": "RP-238268",
+        "attributes": [
+            {
+                "name": "Артикул",
+                "values": [
+                    "RP-238268"
+                ]
+            },
+            {
+                "name": "Размер",
+                "values": [
+                    "60×120"
+                ]
+            },
+            {
+                "name": "Поверхность",
+                "values": [
+                    "карвинг"
+                ]
+            }
+        ],
+        "attribute1": {
+            "name": "Артикул",
+            "values": [
+                "RP-238268"
+            ]
+        },
+        "attribute2": {
+            "name": "Размер",
+            "values": [
+                "60×120"
+            ]
+        },
+        "attribute3": {
+            "name": "Поверхность",
+            "values": [
+                "карвинг"
+            ]
+        },
+        "source": "31lab_main_tiles_characteristics.xlsx"
     }
 ]

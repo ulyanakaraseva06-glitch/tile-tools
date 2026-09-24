@@ -17,18 +17,14 @@ function tt_integration_url(string $service): string
     return is_string($configured) && $configured !== '' ? $configured : ($defaults[$service] ?? '#');
 }
 
-function tt_render_integrated_service(string $service, string $heading, string $sourceName): void
+function tt_render_integrated_service(string $service, string $heading): void
 {
     $url = tt_integration_url($service);
+    $user = tt_current_user();
+    if ($user) {
+        $url .= (str_contains($url, '?') ? '&' : '?') . 'account=' . rawurlencode((string) $user['id']);
+    }
     ?>
-    <section class="service-host-heading">
-      <div>
-        <p class="eyebrow">Исходный сервис без изменения функций</p>
-        <h1><?= tt_escape($heading) ?></h1>
-        <p>Внутри загружается оригинальное приложение <?= tt_escape($sourceName) ?>. Tile Tools добавляет только общую оболочку и связи с общими данными.</p>
-      </div>
-      <a class="button button-secondary" href="<?= tt_escape($url) ?>" target="_blank" rel="noopener">Открыть отдельно ↗</a>
-    </section>
     <section class="service-host">
       <iframe class="service-frame" src="<?= tt_escape($url) ?>" title="<?= tt_escape($heading) ?>" loading="eager" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
     </section>

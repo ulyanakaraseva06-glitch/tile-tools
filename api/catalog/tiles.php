@@ -15,15 +15,13 @@ $surface = trim((string) ($_GET['surface'] ?? ''));
 $design = trim((string) ($_GET['design'] ?? ''));
 $user = tt_current_user();
 $userId = $user ? (int) $user['id'] : 0;
-tt_start_session();
-$guestFavorites = $user ? [] : array_flip(array_values((array) ($_SESSION['guest_tile_favorites'] ?? [])));
 
 $where = [];
 $params = [$userId];
 if ($search !== '') {
-    $where[] = '(t.name LIKE ? OR t.short_name LIKE ? OR t.brand LIKE ?)';
+    $where[] = '(t.name LIKE ? OR t.short_name LIKE ? OR t.brand LIKE ? OR JSON_UNQUOTE(JSON_EXTRACT(t.source_payload, \'$.article\')) LIKE ?)';
     $needle = '%' . mb_substr($search, 0, 120) . '%';
-    array_push($params, $needle, $needle, $needle);
+    array_push($params, $needle, $needle, $needle, $needle);
 }
 foreach (['brand' => $brand, 'colors' => $color, 'sizes' => $size, 'surfaces' => $surface, 'designs' => $design] as $column => $value) {
     if ($value === '') continue;
@@ -47,6 +45,16 @@ $sql .= ' ORDER BY is_favorite DESC, COALESCE(t.short_name, t.name), t.id';
 
 $statement = tt_pdo()->prepare($sql);
 $statement->execute($params);
+$imageRows = tt_pdo()->query(
+    "SELECT images.tile_id, images.media_id
+       FROM tt_catalog_tile_images images
+       INNER JOIN tt_media_assets media ON media.id = images.media_id AND media.status = 'ready'
+      ORDER BY images.tile_id, images.sort_order"
+)->fetchAll();
+$imageUrlsByTile = [];
+foreach ($imageRows as $imageRow) {
+    $imageUrlsByTile[(string) $imageRow['tile_id']][] = '/api/media/file.php?id=' . rawurlencode((string) $imageRow['media_id']);
+}
 $items = [];
 $facets = ['brands' => [], 'colors' => [], 'sizes' => [], 'surfaces' => [], 'designs' => []];
 foreach ($statement->fetchAll() as $row) {
@@ -55,6 +63,9 @@ foreach ($statement->fetchAll() as $row) {
         return is_array($decoded) ? array_values(array_filter($decoded, 'is_string')) : [];
     };
     $payload = json_decode((string) $row['source_payload'], true);
+    $sourcePayload = is_array($payload) ? $payload : [];
+    $imageUrls = $imageUrlsByTile[(string) $row['id']] ?? [];
+    $previewUrl = $imageUrls[0] ?? ($row['preview_media_id'] ? '/api/media/file.php?id=' . rawurlencode((string) $row['preview_media_id']) : null);
     $item = [
         'id' => $row['id'],
         'name' => $row['name'],
@@ -65,9 +76,17 @@ foreach ($statement->fetchAll() as $row) {
         'surfaces' => $decode($row['surfaces']),
         'designs' => $decode($row['designs']),
         'hex' => $row['hex_color'] ?: '#e7e3de',
-        'previewUrl' => $row['preview_media_id'] ? '/api/media/file.php?id=' . rawurlencode((string) $row['preview_media_id']) : null,
-        'isFavorite' => (bool) $row['is_favorite'] || isset($guestFavorites[$row['id']]),
-        'source' => is_array($payload) ? $payload : [],
+        'previewUrl' => $previewUrl,
+        'imageUrls' => $imageUrls !== [] ? $imageUrls : array_values(array_filter([$previewUrl], 'is_string')),
+        'imageCount' => $imageUrls !== [] ? count($imageUrls) : ($previewUrl ? 1 : 0),
+        'article' => isset($sourcePayload['article']) && is_string($sourcePayload['article']) ? $sourcePayload['article'] : null,
+        'attributes' => isset($sourcePayload['attributes']) && is_array($sourcePayload['attributes']) ? $sourcePayload['attributes'] : array_values(array_filter([
+            $sourcePayload['attribute1'] ?? null,
+            $sourcePayload['attribute2'] ?? null,
+            $sourcePayload['attribute3'] ?? null,
+        ], 'is_array')),
+        'isFavorite' => (bool) $row['is_favorite'],
+        'source' => $sourcePayload,
     ];
     $items[] = $item;
     if ($item['brand']) $facets['brands'][] = $item['brand'];

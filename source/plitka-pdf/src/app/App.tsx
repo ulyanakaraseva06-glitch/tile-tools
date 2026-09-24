@@ -517,6 +517,9 @@ export function App() {
       persistProjectSnapshot(projectSnapshot);
       return;
     }
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'tile-tools:dirty-state', projectId: `local:pdf:${projectSnapshot.id}`, dirty: true }, '*');
+    }
     if (projectSaveTimeoutRef.current !== null) window.clearTimeout(projectSaveTimeoutRef.current);
     projectSaveTimeoutRef.current = window.setTimeout(() => {
       projectSaveTimeoutRef.current = null;

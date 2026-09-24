@@ -67,15 +67,21 @@ function _normTile(t) {
     if (t[k] == null) t[k] = [];
     else if (!Array.isArray(t[k])) t[k] = [t[k]];
   });
+  if (!Array.isArray(t.faces)) t.faces = t.tileImg ? [t.tileImg] : [];
+  t.faces = t.faces.filter(src => typeof src === 'string' && src.trim());
   if (!t.renders || typeof t.renders !== 'object') t.renders = {};
   return t;
 }
 
 // Источник истины — window.SP_TILES (из catalog/tiles.json через index.php).
 // Фолбэк — встроенный демо-набор, если инъекция недоступна (например, прямое открытие index.html).
-const TILES_DB = ((window.SP_TILES && Array.isArray(window.SP_TILES) && window.SP_TILES.length)
-  ? window.SP_TILES
-  : EMBEDDED_TILES).map(_normTile);
+const HAS_SERVER_CATALOG = Boolean(window.SP_TILES && Array.isArray(window.SP_TILES) && window.SP_TILES.length);
+const TILES_DB = (HAS_SERVER_CATALOG ? window.SP_TILES : EMBEDDED_TILES)
+  .map(_normTile)
+  // В визуализаторе оставляем только исходные позиции, для которых есть
+  // подготовленные интерьерные R1–R5-рендеры. Новые фото поверхностей
+  // продолжают жить в общей медиатеке и калькуляторе.
+  .filter(tile => !HAS_SERVER_CATALOG || Object.keys(tile.renders || {}).length > 0);
 // Реальные плитки — выше демо-заглушек (стабильная сортировка сохраняет исходный порядок внутри групп).
 TILES_DB.sort((a, b) => (b.hasRealImg ? 1 : 0) - (a.hasRealImg ? 1 : 0));
 
@@ -83,6 +89,24 @@ TILES_DB.sort((a, b) => (b.hasRealImg ? 1 : 0) - (a.hasRealImg ? 1 : 0));
 const fv = (t, k) => (Array.isArray(t[k]) ? (t[k][0] || '') : (t[k] || ''));
 // Рендер плитки для конкретной комнаты (R1–R5), либо null.
 const renderForRoom = (tile, rid) => (tile && tile.renders ? (tile.renders[rid] || null) : null);
+const tileFaces = tile => tile ? (tile.faces && tile.faces.length ? tile.faces : (tile.tileImg ? [tile.tileImg] : [])) : [];
+function tileAspect(tile) {
+  const match = String(fv(tile, 'size')).match(/(\d+(?:[.,]\d+)?)\D+(\d+(?:[.,]\d+)?)/);
+  if (!match) return 1;
+  const a = Number(match[1].replace(',', '.')); const b = Number(match[2].replace(',', '.'));
+  return a > 0 && b > 0 ? Math.max(a, b) / Math.min(a, b) : 1;
+}
+function tilePatternDefinition(tile, zoneId) {
+  const faces = tileFaces(tile); if (!faces.length) return '';
+  const aspect = tileAspect(tile); const cellH = 16; const cellW = cellH * aspect;
+  const cols = Math.max(1, Math.ceil(Math.sqrt(faces.length))); const rows = Math.max(1, Math.ceil(faces.length / cols));
+  let images = '';
+  for (let index = 0; index < cols * rows; index++) {
+    const src = `${DOMAIN}${faces[index % faces.length]}`; const x = (index % cols) * cellW; const y = Math.floor(index / cols) * cellH;
+    images += `<image href="${src}" x="${x}" y="${y}" width="${cellW}" height="${cellH}" preserveAspectRatio="none"/>`;
+  }
+  return `<pattern id="tp_${zoneId}" x="0" y="0" width="${cellW * cols}" height="${cellH * rows}" patternUnits="userSpaceOnUse">${images}</pattern>`;
+}
 
 /* ================================================================
    CONSTANTS
@@ -432,6 +456,36 @@ function tempKelvinLabel(t) {
   const k = Math.round(4550 + t * 1850); // -1 → ~2700K (теплее), +1 → ~6400K (холоднее)
   return `≈ ${k}K · ${t < 0 ? 'теплее' : 'холоднее'}`;
 }
+function activeVisualizationProjectId() {
+  return `local:visualization:${S.roomId}`;
+}
+let visualizationAutosaveTimer = 0;
+function scheduleVisualizationAutosave() {
+  window.clearTimeout(visualizationAutosaveTimer);
+  visualizationAutosaveTimer = window.setTimeout(() => {
+    if (window.parent === window) return;
+    const roomTitle = (ROOMS.find(room => room.id === S.roomId) || {}).name || 'Интерьер';
+    const selection = getCurrentSelection();
+    window.parent.postMessage({
+      type: 'tile-tools:project-saved',
+      project: {
+        id: activeVisualizationProjectId(),
+        type: 'visualization',
+        title: `Визуализация — ${roomTitle}`,
+        status: 'active',
+        updatedAt: new Date().toISOString(),
+        metric: `${Object.keys(selection).length} выбранных зон`,
+        payload: { roomId: S.roomId, selection, lightTemp: S.lightTemp, exposure: S.exposure }
+      }
+    }, '*');
+  }, 250);
+}
+function markServiceDirty() {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'tile-tools:dirty-state', projectId: activeVisualizationProjectId(), dirty: true }, '*');
+    scheduleVisualizationAutosave();
+  }
+}
 function applyTempOverlay() {
   const ts = tempStyle(S.lightTemp);
   document.querySelectorAll('.temp-overlay').forEach(r => {
@@ -440,7 +494,9 @@ function applyTempOverlay() {
   });
 }
 function setLightTemp(v) {
-  S.lightTemp = Math.max(-1, Math.min(1, (+v || 0)));
+  const next = Math.max(-1, Math.min(1, (+v || 0)));
+  if (next !== S.lightTemp) markServiceDirty();
+  S.lightTemp = next;
   applyTempOverlay();
   const out = $id('lightReadout');
   if (out) out.textContent = tempKelvinLabel(S.lightTemp);
@@ -473,12 +529,14 @@ function applyExposure() {
   const f = exposureFilter(S.exposure);
   const val = (f === 'none') ? '' : f;
   // Фильтр — только на фото-слой (.sv-photo), маркеры зон остаются чёткими.
-  document.querySelectorAll('#renderScene .sv-photo, #fsScene .sv-photo').forEach(g => {
+  document.querySelectorAll('#renderScene .sv-photo, #renderScene .sv-base-photo, #fsScene .sv-photo, #fsScene .sv-base-photo').forEach(g => {
     g.style.filter = val;
   });
 }
 function setExposure(v) {
-  S.exposure = Math.max(-1, Math.min(1, (+v || 0)));
+  const next = Math.max(-1, Math.min(1, (+v || 0)));
+  if (next !== S.exposure) markServiceDirty();
+  S.exposure = next;
   applyExposure();
   const out = $id('expReadout');
   if (out) out.textContent = exposureLabel(S.exposure);
@@ -530,6 +588,7 @@ function buildRoomScene(interactive = true) {
     const pathD = zone.path;
     const rImg = renderForRoom(tile, S.roomId);
     const useReal = !!(tile && tile.hasRealImg && rImg);
+    const useTexture = !!(tile && tileFaces(tile).length);
 
     // ClipPath для обрезания плитки по зоне
     defs += `<clipPath id="clip_${zone.id}"><path d="${pathD}"/></clipPath>`;
@@ -538,14 +597,17 @@ function buildRoomScene(interactive = true) {
       // Реальный рендер плитки для текущего ракурса, обрезанный по зоне
       overlays += `<image href="${DOMAIN}${rImg}" x="0" y="0" width="${VBWIDTH}" height="${VBHEIGHT}"
         clip-path="url(#clip_${zone.id})" preserveAspectRatio="xMidYMid slice" opacity="0.92"/>`;
+    } else if (useTexture) {
+      // Все faces модели последовательно раскладываются по сетке, поэтому
+      // природный рисунок не превращается в повтор одного и того же кадра.
+      defs += tilePatternDefinition(tile, zone.id);
+      // У новых моделей нет заранее отрендерованной сцены с маской предметов.
+      // Multiply сохраняет светотень и передние предметы исходного интерьера
+      // (сантехнику, полотенца, корзины), вместо непрозрачной заливки поверх них.
+      overlays += `<path class="texture-zone-overlay" d="${pathD}" fill="url(#tp_${zone.id})" clip-path="url(#clip_${zone.id})" opacity="0.82" style="mix-blend-mode:multiply"/>`;
     } else if (tile) {
-      // Заглушка: заливка цветом плитки + штриховка (рендера для этой зоны пока нет)
       const c = tile.hex;
-      defs += `<pattern id="tp_${zone.id}" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-        <rect width="40" height="40" fill="${c}"/>
-        <line x1="0" y1="0" x2="0" y2="40" stroke="${isDark(c)?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.1)'}" stroke-width="1.5"/>
-        <line x1="0" y1="0" x2="40" y2="0" stroke="${isDark(c)?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.1)'}" stroke-width="1.5"/>
-      </pattern>`;
+      defs += `<pattern id="tp_${zone.id}" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="${c}"/><path d="M0 0H40M0 0V40" stroke="${isDark(c)?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.1)'}" stroke-width="1.5"/></pattern>`;
       overlays += `<path d="${pathD}" fill="url(#tp_${zone.id})" clip-path="url(#clip_${zone.id})" opacity="0.85"/>`;
     }
 
@@ -573,7 +635,7 @@ function buildRoomScene(interactive = true) {
     }
 
     // «образец готовится» — подпись только для реальной плитки в ракурсе без рендеров
-    if (interactive && tile && tile.hasRealImg && !useReal) {
+    if (interactive && tile && tile.hasRealImg && !useReal && !useTexture) {
       const cw = 64 * k, ch = 15 * k, cy = zone.my - 26 * k;
       markers += `<g pointer-events="none">
         <rect x="${zone.mx - cw / 2}" y="${cy}" width="${cw}" height="${ch}" rx="${4 * k}" fill="rgba(24,24,30,0.78)"/>
@@ -601,24 +663,25 @@ function buildRoomScene(interactive = true) {
 
   const renderImgSrc = rd.base;
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    viewBox="0 0 ${VBWIDTH} ${VBHEIGHT}" style="width:100%;height:100%;display:block">
-    <defs>${defs}</defs>
-    <!-- Фото-слой (база + плитки + освещение) — на него вешается фильтр экспозиции -->
-    <g class="sv-photo">
-      <!-- Базовый рендер интерьера -->
-      <image href="${renderImgSrc}" x="0" y="0" width="${VBWIDTH}" height="${VBHEIGHT}"
-        preserveAspectRatio="xMidYMid slice"
-        onerror="this.setAttribute('href','')"/>
-      <!-- Плитки, обрезанные по зонам -->
-      ${overlays}
-      <!-- Температура освещения: равномерный слой над фото/плиткой, под маркерами -->
-      <rect class="temp-overlay" x="0" y="0" width="${VBWIDTH}" height="${VBHEIGHT}"
-        fill="${_ts.color}" opacity="${_ts.alpha}" style="mix-blend-mode:soft-light" pointer-events="none"/>
-    </g>
-    <!-- Маркеры зон (поверх, без фильтра экспозиции) -->
-    <g pointer-events="all">${markers}</g>
-  </svg>`;
+  // Базовый JPG выводится отдельным HTML-изображением. Раньше он был вложен
+  // внутрь SVG с маленькой системой координат зон, из-за чего Chrome мог
+  // предварительно растрировать его и терять детали. SVG теперь отвечает
+  // только за плитку, освещение и интерактивные контуры.
+  return `<div class="room-scene-hq">
+    <img class="sv-base-photo room-base-hq" src="${renderImgSrc}" alt="" decoding="async" fetchpriority="high"/>
+    <svg class="room-overlay-hq" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 ${VBWIDTH} ${VBHEIGHT}" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+      <defs>${defs}</defs>
+      <!-- Плитки и освещение поверх полноразмерного базового рендера -->
+      <g class="sv-photo">
+        ${overlays}
+        <rect class="temp-overlay" x="0" y="0" width="${VBWIDTH}" height="${VBHEIGHT}"
+          fill="${_ts.color}" opacity="${_ts.alpha}" style="mix-blend-mode:soft-light" pointer-events="none"/>
+      </g>
+      <!-- Маркеры зон (поверх, без фильтра экспозиции) -->
+      <g pointer-events="all">${markers}</g>
+    </svg>
+  </div>`;
 }
 
 
@@ -887,6 +950,7 @@ function applyTileToZone(tid, zoneId) {
       done = true;
       S.loadingZones.delete(zoneId);
       S.assignments[key] = tid;
+      markServiceDirty();
       renderScene();
       renderCatalog();
       trackEvent('tile_apply', Object.assign(
@@ -904,6 +968,7 @@ function applyTileToZone(tid, zoneId) {
 
   // Плитки без настоящего рендера — мгновенно
   S.assignments[key] = tid;
+  markServiceDirty();
   trackEvent('tile_apply', Object.assign(
     { scene_id: S.roomId, zone_id: zoneId, selection: getCurrentSelection() },
     tileMeta(tid)));
@@ -921,6 +986,7 @@ function applyTileToAllZones(tid) {
 
   const setAll = () => {
     zones.forEach(zid => { S.assignments[assignKey(S.roomId, zid)] = tid; });
+    markServiceDirty();
   };
 
   if (tile.hasRealImg && renderForRoom(tile, S.roomId) && roomHasRealRenders(S.roomId)) {
@@ -1429,12 +1495,15 @@ async function onExport() {
 
   // Собираем применённые плитки с настоящими рендерами по зонам
   const renders = {};
+  const textures = {};
   roomZones(S.roomId).forEach(z => {
     const tid = S.assignments[assignKey(S.roomId, z.id)];
     const tile = tid ? TILES_DB.find(t => t.id === tid) : null;
     const rImg = renderForRoom(tile, S.roomId);
     if (tile && tile.hasRealImg && rImg) {
       renders[z.id] = `${DOMAIN}${rImg}`;
+    } else if (tile && tileFaces(tile).length) {
+      textures[z.id] = { sources: tileFaces(tile).map(src => `${DOMAIN}${src}`), aspect: tileAspect(tile) };
     }
   });
 
@@ -1449,6 +1518,7 @@ async function onExport() {
       paths:    roomPaths(S.roomId),
       order:    roomZones(S.roomId).map(z => z.id),
       renders,
+      textures,
       quality:  1,
       filename: 'sravni-plitku.jpg',
       lightTempColor: _ts.color,   // тот же цвет/альфа, что и в превью
@@ -1461,7 +1531,7 @@ async function onExport() {
       window.parent.postMessage({
         type: 'tile-tools:project-saved',
         project: {
-          id: `local:visualization:${Date.now()}`,
+          id: activeVisualizationProjectId(),
           type: 'visualization',
           title: `Визуализация — ${roomTitle}`,
           status: 'active',
@@ -1495,6 +1565,7 @@ function resetAll() {
     if (k.startsWith(S.roomId + '.')) delete S.assignments[k];
   });
   S.zoneId = null;
+  markServiceDirty();
   S.loadToken++;            // отменяем незавершённые загрузки
   S.loadingZones = new Set();
   renderScene();

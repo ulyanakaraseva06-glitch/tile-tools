@@ -102,6 +102,7 @@ export interface TileMaterial {
   catalogTileId?: string;
   catalogHex?: string;
   previewUrl?: string;
+  variantUrls?: string[];
 }
 
 export interface RoomArea {

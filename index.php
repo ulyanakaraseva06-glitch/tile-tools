@@ -13,4 +13,5 @@ if (!in_array($page, $allowedPages, true)) {
     $page = 'home';
 }
 
+tt_track_visit($page);
 tt_render_page($page);

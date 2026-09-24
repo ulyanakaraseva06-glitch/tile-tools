@@ -30,7 +30,7 @@ try {
 Write-Host 'Building project_vilray_studio from the unified repository...'
 Push-Location $calculatorSource
 try {
-    & (Join-Path $calculatorSource 'node_modules\.bin\vite.cmd') build --base=/services/calculator/ --outDir=$calculatorOutput --emptyOutDir
+    & (Join-Path $calculatorSource 'node_modules\.bin\vite.cmd') build --configLoader runner --base=/services/calculator/ --outDir=$calculatorOutput --emptyOutDir
     if ($LASTEXITCODE -ne 0) { throw 'project_vilray_studio build failed.' }
 } finally { Pop-Location }
 

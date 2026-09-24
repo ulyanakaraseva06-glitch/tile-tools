@@ -142,15 +142,23 @@ function sanitize_fav_ids($arr) {
     return array_values(array_unique($out));
 }
 function get_favorites($user) {
-    $raw = $user['favorites'] ?? '';
-    if (!$raw) return [];
-    $arr = json_decode($raw, true);
-    return sanitize_fav_ids($arr);
+    $stmt = db()->prepare("SELECT entity_id FROM tt_favorite_items WHERE user_id=? AND entity_type='tile' ORDER BY created_at DESC");
+    $stmt->execute([(int)$user['id']]);
+    return sanitize_fav_ids($stmt->fetchAll(PDO::FETCH_COLUMN));
 }
 function save_favorites($userId, array $ids) {
     $ids = sanitize_fav_ids($ids);
-    db()->prepare('UPDATE users SET favorites=? WHERE id=?')
-        ->execute([json_encode($ids, JSON_UNESCAPED_UNICODE), $userId]);
+    $pdo = db();
+    $pdo->beginTransaction();
+    try {
+        $pdo->prepare("DELETE FROM tt_favorite_items WHERE user_id=? AND entity_type='tile'")->execute([(int)$userId]);
+        $insert = $pdo->prepare("INSERT INTO tt_favorite_items (user_id, entity_type, entity_id) VALUES (?, 'tile', ?)");
+        foreach ($ids as $id) $insert->execute([(int)$userId, $id]);
+        $pdo->commit();
+    } catch (Throwable $error) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        throw $error;
+    }
     return $ids;
 }
 

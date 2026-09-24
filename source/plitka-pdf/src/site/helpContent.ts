@@ -1,3 +1,5 @@
+import { resolvePublicAssetUrl } from '../utils/publicAsset';
+
 export const helpPageMeta = {
   eyebrow: 'Помощь',
   title: 'Как работать в Плитка PDF',
@@ -6,17 +8,17 @@ export const helpPageMeta = {
 
 export const helpVideoScenes = [
   {
-    src: '/landing/app-screen-video.webp',
+    src: resolvePublicAssetUrl('/landing/app-screen-video.webp'),
     title: 'Рабочий стол документа',
     caption: 'Слева страницы, в центре лист A4, справа редактор выбранного блока.'
   },
   {
-    src: '/placeholders/catalog/interior-16x9-living-stone-v2.webp',
+    src: resolvePublicAssetUrl('/placeholders/catalog/interior-16x9-living-stone-v2.webp'),
     title: 'Изображения и интерьеры',
     caption: 'Замените фото плитки и интерьеров — при изменении рамки картинка растягивается вместе с блоком.'
   },
   {
-    src: '/placeholders/catalog/interior-16x9-warm-stone-v1.webp',
+    src: resolvePublicAssetUrl('/placeholders/catalog/interior-16x9-warm-stone-v1.webp'),
     title: 'Готовый материал для клиента',
     caption: 'Проверьте страницы и выгрузите PDF, который можно отправить в сделку или рассылку.'
   }

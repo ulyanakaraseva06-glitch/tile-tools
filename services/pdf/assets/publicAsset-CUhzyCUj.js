@@ -1,0 +1,1 @@
+var e=[`/brand/`,`/landing/`,`/placeholders/`];function t(t){if(!t||!e.some(e=>t.startsWith(e)))return t;let n=`/services/pdf/`;return`${n.endsWith(`/`)?n:`${n}/`}${t.replace(/^\/+/,``)}`}export{t};

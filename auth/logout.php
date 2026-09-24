@@ -16,6 +16,7 @@ if (!hash_equals(tt_csrf_token(), $csrf)) {
     exit('Сессия формы устарела.');
 }
 
+tt_revoke_current_auth_token();
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();

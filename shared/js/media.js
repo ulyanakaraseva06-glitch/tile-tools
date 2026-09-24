@@ -1,15 +1,15 @@
 (() => {
   const root = document.querySelector('[data-media-catalog]'); if (!root) return;
   const $ = (id) => document.getElementById(id); const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
-  const FAVORITES_KEY = 'tt_tile_favorites_v1'; const FOLDERS_KEY = 'tt_media_folders_v1';
+  const FOLDERS_KEY = 'tt_media_folders_v1';
   const state = { items: [], facets: {}, authenticated: false, favorites: new Set(), folders: [], folderTiles: {}, activeFolder: 'all', selectedTileId: null };
   function readLocal(key, fallback) { try { return JSON.parse(localStorage.getItem(key) || '') || fallback; } catch { return fallback; } }
-  function saveLocal() { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...state.favorites])); localStorage.setItem(FOLDERS_KEY, JSON.stringify({ folders: state.folders, folderTiles: state.folderTiles })); }
+  function saveLocal() { localStorage.setItem(FOLDERS_KEY, JSON.stringify({ folders: state.folders, folderTiles: state.folderTiles })); }
   function escape(value) { const node = document.createElement('span'); node.textContent = value ?? ''; return node.innerHTML; }
   async function json(url, options) { const response = await fetch(url, options); const payload = await response.json().catch(() => ({})); if (!response.ok) throw Object.assign(new Error(payload?.error?.message || 'Ошибка запроса'), { status: response.status }); return payload; }
   async function load() {
     const payload = await json('/api/catalog/tiles.php'); state.items = payload.items || []; state.facets = payload.facets || {}; state.authenticated = Boolean(payload.authenticated);
-    state.items.filter((item) => item.isFavorite).forEach((item) => state.favorites.add(item.id)); if (!state.authenticated && state.favorites.size === 0) readLocal(FAVORITES_KEY, []).forEach((id) => state.favorites.add(id));
+    state.favorites = new Set(); state.items.filter((item) => item.isFavorite).forEach((item) => state.favorites.add(item.id));
     if (state.authenticated) { const folders = await json('/api/media/folders.php'); state.folders = folders.items || []; await Promise.all(state.folders.map(async (folder) => { const data = await json(`/api/media/folder-tiles.php?folderId=${encodeURIComponent(folder.id)}`); state.folderTiles[folder.id] = data.tileIds || []; })); }
     else { const local = readLocal(FOLDERS_KEY, { folders: [], folderTiles: {} }); state.folders = local.folders || []; state.folderTiles = local.folderTiles || {}; }
     fillFacets(); renderFolders(); render();
@@ -28,12 +28,30 @@
     $('media-grid').innerHTML = items.map((tile) => { const favorite = state.favorites.has(tile.id); const image = tile.previewUrl ? `<img src="${escape(tile.previewUrl)}" alt="${escape(tile.shortName || tile.name)}" loading="lazy">` : `<span style="background:${escape(tile.hex)}"></span>`; return `<article class="media-tile-card" data-tile-id="${escape(tile.id)}"><div class="media-tile-image">${image}<button class="media-heart ${favorite ? 'is-favorite' : ''}" type="button" data-favorite>${favorite ? '♥' : '♡'}</button></div><div class="media-tile-copy"><h2>${escape(tile.shortName || tile.name)}</h2><p>${escape(tile.brand || 'Без бренда')}</p><small>${escape((tile.sizes || []).join(', ') || 'Размер не указан')} · ${escape((tile.surfaces || []).join(', ') || 'Поверхность не указана')}</small></div><button class="button button-secondary media-folder-action" type="button" data-add-folder>＋ В папку</button></article>`; }).join('');
   }
   function renderFolders() { $('media-folders').innerHTML = state.folders.length ? state.folders.map((folder) => `<button class="media-nav-button" type="button" data-folder="${escape(folder.id)}"><span>□</span>${escape(folder.name)} <b>${(state.folderTiles[folder.id] || []).length}</b></button>`).join('') : '<small>Папок пока нет</small>'; }
-  async function toggleFavorite(tileId) { const adding = !state.favorites.has(tileId); adding ? state.favorites.add(tileId) : state.favorites.delete(tileId); render(); saveLocal(); try { await json('/api/favorites/index.php', { method:adding?'PUT':'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({csrf,entityType:'tile',entityId:tileId}) }); } catch (error) { adding ? state.favorites.delete(tileId) : state.favorites.add(tileId); render(); window.alert(error.message); } }
+  async function toggleFavorite(tileId) { if (!state.authenticated) { window.alert('Войдите в аккаунт, чтобы пользоваться избранным.'); return; } const adding = !state.favorites.has(tileId); adding ? state.favorites.add(tileId) : state.favorites.delete(tileId); render(); try { await json('/api/favorites/index.php', { method:adding?'PUT':'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({csrf,entityType:'tile',entityId:tileId}) }); } catch (error) { adding ? state.favorites.delete(tileId) : state.favorites.add(tileId); render(); window.alert(error.message); } }
   async function createFolder(name) { if (state.authenticated) { const payload = await json('/api/media/folders.php', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({csrf,name}) }); state.folders.unshift(payload.item); state.folderTiles[payload.item.id] = []; } else { const folder = { id:crypto.randomUUID(), name, tile_count:0 }; state.folders.unshift(folder); state.folderTiles[folder.id] = []; saveLocal(); } renderFolders(); render(); }
   function openFolderPicker(tileId) { state.selectedTileId = tileId; const tile = state.items.find((item) => item.id === tileId); $('media-add-tile-name').textContent = tile?.shortName || tile?.name || ''; $('media-folder-picker').innerHTML = state.folders.length ? state.folders.map((folder) => { const included = (state.folderTiles[folder.id] || []).includes(tileId); return `<button type="button" data-pick-folder="${escape(folder.id)}" class="${included?'is-selected':''}"><span>□ ${escape(folder.name)}</span><b>${included?'Добавлено ✓':'Добавить'}</b></button>`; }).join('') : '<p>Сначала создайте папку кнопкой «＋» слева.</p>'; $('media-add-dialog').showModal(); }
   async function toggleFolderTile(folderId) { const list = state.folderTiles[folderId] || []; const adding = !list.includes(state.selectedTileId); state.folderTiles[folderId] = adding ? [...list,state.selectedTileId] : list.filter((id) => id !== state.selectedTileId); if (!state.authenticated) saveLocal(); else await json('/api/media/folder-tiles.php', { method:adding?'PUT':'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({csrf,folderId,tileId:state.selectedTileId}) }); renderFolders(); render(); openFolderPicker(state.selectedTileId); }
   root.addEventListener('click', (event) => { const folder = event.target.closest('[data-folder]'); if (folder) { state.activeFolder = folder.dataset.folder; render(); return; } const card = event.target.closest('[data-tile-id]'); if (!card) return; if (event.target.closest('[data-favorite]')) toggleFavorite(card.dataset.tileId); if (event.target.closest('[data-add-folder]')) openFolderPicker(card.dataset.tileId); });
   ['media-search','media-brand','media-color','media-size','media-surface','media-design'].forEach((id) => $(id).addEventListener(id === 'media-search' ? 'input' : 'change', render)); $('media-search-button').addEventListener('click', render); $('media-reset').addEventListener('click', () => { ['media-search','media-brand','media-color','media-size','media-surface','media-design'].forEach((id) => $(id).value=''); render(); });
   $('media-add-folder').addEventListener('click', () => $('media-folder-dialog').showModal()); $('media-folder-form').addEventListener('submit', async (event) => { event.preventDefault(); const name=$('media-folder-name').value.trim(); if (!name) return; try { await createFolder(name); $('media-folder-name').value=''; $('media-folder-dialog').close(); } catch(error) { window.alert(error.message); } }); $('media-folder-picker').addEventListener('click', (event) => { const button=event.target.closest('[data-pick-folder]'); if (button) toggleFolderTile(button.dataset.pickFolder).catch((error)=>window.alert(error.message)); }); document.querySelector('[data-close-folder-picker]').addEventListener('click', () => $('media-add-dialog').close());
+  const adminAdd = $('media-admin-add'); const adminDialog = $('media-admin-dialog'); const adminForm = $('media-admin-form');
+  if (adminAdd && adminDialog && adminForm) {
+    adminAdd.addEventListener('click', () => adminDialog.showModal());
+    adminDialog.querySelector('[data-close-admin-tile]')?.addEventListener('click', () => adminDialog.close());
+    adminForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const submit = adminForm.querySelector('[type="submit"]'); const errorNode = $('media-admin-error');
+      submit.disabled = true; errorNode.hidden = true;
+      try {
+        const response = await fetch('/api/admin/catalog-tiles.php', { method:'POST', headers:{'X-CSRF-Token':csrf}, body:new FormData(adminForm) });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload?.error?.message || 'Не удалось добавить товар.');
+        window.location.reload();
+      } catch (error) {
+        errorNode.textContent = error.message; errorNode.hidden = false; submit.disabled = false;
+      }
+    });
+  }
   load().catch((error) => { $('media-grid').innerHTML = `<div class="media-empty"><strong>Каталог временно недоступен</strong><p>${escape(error.message)}</p></div>`; });
 })();

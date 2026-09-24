@@ -24,10 +24,48 @@ function collapseDuplicateOutdoorScenes(pages: Page[]): Page[] {
   return nextPages.map((page, order) => ({ ...page, order }));
 }
 
-export const STORAGE_KEY = 'plitka_pdf_current_project';
-export const SAVED_PROJECTS_KEY = 'plitka_pdf_saved_projects';
-export const SAVED_TEMPLATES_KEY = 'plitka_pdf_saved_templates';
-export const SETTINGS_KEY = 'plitka_pdf_service_settings';
+const accountId = typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('account') ?? '';
+const accountKey = (base: string) => accountId ? `${base}.user.${accountId}` : base;
+const GUEST_STORAGE_KEY = 'plitka_pdf_current_project';
+const GUEST_SAVED_PROJECTS_KEY = 'plitka_pdf_saved_projects';
+const GUEST_SAVED_TEMPLATES_KEY = 'plitka_pdf_saved_templates';
+const GUEST_SETTINGS_KEY = 'plitka_pdf_service_settings';
+export const STORAGE_KEY = accountKey(GUEST_STORAGE_KEY);
+export const SAVED_PROJECTS_KEY = accountKey(GUEST_SAVED_PROJECTS_KEY);
+export const SAVED_TEMPLATES_KEY = accountKey(GUEST_SAVED_TEMPLATES_KEY);
+export const SETTINGS_KEY = accountKey(GUEST_SETTINGS_KEY);
+
+function migrateGuestStorageForAccount() {
+  if (!accountId || typeof localStorage === 'undefined') return;
+  const moveCurrent = localStorage.getItem(GUEST_STORAGE_KEY);
+  if (moveCurrent) {
+    localStorage.setItem(STORAGE_KEY, moveCurrent);
+    localStorage.removeItem(GUEST_STORAGE_KEY);
+  }
+  const migrateCollection = (guestListKey: string, accountListKey: string) => {
+    try {
+      const guestList = JSON.parse(localStorage.getItem(guestListKey) || '[]') as Array<{ id: string }>;
+      const accountList = JSON.parse(localStorage.getItem(accountListKey) || '[]') as Array<{ id: string }>;
+      if (!guestList.length) return;
+      const merged = [...guestList, ...accountList.filter((item) => !guestList.some((guest) => guest.id === item.id))];
+      localStorage.setItem(accountListKey, JSON.stringify(merged));
+      guestList.forEach((item) => {
+        const snapshot = localStorage.getItem(`${guestListKey}_${item.id}`);
+        if (snapshot) localStorage.setItem(`${accountListKey}_${item.id}`, snapshot);
+        localStorage.removeItem(`${guestListKey}_${item.id}`);
+      });
+      localStorage.removeItem(guestListKey);
+    } catch { /* Повреждённые старые данные остаются нетронутыми. */ }
+  };
+  migrateCollection(GUEST_SAVED_PROJECTS_KEY, SAVED_PROJECTS_KEY);
+  migrateCollection(GUEST_SAVED_TEMPLATES_KEY, SAVED_TEMPLATES_KEY);
+  if (!localStorage.getItem(SETTINGS_KEY) && localStorage.getItem(GUEST_SETTINGS_KEY)) {
+    localStorage.setItem(SETTINGS_KEY, localStorage.getItem(GUEST_SETTINGS_KEY) as string);
+    localStorage.removeItem(GUEST_SETTINGS_KEY);
+  }
+}
+
+migrateGuestStorageForAccount();
 
 export function normalizeProject(project: Project): Project {
   if (!project || !Array.isArray(project.pages)) {

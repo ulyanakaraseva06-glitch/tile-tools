@@ -21,7 +21,7 @@ import {
 import { Circle, Group, Layer, Line, Rect, Shape, Stage, Text } from 'react-konva';
 import type Konva from 'konva';
 import { TileRotationControl } from './TileRotationControl';
-import { SharedTileLibrary, type CatalogTile } from './SharedTileLibrary';
+import type { CatalogTile } from './SharedTileLibrary';
 import { useDraftHistory } from './useDraftHistory';
 import { getVisibleTilePresets, templates } from '../config/appConfig';
 import {
@@ -188,6 +188,8 @@ const ROOM_OBJECT_OPACITY = 1;
 type ConfirmAction =
   | { type: 'reset' }
   | { type: 'template'; templateId: string }
+  | { type: 'replace-catalog-preset'; tile: TileSizePreset }
+  | { type: 'replace-catalog-custom'; widthMm: number; heightMm: number }
   | { type: 'delete-opening'; id: string }
   | { type: 'delete-partition'; id: string }
   | { type: 'delete-room-area'; areaId: string }
@@ -335,6 +337,7 @@ export function App() {
   const [drawingError, setDrawingError] = useState<string | null>(null);
   const [customTileDialogOpen, setCustomTileDialogOpen] = useState(false);
   const [customTileError, setCustomTileError] = useState<string | null>(null);
+  const [tileColorDialogOpen, setTileColorDialogOpen] = useState(false);
   const [openTileSection, setOpenTileSection] = useState<TilePanelSection | null>(null);
   const [templatePickerOpen, setTemplatePickerOpen] = useState(initialAppState.templatePickerOpen);
   const [addRoomPickerOpen, setAddRoomPickerOpen] = useState(false);
@@ -367,6 +370,7 @@ export function App() {
   const zoneDraftHistory = useDraftHistory(manualZoneSurfaceId, zoneDraftSnapshot);
   const historyRef = useRef<{ applying: boolean; current: TileProject; future: TileProject[]; past: TileProject[] }>({ applying: false, current: initialAppState.project, future: [], past: [] });
   const projectFileInputRef = useRef<HTMLInputElement>(null);
+  const tilePickerRequestRef = useRef<string | null>(null);
   const [, setHistoryRevision] = useState(0);
   const contourStatus = validateContour(project.room.contour);
   const primaryMaterial = project.materials[0];
@@ -398,6 +402,9 @@ export function App() {
 
   useEffect(() => {
     if (templatePickerOpen) return;
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'tile-tools:dirty-state', projectId: `local:calculation:${project.id}`, dirty: true }, '*');
+    }
     const timeoutId = window.setTimeout(() => {
       saveProject(project);
       if (window.parent !== window) {
@@ -770,6 +777,14 @@ export function App() {
   }
 
   function selectTilePreset(tile: TileSizePreset) {
+    if (activeTileMaterial?.catalogTileId) {
+      setConfirmAction({ type: 'replace-catalog-preset', tile });
+      return;
+    }
+    applyTilePresetNow(tile);
+  }
+
+  function applyTilePresetNow(tile: TileSizePreset) {
     setCustomTileDialogOpen(false);
     setCustomTileError(null);
     if (!activeSurfaceId) {
@@ -807,6 +822,16 @@ export function App() {
       setOpenTileSection(null);
       return;
     }
+    if (activeTileMaterial?.catalogTileId) {
+      setCustomTileDialogOpen(false);
+      setConfirmAction({ type: 'replace-catalog-custom', widthMm, heightMm });
+      return;
+    }
+    applyCustomTileNow(widthMm, heightMm);
+  }
+
+  function applyCustomTileNow(widthMm: number, heightMm: number) {
+    if (!activeSurfaceId) return;
     setHasRoomEdits(true);
     setProject((current) => activeZoneId
       ? updateZoneCustomTileMaterial(current, activeSurfaceId, activeZoneId, widthMm, heightMm)
@@ -1332,6 +1357,7 @@ export function App() {
     if (!activeSurfaceId || !activeZoneId) return;
     setHasRoomEdits(true);
     setProject((current) => updateZoneTileColor(current, activeSurfaceId, activeZoneId, color, name));
+    setTileColorDialogOpen(false);
   }
 
   function applyCatalogTile(tile: CatalogTile) {
@@ -1339,6 +1365,27 @@ export function App() {
     setHasRoomEdits(true);
     setProject((current) => updateZoneCatalogTile(current, activeSurfaceId, activeZoneId, tile));
   }
+
+  function openSharedTilePicker() {
+    if (!activeSurfaceId || !activeZoneId) {
+      setRoomActionMessage('Сначала выберите пол, стену или зону.');
+      return;
+    }
+    const requestId = `calculator-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    tilePickerRequestRef.current = requestId;
+    window.parent.postMessage({ type: 'tile-tools:open-tile-picker', requestId, mode: 'model' }, '*');
+  }
+
+  useEffect(() => {
+    const receiveTile = (event: MessageEvent) => {
+      if (event.source !== window.parent || event.data?.type !== 'tile-tools:tile-picker-result') return;
+      if (event.data.requestId !== tilePickerRequestRef.current || !event.data.tile) return;
+      tilePickerRequestRef.current = null;
+      applyCatalogTile(event.data.tile as CatalogTile);
+    };
+    window.addEventListener('message', receiveTile);
+    return () => window.removeEventListener('message', receiveTile);
+  });
 
   function downloadProjectFile() {
     const blob = new Blob([serializeProjectFile(project)], { type: 'application/json;charset=utf-8' });
@@ -1551,6 +1598,8 @@ export function App() {
       return;
     }
     if (action.type === 'template') { applyTemplateNow(action.templateId); return; }
+    if (action.type === 'replace-catalog-preset') { applyTilePresetNow(action.tile); return; }
+    if (action.type === 'replace-catalog-custom') { applyCustomTileNow(action.widthMm, action.heightMm); return; }
     setHasRoomEdits(true);
     if (action.type === 'delete-opening') {
       setProject((current) => {
@@ -1823,11 +1872,18 @@ export function App() {
                 onGroutChange={changeLayoutGrout}
               />
 
-              <section className="panel-module tile-color-module">
-                <h1 className="panel-module-title">Плитка из медиатеки</h1>
-                <div className="panel-card panel-section">
-                  <SharedTileLibrary activeTileId={activeTileMaterial?.catalogTileId} disabled={!activeSurfaceId || !activeZoneId} onSelect={applyCatalogTile} />
+              <section className="panel-module tile-source-module">
+                <h1 className="panel-module-title">Цвет и материал</h1>
+                <div className="panel-card panel-section tile-source-actions">
+                  <button type="button" onClick={() => setTileColorDialogOpen(true)}>Добавить цвет</button>
+                  <button type="button" onClick={openSharedTilePicker}>Медиатека</button>
                 </div>
+                {activeTileMaterial?.catalogTileId ? (
+                  <div className="selected-catalog-material">
+                    {activeTileMaterial.previewUrl ? <img src={activeTileMaterial.previewUrl} alt="" /> : <span style={{ background: activeTileMaterial.catalogHex }} />}
+                    <div><strong>{activeTileMaterial.name}</strong><small>{activeTileMaterial.widthMm} × {activeTileMaterial.heightMm} мм · размер зафиксирован</small></div>
+                  </div>
+                ) : null}
               </section>
 
               <LayoutControl
@@ -1961,6 +2017,16 @@ export function App() {
           }}
           onSubmit={submitCustomTile}
         />
+      ) : null}
+
+      {tileColorDialogOpen ? (
+        <div className="modal-backdrop" role="presentation" onMouseDown={() => setTileColorDialogOpen(false)}>
+          <section className="confirm-dialog tile-color-dialog" role="dialog" aria-modal="true" aria-labelledby="tile-color-title" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="tile-color-dialog-heading"><h2 id="tile-color-title">Добавить цвет плитки</h2><button type="button" onClick={() => setTileColorDialogOpen(false)} aria-label="Закрыть">×</button></div>
+            <p>Размер и раскладка сохранятся, изменится только цвет плитки.</p>
+            <TileColorPicker activeColor={activeTileMaterial?.swatch.value ?? '#E7E3DE'} canApply={Boolean(activeSurfaceId && activeZoneId)} onSelect={applyTileColor} project={project} />
+          </section>
+        </div>
       ) : null}
 
       {renameRoomAreaId ? (
@@ -2566,6 +2632,14 @@ function getConfirmDialogCopy(action: ConfirmAction) {
       confirmLabel: 'Сбросить',
       message: 'Текущая схема, размеры и настройки будут удалены из этого браузера.',
       title: 'Сбросить проект?',
+    };
+  }
+
+  if (action.type === 'replace-catalog-preset' || action.type === 'replace-catalog-custom') {
+    return {
+      confirmLabel: 'Изменить плитку',
+      message: 'У готового материала из медиатеки зафиксирован размер. Продолжить и заменить его плиткой другого формата?',
+      title: 'Изменить готовый материал?',
     };
   }
 
@@ -6110,7 +6184,7 @@ function WallTileLayout({
   return (
     <Group opacity={opacity}>
       <Group clipX={frame.x} clipY={frame.y} clipWidth={frame.width} clipHeight={frame.height} listening={false}>
-      <TilePiecesCanvas pieces={result.pieces} originX={frame.x} originY={frame.y} color={material.swatch.value} textureUrl={material.previewUrl} variant="wall" />
+      <TilePiecesCanvas pieces={result.pieces} originX={frame.x} originY={frame.y} color={material.swatch.value} textureUrl={material.previewUrl} textureUrls={material.variantUrls} variant="wall" />
       {objectBlockers.map((blocker, index) => (
         <Rect
           key={`object-mask-${index}`}
@@ -6605,6 +6679,7 @@ export function WallZoneLayer({
             originY={frame.y + mmToCanvas(bounds.minY)}
             color={material.swatch.value}
             textureUrl={material.previewUrl}
+            textureUrls={material.variantUrls}
             variant="floor"
           />
           <WallZoneOpeningMasks frame={frame} openings={openings} delta={displayedDelta} />
@@ -6689,7 +6764,7 @@ export function WallZoneLayer({
     >
       <Group clipX={x} clipY={y} clipWidth={width} clipHeight={height} listening={false}>
         <Rect x={x} y={y} width={width} height={height} fill="#FFFFFF" listening={false} />
-        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} variant="floor" />
+        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} textureUrls={material.variantUrls} variant="floor" />
         <WallZoneOpeningMasks frame={frame} openings={openings} delta={rectDragDelta ?? { x: 0, y: 0 }} />
         {objectBlockers.map((blocker, index) => (
           <Rect
@@ -6755,7 +6830,7 @@ function FloorTileLayout({ blockedObjects, contour, layout, layoutBounds, maskPo
         context.closePath();
       }}
     >
-      <TilePiecesCanvas pieces={result.pieces} originX={view.x(box.minX)} originY={view.y(box.minY)} color={material.swatch.value} textureUrl={material.previewUrl} variant="floor" />
+      <TilePiecesCanvas pieces={result.pieces} originX={view.x(box.minX)} originY={view.y(box.minY)} color={material.swatch.value} textureUrl={material.previewUrl} textureUrls={material.variantUrls} variant="floor" />
       {blockedObjects.map((object) => {
         const position = maskPositionFor?.(object) ?? { xMm: object.xMm, yMm: object.yMm, rotationDeg: object.rotationDeg ?? 0 };
         return (
@@ -6937,7 +7012,7 @@ function FloorZoneLayer({
       }}
     >
       <Group clipX={x} clipY={y} clipWidth={width} clipHeight={height} listening={false}>
-        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} variant="wall" />
+        <TilePiecesCanvas pieces={result.pieces} originX={x} originY={y} color={material.swatch.value} textureUrl={material.previewUrl} textureUrls={material.variantUrls} variant="wall" />
         {blockedObjects.map((object) => {
           const position = maskPositionFor?.(object) ?? { xMm: object.xMm, yMm: object.yMm, rotationDeg: object.rotationDeg ?? 0 };
           return (
@@ -7306,70 +7381,63 @@ function SmallMetricLabel({ onClick, x, y, text }: { onClick?: () => void; x: nu
  * keeping only the interactive overlays as nodes makes zooming and dragging
  * substantially lighter while preserving the exact fills and seams.
  */
-function useTileTexture(textureUrl?: string) {
-  const [texture, setTexture] = useState<HTMLImageElement | null>(null);
+function useTileTextures(textureUrls?: string[], fallbackUrl?: string) {
+  const [textures, setTextures] = useState<HTMLImageElement[]>([]);
+  const sourceKey = (textureUrls?.length ? textureUrls : fallbackUrl ? [fallbackUrl] : []).join('\n');
   useEffect(() => {
-    if (!textureUrl) { setTexture(null); return undefined; }
+    const sources = sourceKey.split('\n').filter(Boolean);
+    if (!sources.length) { setTextures([]); return undefined; }
     let active = true;
-    const image = new Image();
-    image.onload = () => { if (active) setTexture(image); };
-    image.onerror = () => { if (active) setTexture(null); };
-    image.src = textureUrl;
+    const loaded: Array<HTMLImageElement | null> = new Array(sources.length).fill(null);
+    let settled = 0;
+    const commit = () => { settled += 1; if (active && settled === sources.length) setTextures(loaded.filter((image): image is HTMLImageElement => Boolean(image))); };
+    sources.forEach((source, index) => {
+      const image = new Image();
+      image.onload = () => { loaded[index] = image; commit(); };
+      image.onerror = commit;
+      image.src = source;
+    });
     return () => { active = false; };
-  }, [textureUrl]);
-  return texture;
+  }, [sourceKey]);
+  return textures;
 }
 
-function TilePiecesCanvas({ color, originX, originY, pieces, textureUrl, variant }: {
+function TilePiecesCanvas({ color, originX, originY, pieces, textureUrl, textureUrls, variant }: {
   color: string;
   originX: number;
   originY: number;
   pieces: LayoutTilePiece[];
   textureUrl?: string;
+  textureUrls?: string[];
   variant: 'floor' | 'wall';
 }) {
-  const texture = useTileTexture(textureUrl);
+  const textures = useTileTextures(textureUrls, textureUrl);
   const referencePiece = pieces.find((piece) => piece.kind === 'full') ?? pieces[0];
-  const patternScaleX = texture && referencePiece ? Math.max(1, mmToCanvas(referencePiece.widthMm)) / texture.naturalWidth : 1;
-  const patternScaleY = texture && referencePiece ? Math.max(1, mmToCanvas(referencePiece.heightMm)) / texture.naturalHeight : 1;
+  const drawPieces = (kind: LayoutTilePiece['kind'], textureIndex: number | null) => (context: Konva.Context, shape: Konva.Shape) => {
+    context.beginPath();
+    pieces.forEach((piece, pieceIndex) => {
+      if (piece.kind !== kind || (textureIndex !== null && pieceIndex % textures.length !== textureIndex)) return;
+      if (piece.polygon?.length) {
+        context.moveTo(originX + mmToCanvas(piece.polygon[0].x), originY + mmToCanvas(piece.polygon[0].y));
+        for (const point of piece.polygon.slice(1)) context.lineTo(originX + mmToCanvas(point.x), originY + mmToCanvas(point.y));
+        context.closePath();
+      } else {
+        context.rect(originX + mmToCanvas(piece.xMm), originY + mmToCanvas(piece.yMm), Math.max(1, mmToCanvas(piece.widthMm)), Math.max(1, mmToCanvas(piece.heightMm)));
+      }
+    });
+    context.fillStrokeShape(shape);
+  };
+  const kinds = ['full', 'cut', 'critical'] as const;
+  if (!textures.length) {
+    return <>{kinds.map((kind) => <Shape key={kind} listening={false} perfectDrawEnabled={false} fill={variant === 'floor' ? getFloorLayoutPieceFill(kind, color) : getLayoutPieceFill(kind, color)} stroke={getLayoutPieceStroke(kind)} strokeWidth={1} sceneFunc={drawPieces(kind, null)} />)}</>;
+  }
   return (
     <>
-      {(['full', 'cut', 'critical'] as const).map((kind) => (
-        <Shape
-          key={kind}
-          listening={false}
-          perfectDrawEnabled={false}
-          fill={variant === 'floor' ? getFloorLayoutPieceFill(kind, color) : getLayoutPieceFill(kind, color)}
-          fillPriority={texture ? 'pattern' : 'color'}
-          fillPatternImage={texture ?? undefined}
-          fillPatternRepeat="repeat"
-          fillPatternScaleX={patternScaleX}
-          fillPatternScaleY={patternScaleY}
-          fillPatternOffsetX={originX / patternScaleX}
-          fillPatternOffsetY={originY / patternScaleY}
-          stroke={getLayoutPieceStroke(kind)}
-          strokeWidth={1}
-          sceneFunc={(context, shape) => {
-            context.beginPath();
-            for (const piece of pieces) {
-              if (piece.kind !== kind) continue;
-              if (piece.polygon?.length) {
-                context.moveTo(originX + mmToCanvas(piece.polygon[0].x), originY + mmToCanvas(piece.polygon[0].y));
-                for (const point of piece.polygon.slice(1)) context.lineTo(originX + mmToCanvas(point.x), originY + mmToCanvas(point.y));
-                context.closePath();
-              } else {
-                context.rect(
-                  originX + mmToCanvas(piece.xMm),
-                  originY + mmToCanvas(piece.yMm),
-                  Math.max(1, mmToCanvas(piece.widthMm)),
-                  Math.max(1, mmToCanvas(piece.heightMm)),
-                );
-              }
-            }
-            context.fillStrokeShape(shape);
-          }}
-        />
-      ))}
+      {textures.flatMap((texture, textureIndex) => kinds.map((kind) => {
+        const patternScaleX = referencePiece ? Math.max(1, mmToCanvas(referencePiece.widthMm)) / texture.naturalWidth : 1;
+        const patternScaleY = referencePiece ? Math.max(1, mmToCanvas(referencePiece.heightMm)) / texture.naturalHeight : 1;
+        return <Shape key={`${kind}-${textureIndex}`} listening={false} perfectDrawEnabled={false} fill={variant === 'floor' ? getFloorLayoutPieceFill(kind, color) : getLayoutPieceFill(kind, color)} fillPriority="pattern" fillPatternImage={texture} fillPatternRepeat="repeat" fillPatternScaleX={patternScaleX} fillPatternScaleY={patternScaleY} fillPatternOffsetX={originX / patternScaleX} fillPatternOffsetY={originY / patternScaleY} stroke={getLayoutPieceStroke(kind)} strokeWidth={1} sceneFunc={drawPieces(kind, textureIndex)} />;
+      }))}
     </>
   );
 }

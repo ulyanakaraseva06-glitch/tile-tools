@@ -1,3 +1,10 @@
+<?php if (!tt_current_user()): ?>
+<section class="account-required panel-card">
+  <span aria-hidden="true">⊟</span><h1>Проекты сохраняются в аккаунте</h1>
+  <p>Войдите или зарегистрируйтесь, чтобы работы из всех сервисов были доступны только вам и открывались на другом компьютере.</p>
+  <div><a class="button button-primary" href="/auth/login.php">Войти</a><a class="button button-secondary" href="/auth/register.php">Зарегистрироваться</a></div>
+</section>
+<?php else: ?>
 <section class="projects-page" data-projects-page>
   <aside class="projects-sidebar panel-card" aria-label="Разделы проектов">
     <h2>Проекты</h2>
@@ -47,3 +54,4 @@
   </div>
 </dialog>
 <script src="/shared/js/projects.js" defer></script>
+<?php endif; ?>

@@ -24,6 +24,30 @@ $roleLabels = ['user' => 'Пользователь', 'supplier' => 'Постав
 $statusLabels = ['new' => 'Новая', 'sent' => 'Передана', 'in_progress' => 'В работе', 'closed' => 'Завершена', 'failed' => 'Ошибка'];
 $accountName = tt_user_display_name($user);
 $accountInitials = tt_user_initials($user);
+$isAdmin = ($user['role'] ?? '') === 'admin';
+$adminStats = ['visitors' => 0, 'visitorsToday' => 0, 'users' => 0, 'projects' => 0, 'leads' => 0];
+$projectStats = ['visualization' => 0, 'calculation' => 0, 'pdf' => 0];
+$projectLabels = ['visualization' => 'Сравни плитку', 'calculation' => 'Посчитай плитку', 'pdf' => 'Плитка PDF'];
+if ($isAdmin) {
+    $pdo = tt_pdo();
+    $adminStats['users'] = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE status = 'active' AND role <> 'admin'")->fetchColumn();
+    $adminStats['projects'] = (int) $pdo->query("SELECT COUNT(*) FROM tt_projects WHERE deleted_at IS NULL")->fetchColumn();
+    $adminStats['leads'] = (int) $pdo->query('SELECT COUNT(*) FROM tt_lead_requests')->fetchColumn();
+    foreach ($pdo->query("SELECT project_type, COUNT(*) AS total FROM tt_projects WHERE deleted_at IS NULL GROUP BY project_type")->fetchAll() as $row) {
+        if (array_key_exists((string) $row['project_type'], $projectStats)) {
+            $projectStats[(string) $row['project_type']] = (int) $row['total'];
+        }
+    }
+    try {
+        $adminStats['visitors'] = (int) $pdo->query("SELECT COUNT(DISTINCT IF(user_id IS NULL, CONCAT('v:', visitor_key), CONCAT('u:', user_id))) FROM tt_site_visitors")->fetchColumn();
+        $adminStats['visitorsToday'] = (int) $pdo->query("SELECT COUNT(DISTINCT IF(user_id IS NULL, CONCAT('v:', visitor_key), CONCAT('u:', user_id))) FROM tt_site_visitors WHERE last_seen_at >= CURDATE()")->fetchColumn();
+    } catch (Throwable) {
+        // Дашборд остаётся доступным до применения миграции аналитики.
+    }
+}
+$popularProjectType = array_search(max($projectStats), $projectStats, true);
+$popularProjectLabel = max($projectStats) > 0 && is_string($popularProjectType) ? $projectLabels[$popularProjectType] : 'Пока нет данных';
+$maxProjectCount = max(1, ...array_values($projectStats));
 ?>
 <section class="account-page">
   <?php if (!$user): ?>
@@ -31,7 +55,7 @@ $accountInitials = tt_user_initials($user);
       <span class="account-guest-icon" aria-hidden="true">♙</span>
       <h1>Личный кабинет</h1>
       <p>В этой сессии пользователь не авторизован. После входа здесь появятся почта, имя аккаунта и отправленные заявки.</p>
-      <a class="button button-primary" href="/auth/login.php">Войти в аккаунт</a>
+      <div class="account-guest-actions"><a class="button button-primary" href="/auth/login.php">Войти</a><a class="button button-secondary" href="/auth/register.php">Зарегистрироваться</a></div>
     </div>
   <?php else: ?>
     <aside class="account-summary panel-card">
@@ -46,6 +70,29 @@ $accountInitials = tt_user_initials($user);
       <form class="account-logout" method="post" action="/auth/logout.php"><input type="hidden" name="csrf" value="<?= tt_escape(tt_csrf_token()) ?>"><button type="submit">Выйти из аккаунта</button></form>
     </aside>
 
+    <?php if ($isAdmin): ?>
+    <main class="admin-dashboard">
+      <section class="panel-card admin-dashboard-heading">
+        <div><p class="eyebrow">Панель администратора</p><h2>Статистика Tile Tools</h2><p>Сводные показатели считаются по данным сервера и общей базе проекта.</p></div>
+        <a class="button button-primary" href="<?= tt_url('media') ?>">＋ Добавить плитку</a>
+      </section>
+      <section class="admin-stat-grid">
+        <article class="panel-card"><span>Посетители</span><strong><?= $adminStats['visitors'] ?></strong><small><?= $adminStats['visitorsToday'] ?> сегодня</small></article>
+        <article class="panel-card"><span>Регистрации</span><strong><?= $adminStats['users'] ?></strong><small>пользователей и поставщиков</small></article>
+        <article class="panel-card"><span>Проекты</span><strong><?= $adminStats['projects'] ?></strong><small>во всех сервисах</small></article>
+        <article class="panel-card"><span>Заявки</span><strong><?= $adminStats['leads'] ?></strong><small>услуги и оборудование</small></article>
+      </section>
+      <section class="panel-card admin-project-stats">
+        <header><div><p class="eyebrow">Использование сервисов</p><h3>Где чаще создают проекты</h3></div><span>Лидер: <b><?= tt_escape($popularProjectLabel) ?></b></span></header>
+        <div class="admin-service-bars">
+          <?php foreach ($projectStats as $type => $count): $width = max(3, (int) round($count / $maxProjectCount * 100)); ?>
+            <div class="admin-service-row"><div><strong><?= tt_escape($projectLabels[$type]) ?></strong><span><?= $count ?> проектов</span></div><i><b style="width:<?= $width ?>%"></b></i></div>
+          <?php endforeach; ?>
+        </div>
+      </section>
+      <section class="panel-card admin-dashboard-note"><strong>Как считается посещаемость</strong><p>Один посетитель — один браузер до регистрации. После входа визиты объединяются по аккаунту. Поисковые роботы не учитываются.</p></section>
+    </main>
+    <?php else: ?>
     <main class="account-requests panel-card">
       <header class="account-requests-heading">
         <div><p class="eyebrow">История обращений</p><h2>Мои заявки на услуги</h2><p>Здесь отображаются только заявки, отправленные из этого аккаунта.</p></div>
@@ -81,5 +128,6 @@ $accountInitials = tt_user_initials($user);
         </div>
       <?php endif; ?>
     </main>
+    <?php endif; ?>
   <?php endif; ?>
 </section>

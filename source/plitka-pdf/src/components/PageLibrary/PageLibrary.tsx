@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { visiblePresetSummaries } from '../../data/createProject';
-import { allPageTemplates, categories, pageTemplates } from '../../data/pageTemplates';
+import { categories, pageTemplates } from '../../data/pageTemplates';
 import { DocumentRenderSettings, PresetId, SavedTemplateMeta } from '../../types/project';
 import { LibraryAudience, LibrarySection, PageTemplate } from '../../types/templates';
 import { FitPagePreview } from '../FitPagePreview/FitPagePreview';
@@ -102,15 +102,6 @@ const templateSearchIndex = pageTemplates.map((template) => ({
     ...(template.audiences?.map((audience) => audienceLabels[audience]) ?? [])
   ].join(' ').toLowerCase()
 }));
-
-const templateStatusCounts = allPageTemplates.reduce(
-  (counts, template) => {
-    const status = template.libraryStatus ?? 'hidden';
-    counts[status] += 1;
-    return counts;
-  },
-  { core: 0, legacy: 0, hidden: 0 }
-);
 
 export function PageLibrary({
   currentPreset,

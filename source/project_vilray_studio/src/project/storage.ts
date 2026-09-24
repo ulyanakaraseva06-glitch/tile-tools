@@ -1,6 +1,8 @@
 import type { TileProject } from '../types/project';
 
-const STORAGE_KEY = 'poschitay-plitku.project.v1';
+const GUEST_STORAGE_KEY = 'poschitay-plitku.project.v1';
+const accountId = typeof window === 'undefined' ? '' : new URLSearchParams(window.location.search).get('account') ?? '';
+const STORAGE_KEY = accountId ? `${GUEST_STORAGE_KEY}.user.${accountId}` : GUEST_STORAGE_KEY;
 const FILE_FORMAT = 'vilray-project';
 
 export function saveProject(project: TileProject, storage: Storage = localStorage): void {
@@ -8,6 +10,10 @@ export function saveProject(project: TileProject, storage: Storage = localStorag
 }
 
 export function loadProject(storage: Storage = localStorage): TileProject | null {
+  if (accountId && !storage.getItem(STORAGE_KEY) && storage.getItem(GUEST_STORAGE_KEY)) {
+    storage.setItem(STORAGE_KEY, storage.getItem(GUEST_STORAGE_KEY) as string);
+    storage.removeItem(GUEST_STORAGE_KEY);
+  }
   const raw = storage.getItem(STORAGE_KEY);
   if (!raw) return null;
 

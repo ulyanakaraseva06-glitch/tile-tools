@@ -43,6 +43,9 @@ $upsert = $pdo->prepare(
 );
 $insertMedia = $pdo->prepare("INSERT INTO tt_media_assets (id, owner_user_id, scope, kind, original_name, storage_key, mime_type, bytes, width_px, height_px, checksum_sha256, status, published_at) VALUES (?, NULL, 'system', 'image', ?, ?, ?, ?, ?, ?, ?, 'ready', NOW())");
 $upsertMedia = $pdo->prepare('UPDATE tt_catalog_tiles SET preview_media_id = ? WHERE id = ?');
+$findTileImages = $pdo->prepare('SELECT media_id, sort_order FROM tt_catalog_tile_images WHERE tile_id = ? ORDER BY sort_order');
+$linkTileImage = $pdo->prepare('INSERT INTO tt_catalog_tile_images (tile_id, media_id, sort_order) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE media_id = VALUES(media_id)');
+$trimTileImages = $pdo->prepare('DELETE FROM tt_catalog_tile_images WHERE tile_id = ? AND sort_order >= ?');
 $storageRoot = rtrim((string) tt_config()['app']['storage_root'], '/\\');
 $copyImages = array_key_exists('copy-images', $options);
 $findExistingPreview = $pdo->prepare('SELECT preview_media_id FROM tt_catalog_tiles WHERE id = ? LIMIT 1');
@@ -60,31 +63,7 @@ foreach ($tiles as $tile) {
     if (is_string($existingPreviewId) && tt_valid_uuid($existingPreviewId)) {
         $previewMediaId = $existingPreviewId;
     }
-    if ($copyImages && $previewMediaId === null && is_string($tile['tileImg'] ?? null) && preg_match('#^images/tiles/[a-zA-Z0-9_./-]+\.(jpg|jpeg|png|webp)$#', $tile['tileImg'])) {
-        $original = realpath($source . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $tile['tileImg']));
-        $sourceReal = realpath($source);
-        if ($original && $sourceReal && str_starts_with($original, $sourceReal) && is_file($original)) {
-            $mime = (new finfo(FILEINFO_MIME_TYPE))->file($original);
-            if (is_string($mime) && in_array($mime, tt_config()['app']['allowed_image_mimes'], true)) {
-                $previewMediaId = tt_uuid();
-                $extension = pathinfo($original, PATHINFO_EXTENSION);
-                $key = 'system/catalog/' . $previewMediaId . '.' . $extension;
-                $target = $storageRoot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $key);
-                $dir = dirname($target);
-                if (!is_dir($dir) && !mkdir($dir, 0750, true) && !is_dir($dir)) {
-                    throw new RuntimeException('Cannot create system storage.');
-                }
-                if (!copy($original, $target)) {
-                    throw new RuntimeException('Cannot copy source preview image.');
-                }
-                $size = filesize($target);
-                $dimensions = @getimagesize($target) ?: [null, null];
-                $insertMedia->execute([$previewMediaId, basename($original), $key, $mime, $size, $dimensions[0], $dimensions[1], hash_file('sha256', $target)]);
-                $copied++;
-            }
-        }
-    }
-    $upsert->execute([
+    $tileValues = [
         $id,
         mb_substr((string) ($tile['name'] ?? $id), 0, 255),
         mb_substr((string) ($tile['shortName'] ?? ''), 0, 255) ?: null,
@@ -96,7 +75,59 @@ foreach ($tiles as $tile) {
         preg_match('/^#[0-9a-f]{6}$/i', (string) ($tile['hex'] ?? '')) ? $tile['hex'] : null,
         json_encode($tile, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
         $previewMediaId,
-    ]);
+    ];
+    // The parent row must exist before image relations are inserted.
+    $upsert->execute($tileValues);
+    $facePaths = array_values(array_filter((array) ($tile['faces'] ?? []), 'is_string'));
+    if ($facePaths === [] && is_string($tile['tileImg'] ?? null)) {
+        $facePaths = [$tile['tileImg']];
+    }
+    $imageIds = [];
+    $findTileImages->execute([$id]);
+    foreach ($findTileImages->fetchAll() as $imageRow) {
+        $imageIds[(int) $imageRow['sort_order']] = (string) $imageRow['media_id'];
+    }
+    if ($previewMediaId !== null && !isset($imageIds[0]) && $facePaths !== []) {
+        $linkTileImage->execute([$id, $previewMediaId, 0]);
+        $imageIds[0] = $previewMediaId;
+    }
+    foreach ($facePaths as $sortOrder => $facePath) {
+        if (isset($imageIds[$sortOrder]) && tt_valid_uuid($imageIds[$sortOrder])) {
+            if ($sortOrder === 0) $previewMediaId = $imageIds[$sortOrder];
+            continue;
+        }
+        if (!$copyImages || !preg_match('#^images/tiles/[a-zA-Z0-9_./-]+\.(jpg|jpeg|png|webp)$#', $facePath)) {
+            continue;
+        }
+        $original = realpath($source . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $facePath));
+        $sourceReal = realpath($source);
+        if ($original && $sourceReal && str_starts_with($original, $sourceReal) && is_file($original)) {
+            $mime = (new finfo(FILEINFO_MIME_TYPE))->file($original);
+            if (is_string($mime) && in_array($mime, tt_config()['app']['allowed_image_mimes'], true)) {
+                $mediaId = tt_uuid();
+                $extension = pathinfo($original, PATHINFO_EXTENSION);
+                $key = 'system/catalog/' . $mediaId . '.' . $extension;
+                $target = $storageRoot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $key);
+                $dir = dirname($target);
+                if (!is_dir($dir) && !mkdir($dir, 0750, true) && !is_dir($dir)) {
+                    throw new RuntimeException('Cannot create system storage.');
+                }
+                if (!copy($original, $target)) {
+                    throw new RuntimeException('Cannot copy source preview image.');
+                }
+                $size = filesize($target);
+                $dimensions = @getimagesize($target) ?: [null, null];
+                $insertMedia->execute([$mediaId, basename($original), $key, $mime, $size, $dimensions[0], $dimensions[1], hash_file('sha256', $target)]);
+                $linkTileImage->execute([$id, $mediaId, $sortOrder]);
+                if ($sortOrder === 0) $previewMediaId = $mediaId;
+                $copied++;
+            }
+        }
+    }
+    $trimTileImages->execute([$id, count($facePaths)]);
+    if ($previewMediaId !== null) {
+        $upsertMedia->execute([$previewMediaId, $id]);
+    }
     $count++;
 }
 

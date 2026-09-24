@@ -18,8 +18,8 @@ import {
 } from '../../data/textEditor';
 import { DividerZone, EditableZone, FeatureZone, IconZone, ImageZone, PanelZone, TableZone, TextZone, ZoneStyle, ZoneStyleOverrideKey } from '../../types/project';
 import { compressImage } from '../../utils/images';
+import { resolvePublicAssetUrl } from '../../utils/publicAsset';
 import { ColorPickerPopover } from '../ColorPickerPopover/ColorPickerPopover';
-import { SharedTilePicker } from '../SharedTilePicker/SharedTilePicker';
 
 const defaultDocumentColors: TextEditorDocumentColors = {
   documentTheme: 'light',
@@ -631,10 +631,29 @@ function ImageEditor({
 }) {
   const [error, setError] = useState('');
   const [dragActive, setDragActive] = useState(false);
-  const [mediaOpen, setMediaOpen] = useState(false);
+  const mediaRequestRef = useRef<string | null>(null);
   const defaultFit = zone.imageRole === 'product' ? 'contain' : 'fill';
   const currentFit = zone.fit ?? defaultFit;
   const isLogo = isLogoZone(zone);
+
+  useEffect(() => {
+    const receiveTile = (event: MessageEvent) => {
+      if (event.source !== window.parent || event.data?.type !== 'tile-tools:tile-picker-result') return;
+      if (event.data.requestId !== mediaRequestRef.current || !event.data.tile) return;
+      mediaRequestRef.current = null;
+      const tile = event.data.tile as { name?: string; shortName?: string | null; previewUrl?: string | null; selectedImageUrl?: string | null };
+      const src = tile.selectedImageUrl || tile.previewUrl;
+      if (src) onChange({ ...zone, src, alt: tile.shortName || tile.name || 'Плитка из медиатеки' });
+    };
+    window.addEventListener('message', receiveTile);
+    return () => window.removeEventListener('message', receiveTile);
+  }, [onChange, zone]);
+
+  function openMediaLibrary() {
+    const requestId = `pdf-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    mediaRequestRef.current = requestId;
+    window.parent.postMessage({ type: 'tile-tools:open-tile-picker', requestId, mode: 'image' }, '*');
+  }
 
   async function uploadFile(file: File | undefined) {
     if (!file) return;
@@ -682,7 +701,7 @@ function ImageEditor({
           {zone.src ? (
             <img
               className={`zone-image fit-${currentFit === 'contain' ? 'contain' : 'fill'}`}
-              src={zone.src}
+              src={resolvePublicAssetUrl(zone.src)}
               alt={zone.alt}
               style={{ backgroundColor: zone.style?.backgroundColor ?? 'transparent' }}
             />
@@ -694,9 +713,8 @@ function ImageEditor({
             <span>Перетащите файл сюда</span>
           </div>
         </div>
-        <div className="image-source-actions"><label className="upload-button compact-upload-button"><ImageUp size={16} />Загрузить<input type="file" accept="image/*" onChange={handleFile} /></label><button className="upload-button compact-upload-button" type="button" onClick={()=>setMediaOpen((value)=>!value)}><Shapes size={16}/>Медиатека</button></div>
+        <div className="image-source-actions"><label className="upload-button compact-upload-button"><ImageUp size={16} />Загрузить<input type="file" accept="image/*" onChange={handleFile} /></label><button className="upload-button compact-upload-button" type="button" onClick={openMediaLibrary}><Shapes size={16}/>Медиатека</button></div>
       </section>
-      {mediaOpen&&<SharedTilePicker onClose={()=>setMediaOpen(false)} onSelect={(tile)=>{if(!tile.previewUrl)return;onChange({...zone,src:tile.previewUrl,alt:tile.shortName||tile.name});setMediaOpen(false);}}/>}
       {error && <div className="editor-warning">{error}</div>}
       <DesignControls
         zone={zone}

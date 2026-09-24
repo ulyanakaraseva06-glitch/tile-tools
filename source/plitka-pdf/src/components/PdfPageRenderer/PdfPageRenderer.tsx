@@ -9,6 +9,7 @@ import { CatalogIconGlyph } from '../../data/iconLibrary';
 import { formatMoney, rowTotal } from '../../utils/calculations';
 import { getTemplate } from '../../data/pageTemplates';
 import { resizeDirections, resizeZone, type ResizeDirection } from '../../utils/resizeZone';
+import { resolvePublicAssetUrl } from '../../utils/publicAsset';
 
 type PdfPageRendererProps = {
   page: Page;
@@ -241,7 +242,7 @@ function ZoneView({
     return (
       <img
         className={`zone-image fit-${imageFit(zone)}`}
-        src={zone.src}
+        src={resolvePublicAssetUrl(zone.src)}
         alt={zone.alt}
         draggable={false}
       />

@@ -195,6 +195,11 @@ svg    { display: block; flex-shrink: 0; }
 .render-wrapper.panning .render-scene { transition: none; }
 .render-scene > svg,
 .render-scene > div { width: 100%; height: 100%; display: block; }
+.room-scene-hq { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.room-base-hq,
+.room-overlay-hq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.room-base-hq { object-fit: contain; image-rendering: auto; }
+.room-overlay-hq { overflow: visible; }
 
 /* Zone overlays */
 @keyframes dashAnim { to { stroke-dashoffset: -28; } }

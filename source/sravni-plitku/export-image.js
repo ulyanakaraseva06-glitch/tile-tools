@@ -99,12 +99,9 @@
     const order = o.order || Object.keys(o.renders || {});
     for (const zoneId of order) {
       const src = o.renders && o.renders[zoneId];
+      const texture = o.textures && o.textures[zoneId];
       const d   = o.paths && o.paths[zoneId];
-      if (!src || !d) continue;
-
-      let img;
-      try { img = await loadImage(src); }
-      catch (e) { console.warn(e); continue; } // зону пропускаем, остальное собираем
+      if ((!src && !texture) || !d) continue;
 
       const clip = new Path2D();
       clip.addPath(new Path2D(d), matrix);
@@ -112,7 +109,33 @@
       ctx.save();
       ctx.clip(clip);
       ctx.globalAlpha = opacity;
-      drawCover(ctx, img, 0, 0, W, H);
+      if (src) {
+        let img;
+        try { img = await loadImage(src); }
+        catch (e) { console.warn(e); ctx.restore(); continue; }
+        drawCover(ctx, img, 0, 0, W, H);
+      } else {
+        // Текстура должна тонировать исходный интерьер, а не перекрывать
+        // находящиеся перед стеной/полом предметы. Это повторяет превью.
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.globalAlpha = Math.min(opacity, 0.82);
+        const images = [];
+        for (const textureSrc of texture.sources || []) {
+          try { images.push(await loadImage(textureSrc)); }
+          catch (e) { console.warn(e); }
+        }
+        if (images.length) {
+          const cellH = Math.max(72, Math.round(H / 14));
+          const cellW = Math.max(cellH, Math.round(cellH * Math.max(1, Number(texture.aspect) || 1)));
+          let index = 0;
+          for (let y = 0; y < H; y += cellH) {
+            for (let x = 0; x < W; x += cellW) {
+              ctx.drawImage(images[index % images.length], x, y, cellW, cellH);
+              index++;
+            }
+          }
+        }
+      }
       ctx.restore();
 
       if (typeof o.onProgress === 'function') o.onProgress(zoneId);

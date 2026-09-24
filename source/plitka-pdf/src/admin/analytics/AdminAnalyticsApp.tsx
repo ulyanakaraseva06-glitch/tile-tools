@@ -10,6 +10,7 @@ import {
   LockKeyhole,
   RefreshCw
 } from 'lucide-react';
+import { resolvePublicAssetUrl } from '../../utils/publicAsset';
 
 type SectionId = 'overview' | 'funnel' | 'documents' | 'templates' | 'errors' | 'events';
 
@@ -437,7 +438,7 @@ export function AdminAnalyticsApp() {
     <div className="analytics-admin-shell" data-theme="light" data-accent="purple">
       <aside className="analytics-sidebar">
         <a className="analytics-brand" href="/app/">
-          <img src="/brand/logo.webp" alt="" />
+          <img src={resolvePublicAssetUrl('/brand/logo.webp')} alt="" />
           <span>
             <strong>Плитка PDF</strong>
             <small>Аналитика</small>

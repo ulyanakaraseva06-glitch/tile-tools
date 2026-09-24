@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { track } from '../analytics/analyticsClient';
 import { SiteInfoModal, type SiteInfoKind } from '../components/modals/SiteInfoModal';
+import { resolvePublicAssetUrl } from '../utils/publicAsset';
 
 const appUrl = '/app/';
 
@@ -108,7 +109,7 @@ export function LandingPage() {
     <div className="landing-shell">
       <header className="landing-nav" aria-label="Главная навигация">
         <a className="landing-brand" href="/" aria-label="Плитка PDF">
-          <img src="/brand/logo.webp" alt="" />
+          <img src={resolvePublicAssetUrl('/brand/logo.webp')} alt="" />
           <span>
             <strong>Плитка PDF</strong>
             <small>от Vilray Studio</small>
@@ -133,7 +134,7 @@ export function LandingPage() {
         <section className="landing-hero">
           <img
             className="landing-hero-bg"
-            src="/placeholders/catalog/interior-4x3-dark-stone-v1.webp"
+            src={resolvePublicAssetUrl('/placeholders/catalog/interior-4x3-dark-stone-v1.webp')}
             alt=""
           />
           <div className="landing-hero-shade" />
@@ -171,11 +172,11 @@ export function LandingPage() {
             </div>
 
             <div className="landing-document-preview" aria-label="Превью PDF-документов">
-              <img className="preview-main" src="/landing/app-screen-hero.webp" alt="Интерфейс сервиса Плитка PDF" />
-              <img className="preview-side" src="/landing/app-screen-export.webp" alt="Проверка PDF перед выгрузкой" />
-              <img className="preview-bottom" src="/landing/app-screen-cabinet.webp" alt="Личный кабинет сервиса" />
-              <img className="preview-modal" src="/landing/app-screen-video.webp" alt="Предпросмотр страницы в сервисе" />
-              <img className="preview-detail" src="/landing/app-screen-panel.webp" alt="Панель настройки блока" />
+              <img className="preview-main" src={resolvePublicAssetUrl('/landing/app-screen-hero.webp')} alt="Интерфейс сервиса Плитка PDF" />
+              <img className="preview-side" src={resolvePublicAssetUrl('/landing/app-screen-export.webp')} alt="Проверка PDF перед выгрузкой" />
+              <img className="preview-bottom" src={resolvePublicAssetUrl('/landing/app-screen-cabinet.webp')} alt="Личный кабинет сервиса" />
+              <img className="preview-modal" src={resolvePublicAssetUrl('/landing/app-screen-video.webp')} alt="Предпросмотр страницы в сервисе" />
+              <img className="preview-detail" src={resolvePublicAssetUrl('/landing/app-screen-panel.webp')} alt="Панель настройки блока" />
             </div>
           </div>
         </section>
@@ -201,7 +202,7 @@ export function LandingPage() {
             </div>
             <div className="landing-video-showcase">
               <div className="landing-video-frame" aria-label="Видео о сервисе Плитка PDF">
-                <img src="/landing/app-screen-video.webp" alt="" />
+                <img src={resolvePublicAssetUrl('/landing/app-screen-video.webp')} alt="" />
                 <div className="landing-video-overlay">
                   <PlayCircle size={72} />
                   <span>Демонстрация сервиса</span>
@@ -302,7 +303,7 @@ export function LandingPage() {
                 </a>
               </div>
             </div>
-            <img src="/placeholders/catalog/interior-16x9-living-stone-v2.webp" alt="Интерьер с плиткой" />
+            <img src={resolvePublicAssetUrl('/placeholders/catalog/interior-16x9-living-stone-v2.webp')} alt="Интерьер с плиткой" />
           </div>
         </section>
 
@@ -344,7 +345,7 @@ export function LandingPage() {
             </div>
             <img
               className="landing-final-image"
-              src="/placeholders/catalog/interior-16x9-warm-stone-v1.webp"
+              src={resolvePublicAssetUrl('/placeholders/catalog/interior-16x9-warm-stone-v1.webp')}
               alt="Интерьер с плиткой"
             />
           </div>
@@ -354,7 +355,7 @@ export function LandingPage() {
       <footer className="landing-footer">
         <div className="landing-footer-inner">
           <a className="landing-brand" href="/" aria-label="Плитка PDF">
-            <img src="/brand/logo.webp" alt="" />
+            <img src={resolvePublicAssetUrl('/brand/logo.webp')} alt="" />
             <span>
               <strong>Плитка PDF</strong>
               <small>от Vilray Studio</small>

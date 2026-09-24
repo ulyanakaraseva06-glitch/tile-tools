@@ -1,7 +1,10 @@
 /// <reference types="vitest/config" />
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+
+const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 const config = {
   plugins: [
@@ -21,8 +24,8 @@ const config = {
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        app: resolve(__dirname, 'app/index.html'),
+        main: resolve(rootDir, 'index.html'),
+        app: resolve(rootDir, 'app/index.html'),
       },
       output: {
         manualChunks: {

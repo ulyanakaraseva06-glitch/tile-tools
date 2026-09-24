@@ -10,6 +10,8 @@ return [
     'app' => [
         'environment' => 'development',
         'session_name' => 'tile_tools_session',
+        'auth_token_cookie' => 'tile_tools_auth',
+        'auth_token_ttl_days' => 30,
         // Папка для PHP-сессий также должна быть недоступна из web-root.
         'session_save_path' => dirname(__DIR__) . '/private/tile-tools-sessions',
         'base_url' => '',

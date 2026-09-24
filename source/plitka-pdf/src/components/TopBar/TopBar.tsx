@@ -3,6 +3,7 @@ import { RectangleHorizontal, RectangleVertical } from 'lucide-react';
 import { Accent, PageFormat, Project, ThemeMode } from '../../types/project';
 import { ColorPickerPopover } from '../ColorPickerPopover/ColorPickerPopover';
 import { DocumentSchemeId, documentSchemes } from '../../data/documentSchemes';
+import { resolvePublicAssetUrl } from '../../utils/publicAsset';
 
 type Action = {
   label: string;
@@ -313,7 +314,7 @@ export function TopBar(props: TopBarProps) {
   return (
     <header className="top-bar">
       <div className="brand-block">
-        <img className="brand-logo" src="/brand/logo.webp" alt="" />
+        <img className="brand-logo" src={resolvePublicAssetUrl('/brand/logo.webp')} alt="" />
         <div>
           <strong>Плитка PDF</strong>
           <span>от Вилрэй Студия</span>

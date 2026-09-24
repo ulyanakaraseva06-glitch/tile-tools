@@ -21,8 +21,13 @@ $headerUserInitials = tt_user_initials($headerUser);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Tile Tools — единый сервис для работы с плиткой, проектами и документами.">
   <meta name="csrf-token" content="<?= tt_escape(tt_csrf_token()) ?>">
+  <meta name="account-user-id" content="<?= $headerUser ? (int) $headerUser['id'] : '' ?>">
+  <meta name="login-url" content="/auth/login.php">
   <title><?= tt_escape($title) ?> — Tile Tools</title>
-  <link rel="stylesheet" href="/shared/css/app.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20260924-7">
 </head>
 <body>
   <header class="topbar">
@@ -38,4 +43,4 @@ $headerUserInitials = tt_user_initials($headerUser);
       <a class="profile-button <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>" aria-label="Открыть личный кабинет"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><span class="profile-name"><?= tt_escape($headerUserName) ?></span><span aria-hidden="true">⌄</span></a>
     </nav>
   </header>
-  <main class="app-main">
+  <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">
