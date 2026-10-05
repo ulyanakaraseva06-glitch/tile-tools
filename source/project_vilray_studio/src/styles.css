@@ -2957,7 +2957,7 @@ input {
   border: 1px solid #e1d7ed;
   border-radius: 14px;
   color: #302840;
-  background-image: linear-gradient(90deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.48) 50%, rgba(248,244,252,.30) 100%), url('/shared/images/home-interior-1600.webp');
+  background-image: linear-gradient(90deg, rgba(35,27,47,.74) 0%, rgba(55,40,67,.60) 55%, rgba(40,31,52,.48) 100%), url('/shared/images/home-interior-1600.webp');
   background-size: cover;
   background-position: center 58%;
   box-shadow: 0 8px 24px rgba(67, 48, 86, 0.09);
@@ -2966,10 +2966,10 @@ input {
 .service-ad-card small,
 .service-ad-card strong,
 .service-ad-card span { position: relative; z-index: 1; display: block; }
-.service-ad-card small { color: #8f71ad; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
-.service-ad-card strong { margin: 6px 0 5px; max-width: 320px; font-size: 16px; font-weight: 800; line-height: 1.25; }
-.service-ad-card span { max-width: 360px; color: #645a71; font-size: 11px; font-weight: 600; line-height: 1.45; }
-.service-ad-card a { position: relative; z-index: 1; display: inline-block; margin-top: 9px; color: #69438d; font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+.service-ad-card small { color: rgba(255,255,255,.78); font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+.service-ad-card strong { margin: 6px 0 5px; max-width: 320px; color: #fff; font-size: 16px; font-weight: 800; line-height: 1.25; }
+.service-ad-card span { max-width: 360px; color: rgba(255,255,255,.86); font-size: 11px; font-weight: 600; line-height: 1.45; }
+.service-ad-card a { position: absolute; z-index: 1; right: 16px; bottom: 15px; display: inline-flex; align-items: center; gap: 5px; min-height: 34px; padding: 7px 11px; border: 1px solid rgba(255,255,255,.72); border-radius: 8px; color: #fff; background: rgba(61,42,76,.62); font-size: 12px; font-weight: 800; text-decoration: none; white-space: nowrap; }
 
 @media (min-width: 1021px) {
   .side-panel > *,
