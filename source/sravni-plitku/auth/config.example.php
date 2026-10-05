@@ -18,6 +18,8 @@ define('DEFAULT_MONTHLY_LIMIT', 20);
 
 /* --- Имя cookie сессии --- */
 define('SESSION_NAME', 'SPSESSID');
+// Для общей авторизации укажите ту же папку сессий, что и в Tile Tools.
+define('SESSION_SAVE_PATH', '');
 
 /* --- Адрес страницы входа (для редиректов) --- */
 define('LOGIN_URL', 'auth/login.php');

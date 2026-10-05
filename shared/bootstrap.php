@@ -230,7 +230,7 @@ function tt_current_user(): ?array
         session_regenerate_id(true);
         $_SESSION['uid'] = $userId;
     }
-    $statement = tt_pdo()->prepare('SELECT id, email, first_name, last_name, role, status FROM users WHERE id = ? LIMIT 1');
+    $statement = tt_pdo()->prepare('SELECT id, email, nickname, first_name, last_name, role, status FROM users WHERE id = ? LIMIT 1');
     $statement->execute([(int) $userId]);
     $user = $statement->fetch();
     if (!$user || ($user['status'] ?? '') !== 'active') {

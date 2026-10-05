@@ -249,6 +249,32 @@ svg    { display: block; flex-shrink: 0; }
   padding: 8px 12px;
   display: flex; align-items: stretch; gap: 12px;
 }
+.visualizer-size-filter-preserved,
+.rooms-strip { display: none; }
+.room-picker-dropdown .filter-dropdown__menu {
+  left: 0;
+  right: 0;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 5px;
+}
+.room-picker-dropdown.open .filter-dropdown__menu { display: grid; }
+.room-picker-option {
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 11px; color: var(--text); font-size: 12px;
+  min-width: 0; border-radius: 6px;
+  cursor: pointer; transition: background var(--transition), color var(--transition);
+}
+.room-picker-option:hover,
+.room-picker-option.selected { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+.room-picker-option img {
+  width: 38px; height: 27px; flex: 0 0 auto;
+  border: 1px solid var(--border); border-radius: 5px; object-fit: cover;
+}
+.room-picker-option span {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 .rooms-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
 .rooms-col--info { border-left: 1px solid var(--border); padding-left: 12px; }
 .rooms-list {
@@ -275,10 +301,14 @@ svg    { display: block; flex-shrink: 0; }
    CATALOG PANEL — right 40%
 ============================================================ */
 .catalog-panel {
-  flex: 0 0 40%;
+  flex: 1 1 40%;
   display: flex; flex-direction: column;
   background: var(--bg-white);
-  border-left: 1px solid var(--border);
+  height: calc(100% - 28px);
+  margin: 14px 14px 14px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   padding: 14px 12px 10px;
   gap: 10px;
   overflow: hidden; min-width: 0;
@@ -412,7 +442,7 @@ svg    { display: block; flex-shrink: 0; }
   width: 100%; height: 100%;
 }
 .tile-card__img > svg { display: block; }
-.tile-card__img > img { object-fit: contain; display: block; }
+.tile-card__img > img { object-fit: cover; object-position: center; display: block; transform: scale(1.035); }
 .tile-card__img > div { display: flex; align-items: center; justify-content: center; }
 
 .tile-card__fav {
@@ -457,13 +487,13 @@ svg    { display: block; flex-shrink: 0; }
 /* ============================================================
    PAGINATION
 ============================================================ */
-/* Серая зона низа панели: основной фон проходит между пагинацией и рекламой,
-   делая их отдельными карточками (как блоки в левой колонке). Full-bleed к краям панели. */
+/* Pagination and advertising belong to the catalog workspace rather than a
+   detached full-bleed footer. */
 .catalog-foot {
   flex-shrink: 0;
-  margin: 0 -12px -10px;
-  padding: 10px 12px;
-  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  background: transparent;
   display: flex; flex-direction: column; gap: 10px;
 }
 .pagination {
@@ -716,3 +746,10 @@ svg    { display: block; flex-shrink: 0; }
 .promo-card__text a:hover { color: var(--primary); }
 .promo-card__cta { align-self: flex-start; font-size: 12.5px; font-weight: 700; color: var(--primary); text-decoration: none; }
 .promo-card__cta:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+.service-ad-card { position: relative; box-sizing: border-box; width: 100%; height: 132px; min-height: 132px; max-height: 132px; padding: 15px 18px; overflow: hidden; border: 1px solid #e1d7ed; border-radius: 14px; color: #302840; background-image: linear-gradient(90deg,rgba(255,255,255,.72) 0%,rgba(255,255,255,.48) 50%,rgba(248,244,252,.30) 100%),url('/source/sravni-plitku/images/home-interior-1600.webp'); background-size: cover; background-position: center 58%; box-shadow: 0 8px 24px rgba(67,48,86,.09); }
+.service-ad-card small,.service-ad-card strong,.service-ad-card span { position: relative; z-index: 1; display: block; }
+.service-ad-card small { color: #8f71ad; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+.service-ad-card strong { margin: 6px 0 5px; max-width: 320px; font-size: 16px; font-weight: 800; line-height: 1.25; }
+.service-ad-card span { max-width: 360px; color: #645a71; font-size: 11px; font-weight: 600; line-height: 1.45; }
+.service-ad-card a { position: relative; z-index: 1; display: inline-block; margin-top: 9px; color: #69438d; font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }

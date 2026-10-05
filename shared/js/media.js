@@ -12,6 +12,8 @@
     state.favorites = new Set(); state.items.filter((item) => item.isFavorite).forEach((item) => state.favorites.add(item.id));
     if (state.authenticated) { const folders = await json('/api/media/folders.php'); state.folders = folders.items || []; await Promise.all(state.folders.map(async (folder) => { const data = await json(`/api/media/folder-tiles.php?folderId=${encodeURIComponent(folder.id)}`); state.folderTiles[folder.id] = data.tileIds || []; })); }
     else { const local = readLocal(FOLDERS_KEY, { folders: [], folderTiles: {} }); state.folders = local.folders || []; state.folderTiles = local.folderTiles || {}; }
+    const requestedFolder = new URLSearchParams(window.location.hash.slice(1)).get('folder');
+    if (requestedFolder && state.folders.some((folder) => folder.id === requestedFolder)) state.activeFolder = requestedFolder;
     fillFacets(); renderFolders(); render();
   }
   function fillFacets() { [['media-brand','brands'],['media-color','colors'],['media-size','sizes'],['media-surface','surfaces'],['media-design','designs']].forEach(([id,key]) => (state.facets[key] || []).forEach((value) => $(id).insertAdjacentHTML('beforeend', `<option value="${escape(value)}">${escape(value)}</option>`))); }

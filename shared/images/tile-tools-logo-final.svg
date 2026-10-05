@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" role="img" aria-labelledby="title desc">
+  <title id="title">Tile Tools</title>
+  <desc id="desc">Tile Tools logo with a magnifying glass and four colored tile sections.</desc>
+  <g transform="scale(.028)" fill="#454755">
+    <path d="M4166.94 0c2301.26 0 4166.94 1865.68 4166.94 4166.94 0 2301.26-1865.68 4166.94-4166.94 4166.94S0 6468.2 0 4166.94 1865.68 0 4166.94 0zm0 785.53c-1867.58 0-3381.41 1513.83-3381.41 3381.41 0 1867.58 1513.83 3381.41 3381.41 3381.41s3381.41-1513.83 3381.41-3381.41c0-1867.58-1513.83-3381.41-3381.41-3381.41z"/>
+    <polygon points="7502.66 6570.56 8694.44 7762.33 7722.52 8734.25 6530.74 7542.47"/>
+    <circle fill="#987DB9" cx="8471.64" cy="8511.46" r="1104.64"/>
+    <rect fill="#A385C4" x="2144.83" y="2144.83" width="1825.72" height="1825.72" rx="216.02"/>
+    <rect fill="#464958" x="4363.32" y="2144.83" width="1825.72" height="1825.72" rx="216.02"/>
+    <rect fill="#454755" x="2144.83" y="4363.32" width="1825.72" height="1825.72" rx="216.02"/>
+    <rect fill="#987DB9" x="4363.32" y="4363.32" width="1825.72" height="1825.72" rx="216.02"/>
+  </g>
+  <text x="275" y="128" fill="#454755" font-family="Arial, Helvetica, sans-serif" font-size="118" font-weight="700">Tile</text>
+  <text x="280" y="202" fill="#454755" font-family="Arial, Helvetica, sans-serif" font-size="50" font-weight="700" letter-spacing="8">TOOLS</text>
+</svg>

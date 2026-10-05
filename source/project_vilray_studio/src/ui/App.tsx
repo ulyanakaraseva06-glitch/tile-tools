@@ -7,8 +7,6 @@ import {
   Calculator,
   FolderOpen,
   Grid3X3,
-  HelpCircle,
-  Info,
   Maximize2,
   Minus,
   Plus,
@@ -321,8 +319,6 @@ export function App() {
   const [calculationSelecting, setCalculationSelecting] = useState(false);
   const [calculationSurfaceIds, setCalculationSurfaceIds] = useState<Set<string>>(() => new Set());
   const [calculationHintVisible, setCalculationHintVisible] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<EditTarget>(null);
   const [layers, setLayers] = useState<CanvasLayers>({ grid: true, floor: true, walls: true, dimensions: true });
   const [viewport, setViewport] = useState<CanvasViewport>(resetViewport());
@@ -1630,7 +1626,6 @@ export function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <AppLogo />
         <div className="topbar-tools" aria-label="Быстрые действия">
           <button type="button" className="icon-button" aria-label="Отменить" disabled={additionalRoomDraft || roomDraftActive ? false : manualZoneSurfaceId ? !zoneDraftHistory.canUndo : !historyRef.current.past.length} onClick={undoProject}>
             <Undo2 size={18} />
@@ -1641,14 +1636,6 @@ export function App() {
           <button type="button" className={layers.grid ? 'tool-button active' : 'tool-button'} onClick={() => setLayers((current) => ({ ...current, grid: !current.grid }))}>
             <Grid3X3 size={17} />
             Сетка
-          </button>
-          <button type="button" className="tool-button" onClick={() => setHelpOpen(true)}>
-            <HelpCircle size={17} />
-            Помощь
-          </button>
-          <button type="button" className="tool-button" onClick={() => setAboutOpen(true)}>
-            <Info size={17} />
-            О сервисе
           </button>
           <button type="button" className="tool-button danger-lite" onClick={resetProject}>
             <Trash2 size={17} />
@@ -1984,7 +1971,7 @@ export function App() {
           ) : null}
 
           {contourStatus.ok ? null : <p className="error-text">{contourStatus.message}</p>}
-          <PromoCard />
+          <ServiceAdCard />
         </aside>
       </main>
 
@@ -2037,8 +2024,6 @@ export function App() {
         />
       ) : null}
 
-      {helpOpen ? <HelpDialog onClose={() => setHelpOpen(false)} /> : null}
-      {aboutOpen ? <AboutDialog onClose={() => setAboutOpen(false)} /> : null}
 
       {templatePickerOpen ? (
         <TemplatePickerDialog
@@ -2061,26 +2046,6 @@ export function App() {
           onClose={() => setCalculationOpen(false)}
         />
       ) : null}
-    </div>
-  );
-}
-
-function AppLogo() {
-  return (
-    <div className="brand" aria-label="Посчитай плитку">
-      <svg className="brand-logo-mark" viewBox="0 0 52 44" aria-hidden="true">
-        <rect className="logo-tile logo-tile-a" x="4" y="5" width="12" height="12" rx="3" />
-        <rect className="logo-tile logo-tile-b" x="19" y="5" width="12" height="12" rx="3" />
-        <rect className="logo-tile logo-tile-c" x="4" y="20" width="12" height="12" rx="3" />
-        <rect className="logo-tile logo-tile-d" x="19" y="20" width="12" height="12" rx="3" />
-        <path className="logo-ruler" d="M36 9v25h12" />
-        <path className="logo-ruler" d="M36 14h4M36 19h6M36 24h4M36 29h6" />
-        <path className="logo-ruler-fill" d="M39 31h9v4h-9z" />
-      </svg>
-      <strong>
-        Посчитай
-        <span>плитку</span>
-      </strong>
     </div>
   );
 }
@@ -8435,15 +8400,13 @@ function CalculationDialog({
   );
 }
 
-function PromoCard() {
+function ServiceAdCard() {
   return (
-    <aside className="promo-card" aria-label="Vilray Studio">
-      <span>Проект Vilray</span>
-      <strong>Нужен такой калькулятор для вашего бренда?</strong>
-      <p>Разрабатываем визуализаторы, конфигураторы и сервисы для отделочных материалов.</p>
-      <a href="https://vilraystudio.ru/" target="_blank" rel="noreferrer">
-        Обсудить проект
-      </a>
+    <aside className="service-ad-card" aria-label="Vilray Studio">
+      <small>VILRAY STUDIO</small>
+      <strong>Нужна профессиональная подача проекта?</strong>
+      <span>Визуализации, каталоги и материалы для продаж.</span>
+      <a href="/index.php?page=services" target="_top">Перейти к услуге →</a>
     </aside>
   );
 }

@@ -29,20 +29,6 @@ $categories = [
     </div>
   </main>
 
-  <aside class="services-request panel-card">
-    <div class="services-request-title"><span>⌁</span><h2>Передать проект<br>в студию Vilray</h2></div>
-    <p>Расскажите о задаче — сохраним заявку и подготовим её к обработке менеджером.</p>
-    <form data-service-form>
-      <label>Какая услуга вас интересует?<select class="input" name="serviceId" required><option value="">Выберите услугу</option><?php foreach ($services as $service): ?><option value="<?= tt_escape($service['id']) ?>"><?= tt_escape($service['title']) ?></option><?php endforeach; ?></select></label>
-      <label>Кратко опишите задачу<textarea class="input" name="message" rows="4" maxlength="5000" placeholder="Например: нужна визуализация новой коллекции в интерьере ванной комнаты..."></textarea></label>
-      <label>Ваше имя<input class="input" name="name" required minlength="2" maxlength="160" placeholder="Алексей"></label>
-      <label>Телефон, e-mail или Telegram<input class="input" name="contact" required minlength="3" maxlength="255" placeholder="+7 999 123-45-67 или @username"></label>
-      <label class="services-consent"><input type="checkbox" required> <span>Согласен(а) с политикой обработки персональных данных.</span></label>
-      <button class="button button-primary" type="submit">⌁ Отправить запрос</button>
-      <small>Заявка сохраняется в Tile Tools и пока не отправляется во внешние сервисы.</small>
-    </form>
-    <article class="services-ad"><small>ПРИМЕР РАБОТЫ</small><div></div><strong>Визуальная система для продукта</strong><a href="https://vilraystudio.ru/portfolio.html" target="_blank" rel="noopener">Смотреть портфолио →</a></article>
-  </aside>
 </section>
 
 <dialog class="service-dialog" data-service-dialog><button class="dialog-close" type="button" data-service-close aria-label="Закрыть">×</button><div data-service-dialog-content></div></dialog>

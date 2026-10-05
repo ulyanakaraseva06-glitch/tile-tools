@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/functions.php';
-$user = require_login();
+header('Location: /index.php?page=account', true, 302);
+exit;
 ensure_month_reset($user);
 
 /* модуль аналитики подключаем мягко (если установлен) */

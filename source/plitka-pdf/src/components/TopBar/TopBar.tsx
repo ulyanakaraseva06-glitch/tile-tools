@@ -3,7 +3,6 @@ import { RectangleHorizontal, RectangleVertical } from 'lucide-react';
 import { Accent, PageFormat, Project, ThemeMode } from '../../types/project';
 import { ColorPickerPopover } from '../ColorPickerPopover/ColorPickerPopover';
 import { DocumentSchemeId, documentSchemes } from '../../data/documentSchemes';
-import { resolvePublicAssetUrl } from '../../utils/publicAsset';
 
 type Action = {
   label: string;
@@ -33,8 +32,6 @@ type TopBarProps = {
   selectedSchemeId: string;
   onSchemeChange: (schemeId: DocumentSchemeId) => void;
   onResetDesignToScheme: () => void;
-  onOpenHelp: () => void;
-  onOpenAbout: () => void;
 };
 
 type PaletteColor = {
@@ -294,9 +291,7 @@ export function TopBar(props: TopBarProps) {
     onShowDividersChange,
     selectedSchemeId,
     onSchemeChange,
-    onResetDesignToScheme,
-    onOpenHelp,
-    onOpenAbout
+    onResetDesignToScheme
   } = props;
   const [feedbackKey, setFeedbackKey] = useState<string | null>(null);
   const activeThemeColor = project.documentBackgroundColor ?? themes.find((theme) => theme.id === project.documentTheme)?.color ?? '#ffffff';
@@ -313,14 +308,6 @@ export function TopBar(props: TopBarProps) {
 
   return (
     <header className="top-bar">
-      <div className="brand-block">
-        <img className="brand-logo" src={resolvePublicAssetUrl('/brand/logo.webp')} alt="" />
-        <div>
-          <strong>Плитка PDF</strong>
-          <span>от Вилрэй Студия</span>
-        </div>
-      </div>
-
       <label className="top-scheme-select">
         <span>Дизайн-схема</span>
         <select value={selectedSchemeId} onChange={(event) => onSchemeChange(event.target.value as DocumentSchemeId)}>
@@ -376,8 +363,6 @@ export function TopBar(props: TopBarProps) {
       </div>
 
       <div className="top-actions">
-        <button className="btn btn-ghost top-page-link" type="button" onClick={onOpenHelp}>Помощь</button>
-        <button className="btn btn-ghost top-page-link" type="button" onClick={onOpenAbout}>О сервисе</button>
         {actions.map((action) => (
           <button
             key={action.label}

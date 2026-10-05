@@ -1,4 +1,6 @@
 <?php
+header('Location: /auth/login.php', true, 302);
+exit;
 require_once __DIR__ . '/functions.php';
 app_session_start();
 

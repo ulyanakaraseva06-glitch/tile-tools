@@ -22,9 +22,11 @@ import './styles/modal-shell.css';
 import './styles/page-library-controls.css';
 import './styles/storage-warning.css';
 import './styles/template-preview-modal.css';
+import './styles/preset-pages-modal.css';
 import './styles/desktop-required.css';
 import './styles/vilray-promos.css';
 import './styles/themes.css';
+import './styles/uiux-kit.css';
 
 document.body.classList.add('app-runtime');
 initAnalytics();

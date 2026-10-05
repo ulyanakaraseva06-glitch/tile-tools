@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20260927-3">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20260930-1">
 </head>
 <body class="auth-body">
   <main class="auth-card panel-card">
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post">
       <input type="hidden" name="csrf" value="<?= htmlspecialchars(tt_csrf_token(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
       <label>Почта или логин<input class="input" type="text" name="login" value="<?= htmlspecialchars($login, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>" required autocomplete="username"></label>
-      <label>Пароль<input class="input" type="password" name="password" required autocomplete="current-password"></label>
+      <label>Пароль<input class="input" type="password" name="password" required autocomplete="current-password"><a class="auth-forgot-link" href="/auth/forgot-password.php">Забыли пароль?</a></label>
       <label class="auth-check"><input type="checkbox" name="remember" value="1" checked><span>Оставаться в системе на этом устройстве</span></label>
       <button class="button button-primary" type="submit">Войти</button>
     </form>

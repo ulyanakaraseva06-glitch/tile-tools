@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ResizableWorkspace } from '../components/ResizableWorkspace/ResizableWorkspace';
-import { ArrowLeft, ArrowRight, Download, Plus, Save, Star, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Files, LayoutTemplate, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
 import { track } from '../analytics/analyticsClient';
 import { projectAnalyticsProperties, zoneAnalyticsProperties } from '../analytics/projectAnalytics';
 import { applyCompanyProfileToProject } from './projectContactOperations';
@@ -33,11 +32,11 @@ import { PageLibrary } from '../components/PageLibrary/PageLibrary';
 import { Canvas } from '../components/Canvas/Canvas';
 import { DocumentPageStrip } from '../components/DocumentPageStrip/DocumentPageStrip';
 import { RightEditorPanel } from '../components/RightEditorPanel/RightEditorPanel';
-import { VilrayCTA } from '../components/VilrayCTA/VilrayCTA';
 import { ExportCheckModal } from '../components/modals/ExportCheckModal';
 import { LocalDocumentsModal } from '../components/modals/LocalDocumentsModal';
 import { VilrayMaterialsModal } from '../components/modals/VilrayMaterialsModal';
 import { ConfirmModal } from '../components/modals/ConfirmModal';
+import { PresetPagesModal } from '../components/modals/PresetPagesModal';
 import { SiteInfoModal, type SiteInfoKind } from '../components/modals/SiteInfoModal';
 import { getDocumentScheme, type DocumentSchemeId } from '../data/documentSchemes';
 import {
@@ -69,12 +68,14 @@ import {
   loadSavedTemplate,
   loadSavedTemplates,
   loadServiceSettings,
+  normalizeProject,
   saveProject,
   saveProjectAsTemplate,
   saveProjectToLibrary,
   saveServiceSettings
 } from '../utils/storage';
 import type { VilrayPromoId } from '../data/vilrayPromos';
+import { applySelectedPresetPages, type PresetApplyMode } from './presetPageSelection';
 
 const AUTOSAVE_DEBOUNCE_MS = 400;
 
@@ -86,6 +87,13 @@ type ConfirmState = {
   tone?: 'default' | 'danger';
   resolve: (accepted: boolean) => void;
 };
+
+type PendingPresetSelection = {
+  project: Project;
+  source: string;
+};
+
+type RegistryProjectStatus = 'active' | 'done';
 
 let initialProjectSource = 'initial_default';
 
@@ -150,10 +158,28 @@ function getInitialProject() {
   return createProject();
 }
 
+function getProjectRenderSettings(project: Project): DocumentRenderSettings {
+  return {
+    pageFormat: project.pageFormat,
+    documentTheme: project.documentTheme,
+    documentAccent: project.documentAccent,
+    documentAccentColor: project.documentAccentColor,
+    documentBackgroundColor: project.documentBackgroundColor,
+    documentTextPalette: project.documentTextPalette,
+    documentTextPrimaryColor: project.documentTextPrimaryColor,
+    documentTextSecondaryColor: project.documentTextSecondaryColor,
+    documentDividerColor: project.documentDividerColor,
+    showLogos: project.showLogos,
+    showPageNumbers: project.showPageNumbers,
+    showDividers: project.showDividers
+  };
+}
+
 export function App() {
   const [project, setProject] = useState<Project>(() => getInitialProject());
   const [selectedPageId, setSelectedPageId] = useState(() => project.pages[0]?.id ?? '');
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
+  const [workspaceTab, setWorkspaceTab] = useState<'templates' | 'editor' | 'pages'>('templates');
   const [isExportCheckOpen, setExportCheckOpen] = useState(false);
   const [isLibraryOpen, setLibraryOpen] = useState(false);
   const [isPromoOpen, setPromoOpen] = useState(false);
@@ -165,6 +191,7 @@ export function App() {
   const [history, setHistory] = useState<HistoryState<Project>>(() => createEmptyHistory());
   const [storageWarning, setStorageWarning] = useState('');
   const [confirmState, setConfirmState] = useState<ConfirmState | null>(null);
+  const [pendingPresetSelection, setPendingPresetSelection] = useState<PendingPresetSelection | null>(null);
   const [isMobileDevice, setMobileDevice] = useState(() => {
   if (typeof window === 'undefined') return false;
 
@@ -178,37 +205,17 @@ export function App() {
   const settingsSaveTimeoutRef = useRef<number | null>(null);
   const projectRef = useRef(project);
   const settingsRef = useRef(serviceSettings);
+  const registryStatusRef = useRef<RegistryProjectStatus>('active');
+  const registryProjectIdRef = useRef(`local:pdf:${project.id}`);
+  const registryServerIdRef = useRef<string | null>(null);
 
   const pages = useMemo(() => sortProjectPages(project.pages), [project.pages]);
   const projectSnapshot = useMemo(() => ({ ...project, pages }), [project, pages]);
   const initialProjectRef = useRef(projectSnapshot);
-  const renderSettings = useMemo<DocumentRenderSettings>(() => ({
-    pageFormat: project.pageFormat,
-    documentTheme: project.documentTheme,
-    documentAccent: project.documentAccent,
-    documentAccentColor: project.documentAccentColor,
-    documentBackgroundColor: project.documentBackgroundColor,
-    documentTextPalette: project.documentTextPalette,
-    documentTextPrimaryColor: project.documentTextPrimaryColor,
-    documentTextSecondaryColor: project.documentTextSecondaryColor,
-    documentDividerColor: project.documentDividerColor,
-    showLogos: project.showLogos,
-    showPageNumbers: project.showPageNumbers,
-    showDividers: project.showDividers
-  }), [
-    project.pageFormat,
-    project.documentTheme,
-    project.documentAccent,
-    project.documentAccentColor,
-    project.documentBackgroundColor,
-    project.documentTextPalette,
-    project.documentTextPrimaryColor,
-    project.documentTextSecondaryColor,
-    project.documentDividerColor,
-    project.showLogos,
-    project.showPageNumbers,
-    project.showDividers
-  ]);
+  const renderSettings = getProjectRenderSettings(project);
+  const pendingPresetRenderSettings = pendingPresetSelection
+    ? getProjectRenderSettings(pendingPresetSelection.project)
+    : null;
   const selectedPage = pages.find((page) => page.id === selectedPageId) ?? pages[0];
   const selectedZone = selectedPage && selectedZoneId ? selectedPage.zones[selectedZoneId] : null;
 
@@ -219,7 +226,7 @@ export function App() {
     });
   }
 
-  function persistProjectSnapshot(snapshot: Project) {
+  function persistProjectSnapshot(snapshot: Project, status = registryStatusRef.current) {
     projectRef.current = snapshot;
     if (!saveProject(snapshot)) {
       setStorageWarning('Автосохранение не выполнено: локальное хранилище браузера переполнено или недоступно.');
@@ -228,10 +235,11 @@ export function App() {
       window.parent.postMessage({
         type: 'tile-tools:project-saved',
         project: {
-          id: `local:pdf:${snapshot.id}`,
+          id: registryProjectIdRef.current,
+          serverId: registryServerIdRef.current,
           type: 'pdf',
           title: snapshot.title || 'PDF-документ',
-          status: 'active',
+          status,
           updatedAt: snapshot.updatedAt,
           metric: `${snapshot.pages.length} стр. · ${snapshot.mediaAssets.length} медиа`,
           payload: snapshot
@@ -279,6 +287,9 @@ export function App() {
       closeLibrary?: boolean;
     } = {}
   ) {
+    registryProjectIdRef.current = `local:pdf:${nextProject.id}`;
+    registryServerIdRef.current = null;
+    registryStatusRef.current = 'active';
     setProject(nextProject);
     if (options.resetHistory) resetProjectHistory();
     const nextPage = nextProject.pages.find((page) => page.id === options.preferredPageId) ?? nextProject.pages[0];
@@ -307,6 +318,7 @@ export function App() {
     });
 
     setHistory((current) => recordHistorySnapshot(current, previousProject));
+    registryStatusRef.current = 'active';
     setProject({
       ...nextProject,
       updatedAt: new Date().toISOString()
@@ -509,6 +521,34 @@ export function App() {
         });
       }
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.parent === window) return;
+    const handleResumeProject = (event: MessageEvent) => {
+      if (event.source !== window.parent || event.data?.type !== 'tile-tools:resume-project' || !event.data.payload) return;
+      try {
+        const resumedProject = normalizeProject(event.data.payload as Project);
+        setProject(resumedProject);
+        setHistory(createEmptyHistory());
+        setSelectedPageId(resumedProject.pages[0]?.id ?? '');
+        setSelectedZoneId(null);
+        registryProjectIdRef.current = String(event.data.projectId || `local:pdf:${resumedProject.id}`);
+        registryServerIdRef.current = event.data.serverId ? String(event.data.serverId) : null;
+        registryStatusRef.current = event.data.projectStatus === 'done' ? 'done' : 'active';
+        if (event.data.resumedFromProjects) {
+          setStorageWarning('Проект открыт. Статус изменён на «В работе».');
+        }
+        track('document_loaded', {
+          ...projectAnalyticsProperties(resumedProject),
+          source: 'tile_tools_projects'
+        });
+      } catch {
+        setStorageWarning('Не удалось открыть проект: сохранённые данные повреждены.');
+      }
+    };
+    window.addEventListener('message', handleResumeProject);
+    return () => window.removeEventListener('message', handleResumeProject);
   }, []);
 
   useEffect(() => {
@@ -730,12 +770,50 @@ export function App() {
     };
   }
 
-  function createProjectFromPreset(preset: Project['preset'], source = 'preset') {
+  function openPresetPageSelection(preset: Project['preset'], source = 'preset') {
     const nextProject = createProjectWithDefaultScheme(preset);
-    activateCreatedProject(nextProject, source);
-    track('document_preset_selected', {
+    setPendingPresetSelection({ project: nextProject, source });
+    track('document_preset_pages_opened', {
       ...projectAnalyticsProperties(nextProject),
       preset,
+      source
+    });
+  }
+
+  function applyPresetPageSelection(selectedPageIds: string[], mode: PresetApplyMode) {
+    if (!pendingPresetSelection || selectedPageIds.length === 0) return;
+    const { project: presetProject, source } = pendingPresetSelection;
+    const nextProject = applySelectedPresetPages(projectSnapshot, presetProject, selectedPageIds, mode);
+    setPendingPresetSelection(null);
+
+    if (mode === 'replace') {
+      registryStatusRef.current = 'active';
+      setProject(nextProject);
+      resetProjectHistory();
+      focusPage(nextProject.pages[0]?.id ?? null);
+      track('document_created', {
+        ...projectAnalyticsProperties(nextProject),
+        source,
+        selectedPageCount: selectedPageIds.length,
+        applyMode: mode
+      });
+    } else {
+      const firstAddedPage = nextProject.pages[projectSnapshot.pages.length];
+      updateProject(() => nextProject);
+      focusPage(firstAddedPage?.id ?? null);
+      trackProjectEvent('document_preset_pages_added', {
+        preset: presetProject.preset,
+        selectedPageCount: selectedPageIds.length,
+        applyMode: mode,
+        source
+      });
+    }
+
+    track('document_preset_selected', {
+      ...projectAnalyticsProperties(nextProject),
+      preset: presetProject.preset,
+      selectedPageCount: selectedPageIds.length,
+      applyMode: mode,
       source
     });
   }
@@ -748,12 +826,8 @@ export function App() {
     });
   }
 
-  async function openPresetFromLibrary(preset: Project['preset']) {
-    if (!await confirmProjectReplacement(
-      'Заменить текущий проект?',
-      'Текущий документ в редакторе будет заменён выбранным готовым шаблоном.'
-    )) return;
-    createProjectFromPreset(preset, 'page_library');
+  function openPresetFromLibrary(preset: Project['preset']) {
+    openPresetPageSelection(preset, 'page_library');
   }
 
   async function createEmptyDocument() {
@@ -926,6 +1000,20 @@ export function App() {
     );
   }
 
+  function saveCompletedProject() {
+    registryStatusRef.current = 'done';
+    persistCurrentProjectSnapshot(
+      saveProjectToLibrary,
+      setSavedProjects,
+      {
+        successMessage: 'Проект сохранён со статусом «Завершён»',
+        saveTarget: 'local_library',
+        errorAction: 'save_completed_project',
+        errorFallbackMessage: 'Не удалось сохранить завершённый проект.'
+      }
+    );
+  }
+
   function saveCurrentProjectAsTemplate() {
     persistCurrentProjectSnapshot(
       saveProjectAsTemplate,
@@ -1039,6 +1127,12 @@ export function App() {
 
   const topBarActions = [
     {
+      label: 'Сохранить проект',
+      icon: <Save size={18} />,
+      onClick: saveCompletedProject,
+      variant: 'ghost' as const
+    },
+    {
       label: 'Выгрузить PDF',
       icon: <Download size={18} />,
       onClick: openExportCheck,
@@ -1093,34 +1187,21 @@ export function App() {
         selectedSchemeId={serviceSettings.defaultDocumentScheme ?? 'classic'}
         onSchemeChange={applyDocumentScheme}
         onResetDesignToScheme={resetDesignToSelectedScheme}
-        onOpenHelp={() => setSiteInfoKind('help')}
-        onOpenAbout={() => setSiteInfoKind('about')}
         actions={topBarActions}
       />
 
-      <ResizableWorkspace>
-        <PageLibrary
-          currentPreset={project.preset}
-          projectTitle={project.title}
-          renderSettings={renderSettings}
-          initialPresetsOpen={initialDebugView.openPresets}
-          onProjectTitleChange={(title) => updateProject((current) => ({ ...current, title }))}
-          onPresetChange={openPresetFromLibrary}
-          userTemplates={userTemplates}
-          onApplyUserTemplate={openUserTemplate}
-          onDeleteUserTemplate={removeUserTemplate}
-          onAddPage={addPage}
-          onApplyPageFormat={(pageFormat) => updateProject((current) => ({ ...current, pageFormat }))}
-        />
-
-        <section className="work-area">
+      <main className="workspace pdf-workspace-two-pane">
+        <section className="work-area pdf-canvas-column">
           <Canvas
             page={selectedPage}
             renderSettings={renderSettings}
             selectedZoneId={selectedZoneId}
-            onSelectZone={selectZone}
+            onSelectZone={(zoneId) => {
+              selectZone(zoneId);
+              if (zoneId) setWorkspaceTab('editor');
+            }}
             onImageDrop={handleImageDrop}
-            onCreateFromPreset={createProjectFromPreset}
+            onCreateFromPreset={(preset) => openPresetPageSelection(preset, 'empty_canvas')}
             userTemplates={userTemplates}
             onCreateFromUserTemplate={openUserTemplate}
             onCommitPageLayout={(page) => updateProject((current) => ({
@@ -1128,25 +1209,9 @@ export function App() {
               pages: current.pages.map((item) => item.id === page.id ? page : item)
             }))}
           />
-
-          <DocumentPageStrip
-            pages={pages}
-            renderSettings={renderSettings}
-            selectedPageId={selectedPage?.id ?? ''}
-            onSelectPage={(pageId) => {
-              trackProjectEvent('page_selected', { pageId });
-              focusPage(pageId);
-            }}
-            onDuplicate={duplicatePage}
-            onDelete={removePage}
-            onMove={movePage}
-            onReorder={reorderPages}
-            onAddPage={addPage}
-            onAddBlankPage={addBlankPage}
-          />
         </section>
 
-        <aside className="right-stack">
+        <aside className="pdf-side-panel">
           <section className="right-toolbar" aria-label="Быстрые действия">
             <button className="btn btn-ghost action-short-btn" onClick={createEmptyDocument} title="Новый документ">
               <Plus size={18} />
@@ -1166,27 +1231,104 @@ export function App() {
             </button>
           </section>
 
-          <RightEditorPanel
-            zone={selectedZone}
-            onChange={handleZoneChange}
-            recentCustomColors={serviceSettings.recentCustomColors ?? []}
-            onRememberCustomColor={rememberCustomColor}
-            onApplyLogoStyleToAllPages={applyLogoStyleToAllPages}
-            onApplyZoneStyleToSameRole={applyZoneStyleToSameRole}
-            documentColors={{
-              documentTheme: project.documentTheme,
-              documentAccent: project.documentAccent,
-              documentAccentColor: project.documentAccentColor,
-              documentBackgroundColor: project.documentBackgroundColor,
-              documentTextPalette: project.documentTextPalette,
-              documentTextPrimaryColor: project.documentTextPrimaryColor,
-              documentTextSecondaryColor: project.documentTextSecondaryColor
-            }}
-          />
+          <nav className="pdf-workspace-tabs" role="tablist" aria-label="Рабочие панели">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={workspaceTab === 'templates'}
+              className={workspaceTab === 'templates' ? 'active' : ''}
+              onClick={() => setWorkspaceTab('templates')}
+            >
+              <LayoutTemplate size={17} />
+              <span>Шаблоны</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={workspaceTab === 'editor'}
+              className={workspaceTab === 'editor' ? 'active' : ''}
+              onClick={() => setWorkspaceTab('editor')}
+            >
+              <SlidersHorizontal size={17} />
+              <span>Редактирование</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={workspaceTab === 'pages'}
+              className={workspaceTab === 'pages' ? 'active' : ''}
+              onClick={() => setWorkspaceTab('pages')}
+            >
+              <Files size={17} />
+              <span>Страницы</span>
+              <small>{pages.length}</small>
+            </button>
+          </nav>
 
-          <VilrayCTA placement="right_panel" onOpenMaterials={(variantId) => openVilrayMaterials('right_cta', variantId)} />
+          <div className="pdf-side-panel-content">
+            <section className="pdf-tab-pane" role="tabpanel" hidden={workspaceTab !== 'templates'}>
+              <PageLibrary
+                currentPreset={project.preset}
+                projectTitle={project.title}
+                renderSettings={renderSettings}
+                initialPresetsOpen={initialDebugView.openPresets}
+                onProjectTitleChange={(title) => updateProject((current) => ({ ...current, title }))}
+                onPresetChange={openPresetFromLibrary}
+                userTemplates={userTemplates}
+                onApplyUserTemplate={openUserTemplate}
+                onDeleteUserTemplate={removeUserTemplate}
+                onAddPage={addPage}
+                onApplyPageFormat={(pageFormat) => updateProject((current) => ({ ...current, pageFormat }))}
+              />
+            </section>
+
+            <section className="pdf-tab-pane" role="tabpanel" hidden={workspaceTab !== 'editor'}>
+              <RightEditorPanel
+                zone={selectedZone}
+                onChange={handleZoneChange}
+                recentCustomColors={serviceSettings.recentCustomColors ?? []}
+                onRememberCustomColor={rememberCustomColor}
+                onApplyLogoStyleToAllPages={applyLogoStyleToAllPages}
+                onApplyZoneStyleToSameRole={applyZoneStyleToSameRole}
+                documentColors={{
+                  documentTheme: project.documentTheme,
+                  documentAccent: project.documentAccent,
+                  documentAccentColor: project.documentAccentColor,
+                  documentBackgroundColor: project.documentBackgroundColor,
+                  documentTextPalette: project.documentTextPalette,
+                  documentTextPrimaryColor: project.documentTextPrimaryColor,
+                  documentTextSecondaryColor: project.documentTextSecondaryColor
+                }}
+              />
+            </section>
+
+            <section className="pdf-tab-pane pdf-pages-tab" role="tabpanel" hidden={workspaceTab !== 'pages'}>
+              <DocumentPageStrip
+                pages={pages}
+                renderSettings={renderSettings}
+                selectedPageId={selectedPage?.id ?? ''}
+                onSelectPage={(pageId) => {
+                  trackProjectEvent('page_selected', { pageId });
+                  focusPage(pageId);
+                }}
+                onDuplicate={duplicatePage}
+                onDelete={removePage}
+                onMove={movePage}
+                onReorder={reorderPages}
+                onAddPage={addPage}
+                onAddBlankPage={addBlankPage}
+              />
+            </section>
+          </div>
+
+          <aside className="service-ad-card" aria-label="Vilray Studio">
+            <small>VILRAY STUDIO</small>
+            <strong>Нужна профессиональная подача проекта?</strong>
+            <span>Визуализации, каталоги и материалы для продаж.</span>
+            <a href="/index.php?page=services" target="_top">Перейти к услуге →</a>
+          </aside>
         </aside>
-      </ResizableWorkspace>
+      </main>
       {storageWarning && (
         <div className="storage-warning" role="status">
           <span>{storageWarning}</span>
@@ -1242,6 +1384,15 @@ export function App() {
           tone={confirmState.tone}
           onConfirm={() => resolveConfirmation(true)}
           onCancel={() => resolveConfirmation(false)}
+        />
+      )}
+
+      {pendingPresetSelection && pendingPresetRenderSettings && (
+        <PresetPagesModal
+          presetProject={pendingPresetSelection.project}
+          renderSettings={pendingPresetRenderSettings}
+          onApply={applyPresetPageSelection}
+          onClose={() => setPendingPresetSelection(null)}
         />
       )}
     </div>

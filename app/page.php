@@ -27,6 +27,8 @@ function tt_render_page(string $page): void
         'partners' => 'Для партнёров',
         'favorites' => 'Избранное',
         'account' => 'Личный кабинет',
+        'about' => 'О сервисе',
+        'help' => 'Помощь',
     ];
     $title = $titles[$page] ?? 'Tile Tools';
 

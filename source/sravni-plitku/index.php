@@ -1,14 +1,19 @@
 <?php
-/* index.php — точка входа. Гость -> публичный лендинг, вошедший -> визуализатор.
-   Данные пользователя передаются в JS через window.SP_USER. */
+/* index.php — точка входа непосредственно в визуализатор.
+   Общая оболочка Tile Tools отвечает за лендинг и личный кабинет. */
 require_once __DIR__ . '/auth/functions.php';
 app_session_start();
-// Не вошёл — показываем публичный лендинг, а не форму входа.
-if (!current_user()) { header('Location: landing.php'); exit; }
-$user = require_login();   // вошёл: проверка доступа (бан/ограничение/одобрение)
-ensure_month_reset($user);
+$user = current_user();
+if ($user) {
+    [$allowed] = access_gate($user);
+    if ($allowed) {
+        ensure_month_reset($user);
+    } else {
+        $user = null;
+    }
+}
 
-$sp = [
+$sp = $user ? [
     'id'        => (int)$user['id'],
     'name'      => trim($user['first_name'] . ' ' . $user['last_name']),
     'email'     => $user['email'],
@@ -17,7 +22,7 @@ $sp = [
     'monthly'   => (int)$user['downloads_monthly'],
     'limit'     => effective_limit($user),
     'csrf'      => csrf_token(),
-];
+] : null;
 
 $html = file_get_contents(__DIR__ . '/index.html');
 $inject  = '<script>window.SP_USER = ' . json_encode($sp, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . ';</script>' . "\n";

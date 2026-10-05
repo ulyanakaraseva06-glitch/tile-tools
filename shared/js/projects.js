@@ -6,7 +6,7 @@
   const STATUS_LABELS = { draft: 'Черновик', active: 'В работе', done: 'Завершён', archived: 'Архив' };
   const TYPE_LABELS = { visualization: 'Сравни плитку', calculation: 'Посчитай плитку', pdf: 'PDF и документы' };
   const ROUTES = { visualization: '/index.php?page=visualizer', calculation: '/index.php?page=calculator', pdf: '/index.php?page=pdf' };
-  const els = { list: root.querySelector('[data-project-list]'), empty: root.querySelector('[data-project-empty]'), summary: root.querySelector('[data-project-summary]'), search: root.querySelector('[data-project-search]'), status: root.querySelector('[data-project-status]'), type: root.querySelector('[data-project-type]'), sort: root.querySelector('[data-project-sort]'), dialog: document.querySelector('[data-project-dialog]') };
+  const els = { list: root.querySelector('[data-project-list]'), empty: root.querySelector('[data-project-empty]'), summary: root.querySelector('[data-project-summary]'), search: document.querySelector('[data-project-search]'), status: document.querySelector('[data-project-status]'), type: document.querySelector('[data-project-type]'), sort: document.querySelector('[data-project-sort]'), dialog: document.querySelector('[data-project-dialog]') };
   let projects = [];
   let view = 'all';
   const safeParse = (raw, fallback = null) => { try { return raw ? JSON.parse(raw) : fallback; } catch (_) { return fallback; } };
@@ -62,6 +62,7 @@
     if (serverId) { try { await fetch(`/api/projects/item.php?id=${encodeURIComponent(serverId)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.content || '' }, body: JSON.stringify({ status: project.status }) }); } catch (_) {} }
   }
   async function resume(project) {
+    await updateStatus(project, 'active');
     let payload = project.payload;
     if (!payload && project.source === 'server') { try { const response = await fetch(`/api/projects/item.php?id=${encodeURIComponent(project.id)}`); if (response.ok) payload = (await response.json()).project?.payload; } catch (_) {} }
     if (payload) {
@@ -81,8 +82,8 @@
       saveLocalChange(project);
     } catch (_) { project.favorite = !adding; render(); }
   }
-  root.addEventListener('input', (event) => { if (event.target.matches('[data-project-search],[data-project-status],[data-project-type],[data-project-sort]')) render(); });
-  root.addEventListener('change', (event) => { if (event.target.matches('[data-project-status],[data-project-type],[data-project-sort]')) { render(); return; } if (!event.target.matches('[data-project-status-change]')) return; const project = projects.find((item) => item.id === event.target.closest('[data-project-id]')?.dataset.projectId); if (project) void updateStatus(project, event.target.value); });
+  document.addEventListener('input', (event) => { if (event.target.matches('[data-project-search],[data-project-status],[data-project-type],[data-project-sort]')) render(); });
+  document.addEventListener('change', (event) => { if (event.target.matches('[data-project-status],[data-project-type],[data-project-sort]')) { render(); return; } if (!event.target.matches('[data-project-status-change]')) return; const project = projects.find((item) => item.id === event.target.closest('[data-project-id]')?.dataset.projectId); if (project) void updateStatus(project, event.target.value); });
   root.addEventListener('click', (event) => {
     const viewButton = event.target.closest('[data-project-view]'); if (viewButton) { view = viewButton.dataset.projectView; root.querySelectorAll('[data-project-view]').forEach((button) => button.classList.toggle('is-active', button === viewButton)); render(); return; }
     const row = event.target.closest('[data-project-id]'); const project = row && projects.find((item) => item.id === row.dataset.projectId);

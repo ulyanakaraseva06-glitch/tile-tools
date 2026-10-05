@@ -1,0 +1,1 @@
+var e=[`/brand/`,`/landing/`,`/placeholders/`];function t(t){return!t||!e.some(e=>t.startsWith(e))?t:`${`/`.endsWith(`/`)?`/`:`//`}${t.replace(/^\/+/,``)}`}export{t};

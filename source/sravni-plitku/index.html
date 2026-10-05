@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>СравниПлитку — Визуализатор плитки</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="stylevis.css"/>
+  <link rel="stylesheet" href="stylevis.css?v=20261001-1"/>
 </head>
 <body>
 
@@ -14,24 +14,6 @@
   <div class="header-scroll" id="headerScroll">
   <div class="header-inner">
   <div class="header-left">
-    <div class="header-logo">
-      <img src="images/logo.svg" alt="СравниПлитку"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <!-- Fallback logo if SVG not found -->
-      <div style="display:none;align-items:center;gap:10px">
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-          <rect x="1" y="1" width="15" height="15" rx="2.5" fill="#6C47D4"/>
-          <rect x="20" y="1" width="15" height="15" rx="2.5" fill="#6C47D4" opacity="0.55"/>
-          <rect x="1" y="20" width="15" height="15" rx="2.5" fill="#6C47D4" opacity="0.55"/>
-          <rect x="20" y="20" width="15" height="15" rx="2.5" fill="#6C47D4"/>
-        </svg>
-        <div class="logo-text">
-          <span class="logo-top">СРАВНИ</span>
-          <span class="logo-bottom">ПЛИТКУ</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Регулятор освещения (температура) — слева в шапке, всегда виден -->
     <div class="header-light" id="headerLight">
       <div class="hl-control">
@@ -76,14 +58,6 @@
       </svg>
       <span>Сбросить зоны</span>
     </button>
-    <button class="header-btn" id="btnHowto" title="Видео-инструкция: как пользоваться">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9.5 9.3a2.6 2.6 0 0 1 4.8 1.1c0 1.7-2.4 2-2.4 3.3" stroke-linecap="round"/>
-        <line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="2.4"/>
-      </svg>
-      <span>Как тут работать?</span>
-    </button>
     <button class="header-btn header-btn--export" id="btnExport" title="Сформировать единое изображение в JPG">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
         <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
@@ -91,12 +65,6 @@
         <text x="12" y="18" font-size="6.2" font-weight="800" fill="currentColor" stroke="none" text-anchor="middle" font-family="Manrope, sans-serif">JPG</text>
       </svg>
       <span>Сформировать изображение</span>
-    </button>
-    <button class="header-btn header-btn--user" id="btnUser" title="Личный кабинет">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
     </button>
   </div>
   </div><!-- /.header-inner -->
@@ -176,6 +144,13 @@
       <input type="text" id="searchInput" placeholder="Поиск плитки…" autocomplete="off"/>
     </div>
 
+    <!-- Room picker -->
+    <div class="filter-dropdown room-picker-dropdown" data-room-picker>
+      <span class="filter-label" id="roomPickerLabel">Выберите помещение</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="filter-dropdown__menu" id="roomPickerMenu"></div>
+    </div>
+
     <!-- Filter dropdowns -->
     <div class="filters-grid">
       <div class="filter-dropdown" data-filter="color">
@@ -183,7 +158,7 @@
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         <div class="filter-dropdown__menu" id="dropdown-color"></div>
       </div>
-      <div class="filter-dropdown" data-filter="size">
+      <div class="filter-dropdown visualizer-size-filter-preserved" data-filter="size" aria-hidden="true">
         <span class="filter-label">Размер</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         <div class="filter-dropdown__menu" id="dropdown-size"></div>
@@ -214,21 +189,15 @@
     <!-- Tile grid -->
     <div class="tile-grid" id="tileGrid"></div>
 
-    <!-- Низ панели: серая зона основного фона; пагинация и реклама — отдельные карточки на ней -->
+    <!-- Низ панели: пагинация -->
     <div class="catalog-foot">
-      <!-- Pagination -->
       <div class="pagination" id="pagination"></div>
-
-      <!-- Промо Контент-студии Vilray (отдельная карточка, не кликается целиком) -->
-      <div class="promo-card">
-        <div class="promo-card__logo">
-          <img src="images/logo-vilray.svg" alt="Vilray Studio"/>
-        </div>
-        <div class="promo-card__body">
-          <p class="promo-card__text">Контент-студия <a href="https://vilraystudio.ru" target="_blank" rel="noopener">vilraystudio.ru</a> — профессиональные 3D-рендерные визуализации и рекламный контент.</p>
-          <a class="promo-card__cta" href="https://vilraystudio.ru" target="_blank" rel="noopener">Заказать персональный контент</a>
-        </div>
-      </div>
+      <aside class="service-ad-card" aria-label="Vilray Studio">
+        <small>VILRAY STUDIO</small>
+        <strong>Нужна профессиональная подача проекта?</strong>
+        <span>Визуализации, каталоги и материалы для продаж.</span>
+        <a href="/index.php?page=services" target="_top">Перейти к услуге →</a>
+      </aside>
     </div>
 
   </aside>
@@ -276,6 +245,6 @@
 </div>
 
 <script src="export-image.js"></script>
-<script src="betavis.js"></script>
+<script src="betavis.js?v=20260930-3"></script>
 </body>
 </html>

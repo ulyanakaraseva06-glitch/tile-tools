@@ -1,5 +1,5 @@
 Options -Indexes
-DirectoryIndex index.php
+DirectoryIndex index.php index.html
 
 <FilesMatch "^(config|\.env)">
   Require all denied

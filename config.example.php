@@ -35,6 +35,8 @@ return [
     ],
     'notifications' => [
         'lead_email_to' => '',
+        'feedback_email_to' => 'info@vilraystudio.ru',
+        'password_reset_from' => 'Tile Tools <info@vilraystudio.ru>',
         'telegram_bot_token' => '',
         'telegram_chat_id' => '',
     ],

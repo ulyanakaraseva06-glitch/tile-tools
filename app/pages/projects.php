@@ -20,16 +20,6 @@
   </aside>
 
   <section class="projects-content">
-    <header class="projects-heading">
-      <div><h1>Проекты</h1><p>Управляйте визуализациями, расчётами и PDF-документами в одном месте.</p></div>
-      <button class="button button-primary" type="button" data-new-project>＋ Новый проект</button>
-    </header>
-    <div class="projects-toolbar">
-      <label class="projects-search"><span>⌕</span><input type="search" placeholder="Поиск по названию проекта…" data-project-search></label>
-      <select class="input" data-project-status><option value="">Все статусы</option><option value="draft">Черновик</option><option value="active">В работе</option><option value="done">Завершён</option><option value="archived">Архив</option></select>
-      <select class="input" data-project-type><option value="">Все типы</option><option value="visualization">Сравни плитку</option><option value="calculation">Посчитай плитку</option><option value="pdf">PDF и документы</option></select>
-      <select class="input" data-project-sort><option value="updated-desc">По дате (сначала новые)</option><option value="updated-asc">По дате (сначала старые)</option><option value="title">По названию</option></select>
-    </div>
     <div class="projects-table-wrap panel-card">
       <div class="projects-table-head"><span>Проект</span><span>Сервис</span><span>Дата изменения</span><span>Содержимое</span><span>Статус</span><span>Действия</span></div>
       <div data-project-list></div>
@@ -39,7 +29,7 @@
   </section>
 
   <aside class="projects-rail" aria-label="Полезная информация">
-    <article class="projects-promo panel-card"><small>НОВАЯ КОЛЛЕКЦИЯ</small><div class="projects-promo-art marble"></div><h2>Материалы для вашего проекта</h2><p>Добавляйте плитку из общей медиатеки и продолжайте работу в любом модуле.</p><a class="button button-secondary" href="<?= tt_url('media') ?>">Открыть медиатеку →</a></article>
+    <article class="service-ad-card" aria-label="Vilray Studio"><small>VILRAY STUDIO</small><strong>Нужна профессиональная подача проекта?</strong><span>Визуализации, каталоги и материалы для продаж.</span><a href="<?= tt_url('services') ?>">Перейти к услуге →</a></article>
     <article class="projects-tip panel-card"><span>✦</span><div><h2>Все работы в одном месте</h2><p>Статус задаёт пользователь. Кнопка «Вернуться к работе» откроет нужный сервис и восстановит сохранённое состояние.</p></div></article>
   </aside>
 </section>

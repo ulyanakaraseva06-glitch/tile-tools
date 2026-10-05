@@ -44,7 +44,7 @@ input {
 
 .topbar {
   display: grid;
-  grid-template-columns: minmax(190px, 1fr) auto minmax(210px, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
   min-height: 0;
@@ -164,7 +164,7 @@ input {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 494px;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   min-height: 0;
   overflow: hidden;
   transition: grid-template-columns 240ms ease;
@@ -176,7 +176,7 @@ input {
   grid-template-rows: minmax(0, 1fr);
   min-width: 0;
   min-height: 0;
-  padding: 10px;
+  padding: 14px;
   overflow: hidden;
 }
 
@@ -904,9 +904,9 @@ input {
   min-width: 0;
   min-height: 0;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   overflow: hidden;
-  padding: 10px 12px;
+  padding: 14px 12px 10px;
   color: #5A5A70;
   background: #FFFFFF;
   border-left: 1px solid #E8DFF3;
@@ -2944,6 +2944,33 @@ input {
   box-shadow: 0 2px 8px rgba(143, 107, 184, 0.24);
 }
 
+.service-ad-card {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 132px;
+  min-height: 132px;
+  max-height: 132px;
+  flex: 0 0 auto;
+  padding: 15px 18px;
+  overflow: hidden;
+  border: 1px solid #e1d7ed;
+  border-radius: 14px;
+  color: #302840;
+  background-image: linear-gradient(90deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.48) 50%, rgba(248,244,252,.30) 100%), url('/shared/images/home-interior-1600.webp');
+  background-size: cover;
+  background-position: center 58%;
+  box-shadow: 0 8px 24px rgba(67, 48, 86, 0.09);
+}
+
+.service-ad-card small,
+.service-ad-card strong,
+.service-ad-card span { position: relative; z-index: 1; display: block; }
+.service-ad-card small { color: #8f71ad; font-size: 9px; font-weight: 800; letter-spacing: .15em; }
+.service-ad-card strong { margin: 6px 0 5px; max-width: 320px; font-size: 16px; font-weight: 800; line-height: 1.25; }
+.service-ad-card span { max-width: 360px; color: #645a71; font-size: 11px; font-weight: 600; line-height: 1.45; }
+.service-ad-card a { position: relative; z-index: 1; display: inline-block; margin-top: 9px; color: #69438d; font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 2px; }
+
 @media (min-width: 1021px) {
   .side-panel > *,
   .tile-card,
@@ -4165,7 +4192,7 @@ input {
 
 @media (min-width: 1021px) and (max-height: 760px) {
   .workspace {
-    grid-template-columns: minmax(0, 1fr) 480px;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   }
 
   .side-panel {

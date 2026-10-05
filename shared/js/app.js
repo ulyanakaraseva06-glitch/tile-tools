@@ -19,18 +19,22 @@
   }
   const storeProject = (incoming) => {
     if (!incoming || !['visualization', 'calculation', 'pdf'].includes(incoming.type) || !incoming.payload) return null;
-    const id = String(incoming.id || `${incoming.type}-${Date.now()}`);
+    const requestedId = String(incoming.id || `${incoming.type}-${Date.now()}`);
+    const current = readProjects();
+    const previous = current.find((item) => String(item.id) === requestedId
+      || (incoming.serverId && String(item.serverId || '') === String(incoming.serverId))
+      || String(item.serverId || '') === requestedId);
+    const id = String(previous?.id || requestedId);
     const syncVersion = (projectVersions.get(id) || 0) + 1;
     projectVersions.set(id, syncVersion);
     unsavedProjects.add(id);
-    const current = readProjects();
-    const previous = current.find((item) => String(item.id) === id);
     const project = {
       ...previous,
       ...incoming,
       id,
+      serverId: incoming.serverId || previous?.serverId || null,
       source: 'local',
-      status: previous?.status || incoming.status || 'active',
+      status: incoming.status || previous?.status || 'active',
       favorite: Boolean(previous?.favorite),
       syncVersion,
       pendingSync: Boolean(accountUserId),
@@ -106,13 +110,6 @@
     if (migrated) showNotice(`Гостевые проекты перенесены в аккаунт: ${migrated}.`);
   }
 
-  const navigationDialog = document.createElement('dialog');
-  navigationDialog.className = 'unsaved-navigation-dialog';
-  navigationDialog.innerHTML = '<div class="unsaved-navigation-icon">!</div><h2>Изменения ещё сохраняются</h2><p>Если перейти прямо сейчас, последние изменения могут не успеть сохраниться. Вы уверены, что хотите продолжить?</p><div><button class="button button-secondary" type="button" data-unsaved-stay>Остаться</button><button class="button button-primary" type="button" data-unsaved-leave>Перейти</button></div>';
-  document.body.appendChild(navigationDialog);
-  let pendingNavigation = '';
-  let navigationApproved = false;
-
   document.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-notice]');
     if (trigger) {
@@ -121,23 +118,8 @@
       return;
     }
 
-    const link = event.target.closest('a[href]');
-    if (!navigationApproved && link && !link.target && unsavedProjects.size > 0) {
-      const url = new URL(link.href, window.location.href);
-      if (url.origin === window.location.origin) {
-        event.preventDefault();
-        pendingNavigation = url.href;
-        navigationDialog.showModal();
-      }
-    }
-
-  });
-
-  navigationDialog.querySelector('[data-unsaved-stay]')?.addEventListener('click', () => { pendingNavigation = ''; navigationDialog.close(); });
-  navigationDialog.querySelector('[data-unsaved-leave]')?.addEventListener('click', () => {
-    if (!pendingNavigation) return;
-    navigationApproved = true;
-    window.location.href = pendingNavigation;
+    const menu = document.querySelector('[data-header-menu]');
+    if (menu?.open && !event.target.closest('[data-header-menu]')) menu.open = false;
   });
 
   window.addEventListener('tile-tools:auth-required', (event) => {
@@ -157,28 +139,147 @@
     }
   });
 
-  window.addEventListener('beforeunload', (event) => {
-    if (navigationApproved || unsavedProjects.size === 0) return;
-    event.preventDefault();
-    event.returnValue = '';
-  });
-
   const serviceFrame = document.querySelector('.service-frame');
+  const serviceToolbarHost = document.querySelector('[data-service-toolbar]');
+  const servicePage = ['visualizer', 'calculator', 'pdf'].find((name) => document.body.classList.contains(`page-${name}`));
+  const toolbarConfigs = {
+    visualizer: {
+      selector: '.app-header',
+      collapse: '.app-header{position:fixed!important;left:-200vw!important;top:0!important;width:100vw!important}.app-body{height:100vh!important;min-height:100vh!important}'
+    },
+    calculator: {
+      selector: '.app-shell > .topbar',
+      collapse: '.app-shell{grid-template-rows:minmax(0,1fr)!important}.app-shell>.topbar{position:fixed!important;left:-200vw!important;top:0!important;width:100vw!important}'
+    },
+    pdf: {
+      selector: '.app-shell > .top-bar',
+      collapse: '.app-shell>.top-bar{position:fixed!important;left:-200vw!important;top:0!important;width:100vw!important}.workspace{height:100vh!important;min-height:100vh!important}'
+    }
+  };
+
+  function fitMirroredToolbar(toolbar) {
+    if (!serviceToolbarHost || !toolbar?.isConnected) return;
+    const availableWidth = Math.max(1, serviceToolbarHost.clientWidth - 4);
+    toolbar.style.setProperty('zoom', '1');
+    toolbar.style.setProperty('width', `${availableWidth}px`, 'important');
+    toolbar.style.setProperty('min-width', `${availableWidth}px`, 'important');
+    const naturalWidth = Math.max(toolbar.scrollWidth, toolbar.getBoundingClientRect().width);
+    const scale = Math.min(1, availableWidth / Math.max(1, naturalWidth));
+    const layoutWidth = availableWidth / Math.max(scale, 0.01);
+    toolbar.style.setProperty('width', `${layoutWidth}px`, 'important');
+    toolbar.style.setProperty('min-width', `${layoutWidth}px`, 'important');
+    toolbar.style.setProperty('zoom', String(scale));
+    toolbar.dataset.toolbarScale = scale.toFixed(3);
+  }
+
+  function mirrorServiceToolbar() {
+    if (!serviceFrame || !serviceToolbarHost || !servicePage) return;
+    const config = toolbarConfigs[servicePage];
+    let frameDocument;
+    try { frameDocument = serviceFrame.contentDocument; } catch (_) { return; }
+    if (!frameDocument || !config) return;
+    const sourceToolbar = frameDocument.querySelector(config.selector);
+    if (!sourceToolbar) return;
+
+    let collapseStyle = frameDocument.querySelector('#tile-tools-unified-toolbar');
+    if (!collapseStyle) {
+      collapseStyle = frameDocument.createElement('style');
+      collapseStyle.id = 'tile-tools-unified-toolbar';
+      collapseStyle.textContent = config.collapse;
+      frameDocument.head.appendChild(collapseStyle);
+    }
+
+    const previousScroll = serviceToolbarHost.scrollLeft;
+    const clone = sourceToolbar.cloneNode(true);
+    clone.classList.add('mirrored-service-toolbar');
+    clone.removeAttribute('id');
+    const sourceNodes = [sourceToolbar, ...sourceToolbar.querySelectorAll('*')];
+    const cloneNodes = [clone, ...clone.querySelectorAll('*')];
+    const frameWindow = serviceFrame.contentWindow;
+    sourceNodes.forEach((sourceNode, index) => {
+      const cloneNode = cloneNodes[index];
+      if (!sourceNode?.style || !cloneNode?.style) return;
+      const computed = frameWindow.getComputedStyle(sourceNode);
+      for (const property of computed) cloneNode.style.setProperty(property, computed.getPropertyValue(property), computed.getPropertyPriority(property));
+    });
+
+    const sourceControls = [...sourceToolbar.querySelectorAll('button,input,select,textarea,a')];
+    const cloneControls = [...clone.querySelectorAll('button,input,select,textarea,a')];
+    cloneControls.forEach((control, index) => {
+      const source = sourceControls[index];
+      if (!source) return;
+      const tagName = control.tagName?.toLowerCase();
+      if (tagName === 'a') {
+        control.addEventListener('click', (event) => {
+          event.preventDefault();
+          source.click();
+        });
+        return;
+      }
+      if (tagName === 'button') {
+        control.addEventListener('click', (event) => {
+          event.preventDefault();
+          source.click();
+          window.setTimeout(mirrorServiceToolbar, 40);
+        });
+        return;
+      }
+      const forwardValue = (eventName) => {
+        if ('checked' in source && 'checked' in control) source.checked = control.checked;
+        source.value = control.value;
+        source.dispatchEvent(new frameWindow.Event(eventName, { bubbles: true }));
+        window.setTimeout(mirrorServiceToolbar, 30);
+      };
+      control.addEventListener('input', () => forwardValue('input'));
+      control.addEventListener('change', () => forwardValue('change'));
+    });
+
+    serviceToolbarHost.replaceChildren(clone);
+    serviceToolbarHost.hidden = false;
+    serviceToolbarHost.scrollLeft = previousScroll;
+    window.requestAnimationFrame(() => fitMirroredToolbar(clone));
+  }
+
   const resumedProjectId = new URLSearchParams(window.location.search).get('project');
   if (serviceFrame) {
+    window.addEventListener('resize', () => {
+      const toolbar = serviceToolbarHost?.querySelector('.mirrored-service-toolbar');
+      if (toolbar) window.requestAnimationFrame(() => fitMirroredToolbar(toolbar));
+    });
     serviceFrame.addEventListener('load', () => {
+      mirrorServiceToolbar();
+      try {
+        const frameDocument = serviceFrame.contentDocument;
+        if (frameDocument?.body) {
+          let toolbarRefreshTimer = 0;
+          new MutationObserver(() => {
+            window.clearTimeout(toolbarRefreshTimer);
+            toolbarRefreshTimer = window.setTimeout(mirrorServiceToolbar, 60);
+          }).observe(frameDocument.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'disabled', 'aria-pressed', 'checked'] });
+        }
+      } catch (_) { /* При внешнем адресе сервис продолжит работать со своей панелью. */ }
       let payload = null;
+      let resumedProject = null;
       if (resumedProjectId) {
         try { payload = JSON.parse(sessionStorage.getItem(`tile_tools_resume_${resumedProjectId}`) || 'null'); } catch (_) {}
-        if (!payload) payload = readProjects().find((item) => String(item.id) === resumedProjectId || String(item.serverId) === resumedProjectId)?.payload || null;
+        resumedProject = readProjects().find((item) => String(item.id) === resumedProjectId || String(item.serverId) === resumedProjectId) || null;
+        if (!payload) payload = resumedProject?.payload || null;
       } else {
         const pageType = { visualizer: 'visualization', calculator: 'calculation', pdf: 'pdf' }[new URLSearchParams(window.location.search).get('page') || ''];
         const candidates = [...readProjects(), ...(accountUserId ? readProjectRegistry(GUEST_PROJECTS_KEY) : [])]
           .filter((item) => item.type === pageType && item.payload)
           .sort((left, right) => new Date(right.updatedAt || 0) - new Date(left.updatedAt || 0));
-        payload = candidates[0]?.payload || null;
+        resumedProject = candidates[0] || null;
+        payload = resumedProject?.payload || null;
       }
-      if (payload) serviceFrame.contentWindow?.postMessage({ type: 'tile-tools:resume-project', payload }, '*');
+      if (payload) serviceFrame.contentWindow?.postMessage({
+        type: 'tile-tools:resume-project',
+        payload,
+        projectId: resumedProject?.id || resumedProjectId || null,
+        serverId: resumedProject?.serverId || null,
+        projectStatus: resumedProject?.status || 'active',
+        resumedFromProjects: Boolean(resumedProjectId)
+      }, '*');
     });
   }
   if (accountUserId) readProjects().filter((project) => project.pendingSync && project.payload).forEach(syncProject);

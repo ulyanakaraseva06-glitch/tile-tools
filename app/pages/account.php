@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__DIR__, 2) . '/shared/services.php';
+require_once dirname(__DIR__, 2) . '/shared/levels.php';
 
 $user = tt_current_user();
 $serviceRequests = [];
@@ -25,6 +26,11 @@ $statusLabels = ['new' => 'Новая', 'sent' => 'Передана', 'in_progre
 $accountName = tt_user_display_name($user);
 $accountInitials = tt_user_initials($user);
 $isAdmin = ($user['role'] ?? '') === 'admin';
+$levelProgress = null;
+$feedbackEmail = (string) (tt_config()['notifications']['feedback_email_to'] ?? 'info@vilraystudio.ru');
+if ($user && !$isAdmin) {
+    $levelProgress = tt_sync_user_level_quota(tt_pdo(), (int) $user['id']);
+}
 $adminStats = ['visitors' => 0, 'visitorsToday' => 0, 'users' => 0, 'projects' => 0, 'leads' => 0];
 $projectStats = ['visualization' => 0, 'calculation' => 0, 'pdf' => 0];
 $projectLabels = ['visualization' => 'Сравни плитку', 'calculation' => 'Посчитай плитку', 'pdf' => 'Плитка PDF'];
@@ -63,10 +69,10 @@ $maxProjectCount = max(1, ...array_values($projectStats));
       <h1><?= tt_escape($accountName) ?></h1>
       <span class="account-role"><?= tt_escape($roleLabels[$user['role']] ?? 'Пользователь') ?></span>
       <dl class="account-facts">
-        <div><dt>Никнейм</dt><dd><?= tt_escape($accountName) ?></dd></div>
+        <div><dt>Никнейм</dt><dd>@<?= tt_escape((string) ($user['nickname'] ?? $accountName)) ?></dd></div>
         <div><dt>Почта</dt><dd><?= tt_escape((string) $user['email']) ?></dd></div>
       </dl>
-      <p class="account-note">Никнейм формируется из имени и фамилии аккаунта. Если они не заполнены — из части почты до символа @.</p>
+      <p class="account-note">Никнейм можно сообщить друзьям: они укажут его при регистрации, и приглашение засчитается вашему уровню.</p>
       <form class="account-logout" method="post" action="/auth/logout.php"><input type="hidden" name="csrf" value="<?= tt_escape(tt_csrf_token()) ?>"><button type="submit">Выйти из аккаунта</button></form>
     </aside>
 
@@ -93,6 +99,40 @@ $maxProjectCount = max(1, ...array_values($projectStats));
       <section class="panel-card admin-dashboard-note"><strong>Как считается посещаемость</strong><p>Один посетитель — один браузер до регистрации. После входа визиты объединяются по аккаунту. Поисковые роботы не учитываются.</p></section>
     </main>
     <?php else: ?>
+    <div class="user-account-content">
+    <section class="account-level panel-card" data-account-level>
+      <header class="account-level-heading">
+        <div><p class="eyebrow">Рейтинг аккаунта</p><h2>Уровень <?= (int) $levelProgress['level'] ?> из 3</h2><p>Выполняйте задания, чтобы получить больше места для проектов и медиатеки.</p></div>
+        <div class="account-level-badge"><strong><?= (int) $levelProgress['quota_mb'] ?></strong><span>МБ</span><small>доступно</small></div>
+      </header>
+      <div class="account-level-track" aria-label="Текущий уровень: <?= (int) $levelProgress['level'] ?> из 3">
+        <?php for ($level = 1; $level <= 3; $level++): ?>
+          <div class="<?= $level <= (int) $levelProgress['level'] ? 'is-reached' : '' ?>"><i><?= $level < (int) $levelProgress['level'] ? '✓' : $level ?></i><span>Уровень <?= $level ?></span><small><?= [1 => '100 МБ', 2 => '200 МБ', 3 => '300 МБ'][$level] ?></small></div>
+        <?php endfor; ?>
+      </div>
+      <div class="account-level-tasks">
+        <article class="<?= (int) $levelProgress['referrals'] >= 2 ? 'is-complete' : '' ?>">
+          <span class="account-task-icon" aria-hidden="true">♙</span>
+          <div><h3>Пригласите двух друзей</h3><p>Попросите друзей указать при регистрации ваш никнейм <b>@<?= tt_escape((string) $user['nickname']) ?></b>.</p><div class="account-task-progress"><i style="width:<?= min(100, (int) $levelProgress['referrals'] * 50) ?>%"></i></div><small><?= min(2, (int) $levelProgress['referrals']) ?> из 2 регистраций</small></div>
+          <b class="account-task-state"><?= (int) $levelProgress['referrals'] >= 2 ? 'Готово' : '+ уровень 2' ?></b>
+        </article>
+        <article class="<?= $levelProgress['feedback_completed'] ? 'is-complete' : '' ?>">
+          <span class="account-task-icon" aria-hidden="true">✉</span>
+          <div><h3>Поделитесь обратной связью</h3><p>Напишите, что удобно в Tile Tools и что стоит улучшить. Задание откроет третий уровень после двух приглашений.</p>
+            <?php if (!$levelProgress['feedback_completed']): ?>
+              <div class="account-task-actions"><a class="button button-secondary" href="mailto:<?= tt_escape($feedbackEmail) ?>?subject=<?= rawurlencode('Обратная связь о Tile Tools от @' . (string) $user['nickname']) ?>" data-feedback-mail>Написать по почте</a><button class="button button-primary" type="button" data-feedback-confirm hidden>Я отправил письмо</button></div>
+            <?php endif; ?>
+          </div>
+          <b class="account-task-state"><?= $levelProgress['feedback_completed'] ? 'Готово' : '+ уровень 3' ?></b>
+        </article>
+        <article class="account-task-future <?= (int) $levelProgress['vote_participations'] >= 3 ? 'is-complete' : '' ?>">
+          <span class="account-task-icon" aria-hidden="true">◇</span>
+          <div><h3>Участвуйте в голосованиях</h3><p>Альтернативный путь к третьему уровню. Голосования появятся в следующих обновлениях.</p><small><?= min(3, (int) $levelProgress['vote_participations']) ?> из 3 голосований</small></div>
+          <b class="account-task-state">Скоро</b>
+        </article>
+      </div>
+      <?php if ((int) $levelProgress['level'] === 2 && !$levelProgress['feedback_completed'] && (int) $levelProgress['vote_participations'] < 3): ?><p class="account-level-note">Второй уровень уже открыт. Для третьего достаточно оставить обратную связь или позднее принять участие в трёх голосованиях.</p><?php endif; ?>
+    </section>
     <main class="account-requests panel-card">
       <header class="account-requests-heading">
         <div><p class="eyebrow">История обращений</p><h2>Мои заявки на услуги</h2><p>Здесь отображаются только заявки, отправленные из этого аккаунта.</p></div>
@@ -128,6 +168,7 @@ $maxProjectCount = max(1, ...array_values($projectStats));
         </div>
       <?php endif; ?>
     </main>
+    </div>
     <?php endif; ?>
   <?php endif; ?>
 </section>

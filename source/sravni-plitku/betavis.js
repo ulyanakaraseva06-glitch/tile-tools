@@ -88,7 +88,10 @@ TILES_DB.sort((a, b) => (b.hasRealImg ? 1 : 0) - (a.hasRealImg ? 1 : 0));
 // Первое значение поля-массива (для подписей/заглушек, где нужна одна величина).
 const fv = (t, k) => (Array.isArray(t[k]) ? (t[k][0] || '') : (t[k] || ''));
 // Рендер плитки для конкретной комнаты (R1–R5), либо null.
-const renderForRoom = (tile, rid) => (tile && tile.renders ? (tile.renders[rid] || null) : null);
+const renderForRoom = (tile, rid) => {
+  const original = tile && tile.renders ? (tile.renders[rid] || null) : null;
+  return original ? original.replace(/\.jpg$/i, '-web.jpg') : null;
+};
 const tileFaces = tile => tile ? (tile.faces && tile.faces.length ? tile.faces : (tile.tileImg ? [tile.tileImg] : [])) : [];
 function tileAspect(tile) {
   const match = String(fv(tile, 'size')).match(/(\d+(?:[.,]\d+)?)\D+(\d+(?:[.,]\d+)?)/);
@@ -207,6 +210,7 @@ const favKey = v => String(v == null ? '' : v).trim();
 
 const S = {
   roomId: 'bathroom_m',
+  roomPickerTouched: false,
   zoneId: null,           // currently selected zone
   assignments: {},        // 'roomId.zoneId' → tileId
   favorites: new Set(),
@@ -863,15 +867,35 @@ function renderRooms() {
     </div>`).join('');
 
   list.querySelectorAll('[data-room]').forEach(el => {
-    el.addEventListener('click', () => {
-      S.roomId = el.dataset.room;
-      S.zoneId = null;
-      renderRooms();
-      renderScene();
-      updateZoneBadge();
-      updateHint();
-    });
+    el.addEventListener('click', () => selectRoom(el.dataset.room));
   });
+
+  const pickerLabel = $id('roomPickerLabel');
+  const pickerMenu = $id('roomPickerMenu');
+  const activeRoom = ROOMS.find(room => room.id === S.roomId) || ROOMS[0];
+  if (pickerLabel) pickerLabel.textContent = S.roomPickerTouched ? activeRoom.name : 'Выберите помещение';
+  if (pickerMenu) {
+    pickerMenu.innerHTML = ROOMS.map(room => `
+      <div class="room-picker-option ${room.id === S.roomId ? 'selected' : ''}" data-room-option="${room.id}">
+        <img src="${room.img}" alt=""/>
+        <span>${room.name}</span>
+      </div>`).join('');
+  }
+}
+
+function selectRoom(roomId) {
+  if (!ROOMS.some(room => room.id === roomId)) return;
+  S.roomId = roomId;
+  S.roomPickerTouched = true;
+  S.zoneId = null;
+  S.inlineZoom = 1;
+  S.inlinePanX = 0;
+  S.inlinePanY = 0;
+  renderRooms();
+  renderScene();
+  renderCatalog();
+  updateZoneBadge();
+  updateHint();
 }
 
 /* ================================================================
@@ -975,66 +999,6 @@ function applyTileToZone(tid, zoneId) {
   toast(`Применено: ${tile?.shortName || tile?.name}`);
   renderScene();
   renderCatalog();
-}
-
-// Применить плитку СРАЗУ КО ВСЕМ зонам текущего интерьера (из попапа).
-// Попап намеренно НЕ закрываем.
-function applyTileToAllZones(tid) {
-  const tile = TILES_DB.find(t => t.id === tid);
-  if (!tile) return;
-  const zones = roomZones(S.roomId).map(z => z.id);
-
-  const setAll = () => {
-    zones.forEach(zid => { S.assignments[assignKey(S.roomId, zid)] = tid; });
-    markServiceDirty();
-  };
-
-  if (tile.hasRealImg && renderForRoom(tile, S.roomId) && roomHasRealRenders(S.roomId)) {
-    const token = ++S.loadToken;
-    S.loadingZones = new Set(zones);   // анимация на всех зонах сразу
-    renderScene();
-
-    let done = false;
-    const commit = () => {
-      if (done || token !== S.loadToken) return;
-      done = true;
-      S.loadingZones = new Set();
-      setAll();
-      renderScene();
-      renderCatalog();
-      refreshOpenPopupApplyState(tid);
-      trackEvent('tile_apply_all', Object.assign(
-        { scene_id: S.roomId, selection: getCurrentSelection() }, tileMeta(tid)));
-      toast(`Применено ко всем зонам: ${tile.shortName || tile.name}`);
-    };
-    const img = new Image();
-    img.onload = commit;
-    img.onerror = commit;
-    img.src = `${DOMAIN}${renderForRoom(tile, S.roomId)}`;
-    if (img.complete) commit();
-    return;
-  }
-
-  // Без настоящего рендера — мгновенно
-  setAll();
-  renderScene();
-  renderCatalog();
-  refreshOpenPopupApplyState(tid);
-  trackEvent('tile_apply_all', Object.assign(
-    { scene_id: S.roomId, selection: getCurrentSelection() }, tileMeta(tid)));
-  toast(`Применено ко всем зонам: ${tile.shortName || tile.name}`);
-}
-
-// Лёгкая обратная связь в открытом попапе: помечаем кнопку «Применено»
-function refreshOpenPopupApplyState(tid) {
-  const btn = $qs(`[data-apply-all="${tid}"]`);
-  if (!btn) return;
-  const allApplied = roomZones(S.roomId).every(z => S.assignments[assignKey(S.roomId, z.id)] === tid);
-  if (allApplied) {
-    btn.classList.add('popup-action-btn--active');
-    btn.classList.remove('popup-action-btn--primary');
-    btn.textContent = '✓ Применено ко всем зонам';
-  }
 }
 
 /* ================================================================
@@ -1153,8 +1117,6 @@ function renderCatalog() {
     const isApplied = S.zoneId && S.assignments[assignKey(S.roomId, S.zoneId)] === tile.id;
     const isFav = S.favorites.has(favKey(tile.id));
     const displayName = tile.shortName || tile.brand + ' ' + tile.name;
-    const allApplied = roomZones(S.roomId).length > 0 &&
-      roomZones(S.roomId).every(z => S.assignments[assignKey(S.roomId, z.id)] === tile.id);
     return `<div class="tile-card ${isApplied?'selected':''}" data-tid="${tile.id}" title="${tile.name}">
       <div class="tile-card__img">
         ${tileThumbHTML(tile)}
@@ -1172,9 +1134,6 @@ function renderCatalog() {
       </div>
       <div class="tile-card__info">
         <span class="tile-card__name">${displayName}</span>
-        <button class="tile-card__apply ${allApplied?'is-applied':''}" data-apply-all-card="${tile.id}">
-          ${allApplied ? '✓ Применено ко всем зонам' : 'Применить ко всем зонам'}
-        </button>
         <span class="tile-card__meta">${fv(tile,'size')} · ${fv(tile,'surface')}</span>
       </div>
     </div>`;
@@ -1249,7 +1208,7 @@ function buildFilterDropdowns() {
 
 function updateDropdownLabels() {
   const DEFAULT_LABELS = { color:'Цвет', size:'Размер', surface:'Поверхность', design:'Дизайн' };
-  $qsa('.filter-dropdown').forEach(dd => {
+  $qsa('.filter-dropdown[data-filter]').forEach(dd => {
     const key = dd.dataset.filter;
     const label = dd.querySelector('.filter-label');
     const sel = S.filters[key];
@@ -1340,15 +1299,6 @@ function showTileInfoPopup(tid) {
           </button>
         </div>
       </div>
-    </div>
-    <div class="popup-apply">
-      ${(() => {
-        const allApplied = roomZones(S.roomId).every(z => S.assignments[assignKey(S.roomId, z.id)] === tile.id);
-        return `<button class="popup-action-btn ${allApplied?'popup-action-btn--active':'popup-action-btn--primary'} popup-apply__all"
-          data-apply-all="${tile.id}">
-          ${allApplied ? '✓ Применено ко всем зонам' : 'Применить ко всем зонам'}
-        </button>`;
-      })()}
     </div>
     <div class="tile-info-props">${rows}</div>`;
 
@@ -1593,9 +1543,6 @@ function bindEvents() {
 
   // Tile grid clicks (delegated)
   $id('tileGrid').addEventListener('click', e => {
-    const applyCardBtn = e.target.closest('[data-apply-all-card]');
-    if (applyCardBtn) { e.stopPropagation(); applyTileToAllZones(applyCardBtn.dataset.applyAllCard); return; }
-
     const infoBtn = e.target.closest('[data-info]');
     if (infoBtn) { e.stopPropagation(); showTileInfoPopup(infoBtn.dataset.info); return; }
 
@@ -1616,6 +1563,12 @@ function bindEvents() {
 
   // Filter dropdowns
   document.addEventListener('click', e => {
+    const roomOption = e.target.closest('[data-room-option]');
+    if (roomOption) {
+      selectRoom(roomOption.dataset.roomOption);
+      closeAllDropdowns();
+      return;
+    }
     const opt = e.target.closest('.filter-option');
     if (opt) {
       const key = opt.dataset.filter;
@@ -1656,17 +1609,8 @@ function bindEvents() {
 
   // Header & render buttons
   $id('btnReset').addEventListener('click', resetAll);
-  const _howto = $id('btnHowto');
-  if (_howto) _howto.addEventListener('click', openHowto);
   setupHeaderScroll();
   $id('btnExport').addEventListener('click', onExport);
-  $id('btnUser').addEventListener('click', () => {
-    if (window.SP_USER && window.SP_USER.id) {
-      window.location.href = 'auth/cabinet.php';
-    } else {
-      window.location.href = 'auth/login.php';
-    }
-  });
 
   // Tabs in catalog panel
   $qsa('.catalog-tab').forEach(btn => {
@@ -1689,12 +1633,6 @@ function bindEvents() {
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>${nowFav ? 'В избранном' : 'В избранное'}`;
       return;                                     // попап НЕ закрываем
-    }
-    const applyAll = e.target.closest('[data-apply-all]');
-    if (applyAll) {
-      applyTileToAllZones(applyAll.dataset.applyAll);
-      // попап НЕ закрываем — по требованию
-      return;
     }
   });
 
@@ -1768,8 +1706,14 @@ window.addEventListener('message', event => {
   const payload = event.data.payload;
   if (!payload || !ROOMS.some(room => room.id === payload.roomId) || !payload.selection || typeof payload.selection !== 'object') return;
   S.roomId = payload.roomId;
+  S.roomPickerTouched = true;
   S.zoneId = null;
-  Object.entries(payload.selection).forEach(([zoneId, tileId]) => {
+  const validSelection = Object.entries(payload.selection).filter(([zoneId, tileId]) =>
+    roomZones(S.roomId).some(zone => zone.id === zoneId) && TILES_DB.some(tile => String(tile.id) === String(tileId))
+  );
+  const isLegacyMassSelection = validSelection.length === roomZones(S.roomId).length &&
+    new Set(validSelection.map(([, tileId]) => String(tileId))).size === 1;
+  (isLegacyMassSelection ? [] : validSelection).forEach(([zoneId, tileId]) => {
     if (roomZones(S.roomId).some(zone => zone.id === zoneId) && TILES_DB.some(tile => String(tile.id) === String(tileId))) {
       S.assignments[assignKey(S.roomId, zoneId)] = String(tileId);
     }

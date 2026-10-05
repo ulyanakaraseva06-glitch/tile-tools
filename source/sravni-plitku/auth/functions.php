@@ -7,6 +7,12 @@ require_once __DIR__ . '/db.php';
 /* ---------- Сессия ---------- */
 function app_session_start() {
     if (session_status() === PHP_SESSION_NONE) {
+        if (defined('SESSION_SAVE_PATH') && SESSION_SAVE_PATH !== '') {
+            if (!is_dir(SESSION_SAVE_PATH)) {
+                mkdir(SESSION_SAVE_PATH, 0750, true);
+            }
+            session_save_path(SESSION_SAVE_PATH);
+        }
         session_name(SESSION_NAME);
         session_start();
     }
