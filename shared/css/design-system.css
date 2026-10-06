@@ -499,6 +499,37 @@ body.page-about>.topbar>.topbar-context { flex:0 0 auto; }
 .about-faq-list details[open] summary::after { content:'−'; }
 .about-faq-list details p { margin:0 0 16px; color:var(--tt-text-secondary); font-size:12px; line-height:1.6; }
 
+/* Help page: reserve the main left workspace for a future tutorial video and
+   keep the service FAQ available as a compact right-hand reference. */
+body.page-help>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
+body.page-help>.topbar>.topbar-context { flex:0 0 auto; }
+.help-topbar-title { display:flex; flex:1 1 auto; min-width:0; flex-direction:column; justify-content:center; gap:2px; }
+.help-topbar-title strong { overflow:hidden; color:var(--tt-text); font-size:13px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.help-topbar-title span { overflow:hidden; color:var(--tt-text-secondary); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.help-workspace { display:grid; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:stretch; min-height:calc(100dvh - 112px); }
+.help-video { grid-column:1; min-width:0; padding:14px; display:flex; flex-direction:column; }
+.help-video-stage { position:relative; min-height:420px; flex:1 1 auto; overflow:hidden; border-radius:var(--tt-radius-md); background:#292133; }
+.help-video-stage::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(25,20,36,.68),rgba(49,37,61,.2)); }
+.help-video-stage img { display:block; width:100%; height:100%; object-fit:cover; }
+.help-video-overlay { position:absolute; z-index:1; left:26px; bottom:26px; display:grid; max-width:380px; grid-template-columns:52px 1fr; gap:3px 13px; align-items:center; color:#fff; }
+.help-video-play { grid-row:1/3; display:grid; place-items:center; width:52px; height:52px; border:1px solid rgba(255,255,255,.7); border-radius:50%; color:#fff; background:rgba(108,76,137,.78); font-size:20px; }
+.help-video-overlay strong { font-size:18px; line-height:1.2; }
+.help-video-overlay small { color:rgba(255,255,255,.82); font-size:11px; line-height:1.4; }
+.help-video-caption { padding:15px 2px 0; }
+.help-video-caption h1 { margin:5px 0 6px; color:var(--tt-text); font-size:22px; letter-spacing:-.025em; }
+.help-video-caption p { margin:0; color:var(--tt-text-secondary); font-size:13px; line-height:1.5; }
+.help-faq { grid-column:2; min-width:0; padding:22px; overflow:auto; }
+.help-faq-heading { padding-bottom:12px; }
+.help-faq-heading h2 { margin:5px 0 7px; color:var(--tt-text); font-size:24px; letter-spacing:-.03em; }
+.help-faq-heading p { margin:0; color:var(--tt-text-secondary); font-size:13px; line-height:1.5; }
+.help-faq-list { border-top:1px solid var(--tt-border); }
+.help-faq-list details { border-bottom:1px solid var(--tt-border); }
+.help-faq-list summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 2px; color:var(--tt-text); font-size:13px; font-weight:750; cursor:pointer; list-style:none; }
+.help-faq-list summary::-webkit-details-marker { display:none; }
+.help-faq-list summary::after { content:'+'; color:var(--tt-action); font-size:19px; font-weight:500; }
+.help-faq-list details[open] summary::after { content:'−'; }
+.help-faq-list details p { margin:0 0 14px; color:var(--tt-text-secondary); font-size:12px; line-height:1.58; }
+
 /* Media library: keep the page title and filters in the shared top bar,
    while giving the tile catalog the larger left workspace. */
 body.page-media>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
@@ -631,6 +662,13 @@ body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
   .about-gallery,.about-faq { grid-column:1; }
   .about-gallery { min-height:58vh; }
   .about-faq { max-height:none; overflow:visible; }
+  body.page-help>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
+  body.page-help>.topbar>.topbar-context { flex:0 0 auto; }
+  .help-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
+  .help-workspace { grid-template-columns:1fr; min-height:0; }
+  .help-video,.help-faq { grid-column:1; }
+  .help-video-stage { min-height:48vh; }
+  .help-faq { max-height:none; overflow:visible; }
   .projects-page { grid-template-columns:1fr; }
   .projects-page>.projects-content,.projects-page>.projects-sidebar,.projects-page>.projects-rail { grid-column:1; grid-row:auto; }
   .projects-page>.projects-content>.projects-table-wrap { min-height:0; }

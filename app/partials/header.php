@@ -102,6 +102,12 @@ $headerUserInitials = tt_user_initials($headerUser);
         <span>Как Tile Tools помогает пройти путь от выбора плитки до готового проекта</span>
       </div>
     <?php endif; ?>
+    <?php if ($page === 'help'): ?>
+      <div class="help-topbar-title" aria-label="Как начать работу">
+        <strong>Как начать работу</strong>
+        <span>Пошаговые ответы по проектам и всем сервисам Tile Tools</span>
+      </div>
+    <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
   </header>
   <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">
