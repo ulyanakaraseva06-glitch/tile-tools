@@ -465,6 +465,40 @@ body.page-favorites>.topbar>.topbar-context { flex:0 0 auto; }
 .favorites-page>.favorites-panel { grid-column:1; grid-row:1; min-width:0; }
 .favorites-page>.favorites-panel>.favorites-panel-heading { display:none; }
 
+/* About page: a browsable service gallery on the left and compact FAQ on the right. */
+body.page-about>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
+body.page-about>.topbar>.topbar-context { flex:0 0 auto; }
+.about-topbar-title { display:flex; flex:1 1 auto; min-width:0; flex-direction:column; justify-content:center; gap:2px; }
+.about-topbar-title strong { overflow:hidden; color:var(--tt-text); font-size:13px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.about-topbar-title span { overflow:hidden; color:var(--tt-text-secondary); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.about-workspace { display:grid; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:stretch; min-height:calc(100dvh - 112px); }
+.about-gallery { grid-column:1; min-width:0; padding:14px; display:flex; flex-direction:column; }
+.about-gallery-stage { position:relative; min-height:0; flex:1 1 auto; overflow:hidden; border-radius:var(--tt-radius-md); background:#eeeaf1; }
+.about-slide { position:absolute; inset:0; display:none; margin:0; }
+.about-slide.is-active { display:block; }
+.about-slide img { display:block; width:100%; height:100%; object-fit:cover; }
+.about-slide figcaption { position:absolute; left:18px; bottom:18px; max-width:70%; padding:10px 13px; border:1px solid rgba(255,255,255,.5); border-radius:10px; color:#fff; background:rgba(37,29,48,.72); font-size:14px; font-weight:700; line-height:1.3; }
+.about-gallery-arrow { position:absolute; top:50%; width:42px; height:42px; transform:translateY(-50%); border:1px solid rgba(255,255,255,.72); border-radius:50%; color:#fff; background:rgba(42,33,55,.62); font-size:30px; line-height:1; cursor:pointer; }
+.about-gallery-arrow:hover { background:rgba(92,65,112,.84); }
+.about-gallery-prev { left:14px; }
+.about-gallery-next { right:14px; }
+.about-gallery-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 2px 0; }
+.about-gallery-dots { display:flex; gap:7px; }
+.about-gallery-dots button { width:28px; height:5px; padding:0; border:0; border-radius:8px; background:var(--tt-purple-200); cursor:pointer; }
+.about-gallery-dots button.is-active { background:var(--tt-action); }
+.about-gallery-count { color:var(--tt-text-secondary); font-size:11px; font-weight:700; }
+.about-faq { grid-column:2; min-width:0; padding:22px; overflow:auto; }
+.about-faq-heading { padding-bottom:12px; }
+.about-faq-heading h1 { margin:5px 0 7px; color:var(--tt-text); font-size:26px; letter-spacing:-.03em; }
+.about-faq-heading p { margin:0; color:var(--tt-text-secondary); font-size:13px; line-height:1.5; }
+.about-faq-list { border-top:1px solid var(--tt-border); }
+.about-faq-list details { border-bottom:1px solid var(--tt-border); }
+.about-faq-list summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 2px; color:var(--tt-text); font-size:14px; font-weight:750; cursor:pointer; list-style:none; }
+.about-faq-list summary::-webkit-details-marker { display:none; }
+.about-faq-list summary::after { content:'+'; color:var(--tt-action); font-size:20px; font-weight:500; }
+.about-faq-list details[open] summary::after { content:'−'; }
+.about-faq-list details p { margin:0 0 16px; color:var(--tt-text-secondary); font-size:12px; line-height:1.6; }
+
 /* Media library: keep the page title and filters in the shared top bar,
    while giving the tile catalog the larger left workspace. */
 body.page-media>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
@@ -590,6 +624,13 @@ body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
   .favorites-page { grid-template-columns:1fr; }
   .favorites-page>.favorites-tabs,.favorites-page>.favorites-panel { grid-column:1; grid-row:auto; }
   .favorites-page>.favorites-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body.page-about>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
+  body.page-about>.topbar>.topbar-context { flex:0 0 auto; }
+  .about-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
+  .about-workspace { grid-template-columns:1fr; min-height:0; }
+  .about-gallery,.about-faq { grid-column:1; }
+  .about-gallery { min-height:58vh; }
+  .about-faq { max-height:none; overflow:visible; }
   .projects-page { grid-template-columns:1fr; }
   .projects-page>.projects-content,.projects-page>.projects-sidebar,.projects-page>.projects-rail { grid-column:1; grid-row:auto; }
   .projects-page>.projects-content>.projects-table-wrap { min-height:0; }

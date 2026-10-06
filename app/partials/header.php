@@ -96,6 +96,12 @@ $headerUserInitials = tt_user_initials($headerUser);
         <span id="favorites-topbar-description">Плитка, папки, проекты, оборудование и услуги в одном каталоге</span>
       </div>
     <?php endif; ?>
+    <?php if ($page === 'about'): ?>
+      <div class="about-topbar-title" aria-label="О сервисе">
+        <strong>О сервисе</strong>
+        <span>Как Tile Tools помогает пройти путь от выбора плитки до готового проекта</span>
+      </div>
+    <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
   </header>
   <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">
