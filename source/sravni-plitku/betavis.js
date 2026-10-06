@@ -883,6 +883,17 @@ function renderRooms() {
   }
 }
 
+function positionRoomPickerMenu(picker) {
+  const menu = picker?.querySelector('#roomPickerMenu');
+  if (!menu) return;
+  const rect = picker.getBoundingClientRect();
+  const width = Math.min(470, Math.max(280, window.innerWidth * 0.7));
+  const left = Math.max(8, Math.min(rect.left + rect.width / 2 - width / 2, window.innerWidth - width - 8));
+  menu.style.width = `${width}px`;
+  menu.style.left = `${left}px`;
+  menu.style.top = `${Math.min(window.innerHeight - 24, rect.bottom + 8)}px`;
+}
+
 function selectRoom(roomId) {
   if (!ROOMS.some(room => room.id === roomId)) return;
   S.roomId = roomId;
@@ -1591,10 +1602,18 @@ function bindEvents() {
     if (dd) {
       const isOpen = dd.classList.contains('open');
       closeAllDropdowns();
-      if (!isOpen) dd.classList.add('open');
+      if (!isOpen) {
+        dd.classList.add('open');
+        if (dd.matches('[data-room-picker]')) positionRoomPickerMenu(dd);
+      }
       return;
     }
     closeAllDropdowns();
+  });
+
+  window.addEventListener('resize', () => {
+    const picker = document.querySelector('[data-room-picker].open');
+    if (picker) positionRoomPickerMenu(picker);
   });
 
   // Clear filters
