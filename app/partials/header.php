@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20260929-11">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-1">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-3">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -44,7 +44,10 @@ $headerUserInitials = tt_user_initials($headerUser);
         <a class="header-account-link <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><span><b><?= tt_escape($headerUserName) ?></b><small><?= $headerUser ? 'Открыть личный кабинет' : 'Войти или зарегистрироваться' ?></small></span><i>→</i></a>
       </div>
     </details>
-    <div class="topbar-context" aria-current="page"><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong></div>
+    <div class="topbar-context" aria-current="page">
+      <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
+      <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
+    </div>
     <?php if ($page === 'media'): ?>
       <div class="media-topbar-tools" aria-label="Фильтры медиатеки">
         <label class="media-topbar-search"><span aria-hidden="true">⌕</span><input id="media-search" type="search" placeholder="Поиск по названию, бренду или коллекции"></label>
@@ -88,12 +91,6 @@ $headerUserInitials = tt_user_initials($headerUser);
       <div class="services-topbar-title" aria-label="Описание раздела услуг">
         <strong>Профессиональный контент для ваших продаж</strong>
         <span>Визуализация, каталоги, инфографика, видео и digital</span>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'favorites'): ?>
-      <div class="favorites-topbar-title" aria-label="Раздел избранного">
-        <strong id="favorites-topbar-heading">Избранное</strong>
-        <span id="favorites-topbar-description">Плитка, папки, проекты, оборудование и услуги в одном каталоге</span>
       </div>
     <?php endif; ?>
     <?php if ($page === 'about'): ?>
