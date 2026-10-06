@@ -3,8 +3,8 @@
   if (!root) return;
 
   const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
-  const searchForm = root.querySelector('[data-equipment-search]');
-  const queryInput = root.querySelector('[name="q"]');
+  const searchForm = document.querySelector('[data-equipment-search]');
+  const queryInput = document.querySelector('[data-equipment-control][name="q"]');
   const list = root.querySelector('[data-equipment-list]');
   const empty = root.querySelector('[data-equipment-empty]');
   const count = root.querySelector('[data-equipment-count]');
@@ -25,12 +25,12 @@
     window.clearTimeout(notify.timer);
     notify.timer = window.setTimeout(() => { toast.hidden = true; }, 4500);
   };
-  const selected = (name) => root.querySelector(`[name="${name}"]`)?.value || '';
+  const selected = (name) => document.querySelector(`[data-equipment-control][name="${name}"]`)?.value || '';
   const currentParams = () => new URLSearchParams(Object.fromEntries(['q', 'category', 'brand', 'purpose', 'availability', 'type', 'sort'].map((key) => [key, key === 'q' ? queryInput.value.trim() : selected(key)]).filter(([, value]) => value !== '')));
   const isFavorite = (id) => accountFavorites.has(id);
 
   const options = (name, values, pretty = {}) => {
-    const select = root.querySelector(`[name="${name}"]`);
+    const select = document.querySelector(`[data-equipment-control][name="${name}"]`);
     if (!select) return;
     const current = select.value;
     const first = select.options[0].textContent;
@@ -96,9 +96,8 @@
   };
 
   searchForm.addEventListener('submit', (event) => { event.preventDefault(); load(); });
-  root.querySelectorAll('select').forEach((select) => select.addEventListener('change', load));
-  root.querySelector('[data-equipment-reset]').addEventListener('click', () => { queryInput.value = ''; root.querySelectorAll('.equipment-filters select').forEach((select) => { select.value = ''; }); root.querySelector('[name="sort"]').value = 'popular'; root.querySelectorAll('[data-category]').forEach((button) => button.classList.toggle('is-active', button.dataset.category === '')); load(); });
-  root.querySelectorAll('[data-category]').forEach((button) => button.addEventListener('click', () => { root.querySelector('[name="category"]').value = button.dataset.category; root.querySelectorAll('[data-category]').forEach((item) => item.classList.toggle('is-active', item === button)); load(); }));
+  document.querySelectorAll('[data-equipment-control][name]').forEach((select) => select.addEventListener('change', load));
+  root.querySelector('[data-equipment-reset]').addEventListener('click', () => { queryInput.value = ''; document.querySelectorAll('[data-equipment-control][name]').forEach((control) => { control.value = control.name === 'sort' ? 'popular' : ''; }); load(); });
   root.querySelectorAll('[data-view]').forEach((button) => button.addEventListener('click', () => { list.classList.toggle('is-list', button.dataset.view === 'list'); root.querySelectorAll('[data-view]').forEach((item) => item.classList.toggle('is-active', item === button)); }));
   document.addEventListener('click', (event) => {
     const close = event.target.closest('[data-dialog-close]');

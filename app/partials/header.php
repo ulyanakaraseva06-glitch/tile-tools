@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20260929-11">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261004-4">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-1">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -66,6 +66,22 @@ $headerUserInitials = tt_user_initials($headerUser);
         <select class="input" data-project-type><option value="">Все типы</option><option value="visualization">Сравни плитку</option><option value="calculation">Посчитай плитку</option><option value="pdf">PDF и документы</option></select>
         <select class="input" data-project-sort><option value="updated-desc">Сначала новые</option><option value="updated-asc">Сначала старые</option><option value="title">По названию</option></select>
         <button class="button button-primary projects-topbar-new" type="button" data-new-project>＋ Новый проект</button>
+      </div>
+    <?php endif; ?>
+    <?php if ($page === 'equipment'): ?>
+      <div class="equipment-topbar-tools" aria-label="Поиск и оглавление оборудования">
+        <form class="equipment-topbar-search" data-equipment-search>
+          <label class="sr-only" for="equipment-query">Поиск оборудования</label>
+          <span aria-hidden="true">⌕</span>
+          <input id="equipment-query" name="q" data-equipment-control type="search" placeholder="Поиск оборудования, брендов, категорий...">
+          <button class="button button-primary" type="submit">Найти</button>
+        </form>
+        <label class="equipment-topbar-outline">
+          <span>Оглавление</span>
+          <select class="input" name="category" data-equipment-control aria-label="Оглавление оборудования">
+            <option value="">Все категории</option>
+          </select>
+        </label>
       </div>
     <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
