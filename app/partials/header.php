@@ -90,6 +90,12 @@ $headerUserInitials = tt_user_initials($headerUser);
         <span>Визуализация, каталоги, инфографика, видео и digital</span>
       </div>
     <?php endif; ?>
+    <?php if ($page === 'favorites'): ?>
+      <div class="favorites-topbar-title" aria-label="Раздел избранного">
+        <strong id="favorites-topbar-heading">Избранное</strong>
+        <span id="favorites-topbar-description">Плитка, папки, проекты, оборудование и услуги в одном каталоге</span>
+      </div>
+    <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
   </header>
   <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">

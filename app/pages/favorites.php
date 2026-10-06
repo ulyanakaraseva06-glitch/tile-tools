@@ -128,5 +128,5 @@ else:
     </section>
   <?php endforeach; ?>
 </section>
-<script src="/shared/js/favorites.js?v=20260926-1" defer></script>
+<script src="/shared/js/favorites.js?v=20261006-1" defer></script>
 <?php endif; ?>

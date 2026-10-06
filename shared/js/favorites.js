@@ -4,6 +4,8 @@
 
   const tabs = [...root.querySelectorAll('[data-favorites-tab]')];
   const panels = [...root.querySelectorAll('[data-favorites-panel]')];
+  const topbarHeading = document.querySelector('#favorites-topbar-heading');
+  const topbarDescription = document.querySelector('#favorites-topbar-description');
   const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
   function activate(type, updateHash = true) {
@@ -17,6 +19,11 @@
       tab.tabIndex = active ? 0 : -1;
     });
     panels.forEach((panel) => { panel.hidden = panel.dataset.favoritesPanel !== selectedType; });
+    const activePanel = panels.find((panel) => panel.dataset.favoritesPanel === selectedType);
+    const heading = activePanel?.querySelector('.favorites-panel-heading h2')?.textContent?.trim();
+    const description = activePanel?.querySelector('.favorites-panel-heading p')?.textContent?.trim();
+    if (topbarHeading && heading) topbarHeading.textContent = heading;
+    if (topbarDescription && description) topbarDescription.textContent = description;
     if (updateHash) history.replaceState(null, '', `#${selectedType}`);
   }
 

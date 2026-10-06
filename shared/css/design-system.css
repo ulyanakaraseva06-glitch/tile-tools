@@ -453,6 +453,18 @@ tbody tr:hover { background:var(--tt-action-soft); }
   line-height:1.5;
 }
 
+/* Favorites: one shared catalog on the left and section tabs on the right. */
+body.page-favorites>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
+body.page-favorites>.topbar>.topbar-context { flex:0 0 auto; }
+.favorites-topbar-title { display:flex; flex:1 1 auto; min-width:0; flex-direction:column; justify-content:center; gap:2px; }
+.favorites-topbar-title strong { overflow:hidden; color:var(--tt-text); font-size:13px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.favorites-topbar-title span { overflow:hidden; color:var(--tt-text-secondary); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.favorites-page { grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:start; }
+.favorites-page>.favorites-tabs { grid-column:2; grid-row:1; display:grid; grid-template-columns:1fr; align-content:start; gap:6px; min-width:0; padding:10px; }
+.favorites-page>.favorites-tabs button { min-height:54px; }
+.favorites-page>.favorites-panel { grid-column:1; grid-row:1; min-width:0; }
+.favorites-page>.favorites-panel>.favorites-panel-heading { display:none; }
+
 /* Media library: keep the page title and filters in the shared top bar,
    while giving the tile catalog the larger left workspace. */
 body.page-media>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
@@ -572,6 +584,12 @@ body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
   .services-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
   .vilray-services { grid-template-columns:1fr; }
   .vilray-services>.services-content,.vilray-services>.services-rail { grid-column:1; grid-row:auto; }
+  body.page-favorites>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
+  body.page-favorites>.topbar>.topbar-context { flex:0 0 auto; }
+  .favorites-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
+  .favorites-page { grid-template-columns:1fr; }
+  .favorites-page>.favorites-tabs,.favorites-page>.favorites-panel { grid-column:1; grid-row:auto; }
+  .favorites-page>.favorites-tabs { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .projects-page { grid-template-columns:1fr; }
   .projects-page>.projects-content,.projects-page>.projects-sidebar,.projects-page>.projects-rail { grid-column:1; grid-row:auto; }
   .projects-page>.projects-content>.projects-table-wrap { min-height:0; }
