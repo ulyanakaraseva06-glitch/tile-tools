@@ -84,6 +84,12 @@ $headerUserInitials = tt_user_initials($headerUser);
         </label>
       </div>
     <?php endif; ?>
+    <?php if ($page === 'services'): ?>
+      <div class="services-topbar-title" aria-label="Описание раздела услуг">
+        <strong>Профессиональный контент для ваших продаж</strong>
+        <span>Визуализация, каталоги, инфографика, видео и digital</span>
+      </div>
+    <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
   </header>
   <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">

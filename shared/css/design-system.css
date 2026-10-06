@@ -510,6 +510,29 @@ body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
 .equipment-filter-card .equipment-filters .input { min-width:0; width:100%; height:38px; padding:8px 10px; font-size:12px; }
 .equipment-page>.equipment-rail>.service-ad-card { margin-top:auto; }
 
+/* Services use the same 60/40 workspace: the service cards stay wide on the
+   left, while category filtering and the shared promotion live on the right. */
+body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
+body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
+.services-topbar-title { display:flex; flex:1 1 auto; min-width:0; flex-direction:column; justify-content:center; gap:2px; }
+.services-topbar-title strong { overflow:hidden; color:var(--tt-text); font-size:13px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+.services-topbar-title span { overflow:hidden; color:var(--tt-text-secondary); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.vilray-services { grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:start; }
+.vilray-services>.services-content { grid-column:1; grid-row:1; min-width:0; }
+.vilray-services>.services-content>.vilray-service-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.services-rail { grid-column:2; grid-row:1; display:grid; gap:12px; min-width:0; }
+.services-filter-card { padding:16px; }
+.services-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.services-filter-heading h2 { margin:0; font-size:16px; }
+.services-filter-heading span { color:var(--tt-text-secondary); font-size:11px; }
+.services-rail .services-nav { gap:6px; }
+.services-rail .services-nav button { min-height:40px; padding:9px 10px; }
+.services-links-card { padding:8px 16px; }
+.services-links-card a { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--tt-border); color:var(--tt-text-secondary); font-size:12px; text-decoration:none; }
+.services-links-card a:last-child { border-bottom:0; }
+.services-links-card a:hover { color:var(--tt-action-hover); }
+.services-links-card b { margin-left:auto; color:var(--tt-action); font-size:18px; font-weight:500; }
+
 @media (max-width:760px) {
   .app-main:not(.app-main-service) { padding:12px; }
   .equipment-page>.equipment-content { padding:16px; }
@@ -544,6 +567,11 @@ body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
   .equipment-topbar-outline { flex-basis:170px; }
   .equipment-page { grid-template-columns:1fr; }
   .equipment-page>.equipment-content,.equipment-page>.equipment-rail { grid-column:1; grid-row:auto; }
+  body.page-services>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
+  body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
+  .services-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
+  .vilray-services { grid-template-columns:1fr; }
+  .vilray-services>.services-content,.vilray-services>.services-rail { grid-column:1; grid-row:auto; }
   .projects-page { grid-template-columns:1fr; }
   .projects-page>.projects-content,.projects-page>.projects-sidebar,.projects-page>.projects-rail { grid-column:1; grid-row:auto; }
   .projects-page>.projects-content>.projects-table-wrap { min-height:0; }
