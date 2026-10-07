@@ -53,7 +53,7 @@
 
 .pdf-side-panel {
   display:grid;
-  grid-template-rows:auto auto auto minmax(0,1fr) auto;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
   gap:10px;
   min-width:0;
   min-height:0;
@@ -70,7 +70,7 @@
    template selection, saving and PDF export only. */
 .document-controls { display:contents; }
 
-.pdf-side-panel>.document-controls {
+.pdf-document-tab>.document-controls {
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:8px;
@@ -80,7 +80,7 @@
   background:var(--surface-muted);
 }
 
-.pdf-side-panel>.document-controls::before {
+.pdf-document-tab>.document-controls::before {
   content:'Оформление документа';
   grid-column:1/-1;
   color:var(--text);
@@ -88,7 +88,7 @@
   font-weight:900;
 }
 
-.pdf-side-panel>.document-controls .top-scheme-select {
+.pdf-document-tab>.document-controls .top-scheme-select {
   grid-column:1/-1;
   width:auto;
   min-width:0;
@@ -96,18 +96,18 @@
   grid-template-rows:auto 36px;
 }
 
-.pdf-side-panel>.document-controls .top-design-control,
-.pdf-side-panel>.document-controls .orientation-control {
+.pdf-document-tab>.document-controls .top-design-control,
+.pdf-document-tab>.document-controls .orientation-control {
   width:auto;
   min-width:0;
   min-height:0;
   grid-template-rows:auto 36px;
 }
 
-.pdf-side-panel>.document-controls .top-design-control { grid-column:1/2; }
-.pdf-side-panel>.document-controls .top-design-reset { grid-column:2/3; align-self:end; min-height:36px; }
-.pdf-side-panel>.document-controls .orientation-control { grid-column:1/2; }
-.pdf-side-panel>.document-controls .top-toggle-group {
+.pdf-document-tab>.document-controls .top-design-control { grid-column:1/2; }
+.pdf-document-tab>.document-controls .top-design-reset { grid-column:2/3; align-self:end; min-height:36px; }
+.pdf-document-tab>.document-controls .orientation-control { grid-column:1/2; }
+.pdf-document-tab>.document-controls .top-toggle-group {
   grid-column:1/-1;
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -116,10 +116,10 @@
   gap:6px;
 }
 
-.pdf-side-panel>.document-controls .top-toggle,
-.pdf-side-panel>.document-controls .top-toggle:first-child,
-.pdf-side-panel>.document-controls .top-toggle:nth-child(2),
-.pdf-side-panel>.document-controls .top-toggle:last-child {
+.pdf-document-tab>.document-controls .top-toggle,
+.pdf-document-tab>.document-controls .top-toggle:first-child,
+.pdf-document-tab>.document-controls .top-toggle:nth-child(2),
+.pdf-document-tab>.document-controls .top-toggle:last-child {
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -129,14 +129,14 @@
   padding:0 8px;
 }
 
-.pdf-side-panel>.document-controls .top-toggle span {
+.pdf-document-tab>.document-controls .top-toggle span {
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
   font-size:10px;
 }
 
-.pdf-side-panel>.document-controls .top-design-popover { left:auto; right:0; }
+.pdf-document-tab>.document-controls .top-design-popover { left:auto; right:0; }
 
 .pdf-side-panel>.right-toolbar {
   margin:0;
@@ -146,7 +146,7 @@
 
 .pdf-workspace-tabs {
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:5px;
   padding:4px;
   border:1px solid var(--border);

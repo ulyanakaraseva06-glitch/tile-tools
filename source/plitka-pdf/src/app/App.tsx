@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Download, Files, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Files, Paintbrush, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
 import { track } from '../analytics/analyticsClient';
 import { projectAnalyticsProperties, zoneAnalyticsProperties } from '../analytics/projectAnalytics';
 import { applyCompanyProfileToProject } from './projectContactOperations';
@@ -181,7 +181,7 @@ export function App() {
   const [project, setProject] = useState<Project>(() => getInitialProject());
   const [selectedPageId, setSelectedPageId] = useState(() => project.pages[0]?.id ?? '');
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
-  const [workspaceTab, setWorkspaceTab] = useState<'editor' | 'pages'>('editor');
+  const [workspaceTab, setWorkspaceTab] = useState<'document' | 'editor' | 'pages'>('editor');
   const [isExportCheckOpen, setExportCheckOpen] = useState(false);
   const [isLibraryOpen, setLibraryOpen] = useState(false);
   const [isPromoOpen, setPromoOpen] = useState(false);
@@ -1263,26 +1263,6 @@ export function App() {
         </section>
 
         <aside className="pdf-side-panel">
-          <DocumentControls
-            project={project}
-            recentCustomColors={serviceSettings.recentCustomColors ?? []}
-            onRememberCustomColor={rememberCustomColor}
-            onThemeChange={handleThemeChange}
-            onBackgroundColorChange={handleBackgroundColorChange}
-            onAccentChange={handleAccentChange}
-            onAccentColorChange={handleAccentColorChange}
-            onTextPrimaryColorChange={handleTextPrimaryColorChange}
-            onTextSecondaryColorChange={handleTextSecondaryColorChange}
-            onDividerColorChange={handleDividerColorChange}
-            onFormatChange={handlePageFormatChange}
-            onShowLogosChange={handleShowLogosChange}
-            onShowPageNumbersChange={handleShowPageNumbersChange}
-            onShowDividersChange={handleShowDividersChange}
-            selectedSchemeId={serviceSettings.defaultDocumentScheme ?? 'classic'}
-            onSchemeChange={applyDocumentScheme}
-            onResetDesignToScheme={resetDesignToSelectedScheme}
-          />
-
           <section className="right-toolbar" aria-label="Быстрые действия">
             <button className="btn btn-ghost action-short-btn" onClick={createEmptyDocument} title="Новый документ">
               <Plus size={18} />
@@ -1309,6 +1289,16 @@ export function App() {
             <button
               type="button"
               role="tab"
+              aria-selected={workspaceTab === 'document'}
+              className={workspaceTab === 'document' ? 'active' : ''}
+              onClick={() => setWorkspaceTab('document')}
+            >
+              <Paintbrush size={17} />
+              <span>Оформление</span>
+            </button>
+            <button
+              type="button"
+              role="tab"
               aria-selected={workspaceTab === 'editor'}
               className={workspaceTab === 'editor' ? 'active' : ''}
               onClick={() => setWorkspaceTab('editor')}
@@ -1330,6 +1320,28 @@ export function App() {
           </nav>
 
           <div className="pdf-side-panel-content">
+            <section className="pdf-tab-pane pdf-document-tab" role="tabpanel" hidden={workspaceTab !== 'document'}>
+              <DocumentControls
+                project={project}
+                recentCustomColors={serviceSettings.recentCustomColors ?? []}
+                onRememberCustomColor={rememberCustomColor}
+                onThemeChange={handleThemeChange}
+                onBackgroundColorChange={handleBackgroundColorChange}
+                onAccentChange={handleAccentChange}
+                onAccentColorChange={handleAccentColorChange}
+                onTextPrimaryColorChange={handleTextPrimaryColorChange}
+                onTextSecondaryColorChange={handleTextSecondaryColorChange}
+                onDividerColorChange={handleDividerColorChange}
+                onFormatChange={handlePageFormatChange}
+                onShowLogosChange={handleShowLogosChange}
+                onShowPageNumbersChange={handleShowPageNumbersChange}
+                onShowDividersChange={handleShowDividersChange}
+                selectedSchemeId={serviceSettings.defaultDocumentScheme ?? 'classic'}
+                onSchemeChange={applyDocumentScheme}
+                onResetDesignToScheme={resetDesignToSelectedScheme}
+              />
+            </section>
+
             <section className="pdf-tab-pane" role="tabpanel" hidden={workspaceTab !== 'editor'}>
               <RightEditorPanel
                 zone={selectedZone}
