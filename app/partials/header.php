@@ -59,7 +59,7 @@ $headerUserInitials = tt_user_initials($headerUser);
               ['kitchen', 'Кухня-гостиная', 'r5.jpg'],
           ] as [$roomId, $roomLabel, $roomImage]): ?>
             <button class="visualizer-room-card <?= $roomId === 'bathroom_m' ? 'is-active' : '' ?>" type="button" data-room-id="<?= tt_escape($roomId) ?>">
-              <img src="/source/sravni-plitku/images/renders/thumbs/<?= tt_escape($roomImage) ?>?v=20261007-1" alt="<?= tt_escape($roomLabel) ?>" width="960" height="720" loading="eager" decoding="async">
+              <img src="/source/sravni-plitku/images/renders/thumbs/<?= tt_escape($roomImage) ?>?v=20261007-2" alt="<?= tt_escape($roomLabel) ?>" width="960" height="720" loading="eager" decoding="async">
               <span><?= tt_escape($roomLabel) ?></span>
             </button>
           <?php endforeach; ?>
