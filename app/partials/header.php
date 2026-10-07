@@ -27,7 +27,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-7">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-8">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-3">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
@@ -63,6 +63,23 @@ $headerUserInitials = tt_user_initials($headerUser);
               <span><?= tt_escape($roomLabel) ?></span>
             </button>
           <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
+    <?php if ($page === 'pdf'): ?>
+      <div class="pdf-template-menu" data-pdf-template-menu>
+        <button class="pdf-template-trigger" type="button" data-pdf-template-trigger aria-expanded="false">
+          <span data-pdf-template-label>Шаблоны страниц</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="pdf-template-popover" data-pdf-template-popover hidden>
+          <header class="pdf-template-popover-heading">
+            <strong>Шаблоны страниц</strong>
+            <span data-pdf-template-count>Загрузка…</span>
+          </header>
+          <div class="pdf-template-list" data-pdf-template-list>
+            <p class="pdf-template-loading">Загружаем шаблоны…</p>
+          </div>
         </div>
       </div>
     <?php endif; ?>

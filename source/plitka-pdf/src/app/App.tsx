@@ -44,8 +44,11 @@ import {
   createPageFromTemplate,
   createProject,
   getPresetPreferredSchemeId,
-  getPresetPresentationOverrides
+  getPresetPresentationOverrides,
+  visiblePresetSummaries
 } from '../data/createProject';
+import { getTemplate, pageTemplates } from '../data/pageTemplates';
+import { resolvePublicAssetUrl } from '../utils/publicAsset';
 
 import type {
   DocumentRenderSettings,
@@ -179,7 +182,7 @@ export function App() {
   const [project, setProject] = useState<Project>(() => getInitialProject());
   const [selectedPageId, setSelectedPageId] = useState(() => project.pages[0]?.id ?? '');
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
-  const [workspaceTab, setWorkspaceTab] = useState<'templates' | 'editor' | 'pages'>('templates');
+  const [workspaceTab, setWorkspaceTab] = useState<'templates' | 'editor' | 'pages'>('editor');
   const [isExportCheckOpen, setExportCheckOpen] = useState(false);
   const [isLibraryOpen, setLibraryOpen] = useState(false);
   const [isPromoOpen, setPromoOpen] = useState(false);
@@ -208,6 +211,10 @@ export function App() {
   const registryStatusRef = useRef<RegistryProjectStatus>('active');
   const registryProjectIdRef = useRef(`local:pdf:${project.id}`);
   const registryServerIdRef = useRef<string | null>(null);
+  const pdfTemplateActionsRef = useRef<{ addPage: (id: string) => void; openPreset: (id: PresetId) => void }>({
+    addPage: () => {},
+    openPreset: () => {}
+  });
 
   const pages = useMemo(() => sortProjectPages(project.pages), [project.pages]);
   const projectSnapshot = useMemo(() => ({ ...project, pages }), [project, pages]);
@@ -930,6 +937,57 @@ export function App() {
     });
   }
 
+  useEffect(() => {
+    pdfTemplateActionsRef.current = { addPage, openPreset: openPresetFromLibrary };
+  });
+
+  useEffect(() => {
+    const availableTemplateIds = new Set(pageTemplates.map((template) => template.id));
+    const availablePresetIds = new Set(visiblePresetSummaries.map((preset) => preset.id));
+    const publishTemplates = () => {
+      if (window.parent === window) return;
+      window.parent.postMessage({
+        type: 'tile-tools:pdf-templates',
+        presets: visiblePresetSummaries.map((preset) => {
+          const firstPage = createProject(preset.id).pages[0];
+          const thumbnail = firstPage ? getTemplate(firstPage.templateId).thumbnail : '';
+          return {
+            id: preset.id,
+            title: preset.label,
+            description: `${preset.pageCount} страниц · ${preset.description}`,
+            thumbnail: resolvePublicAssetUrl(thumbnail)
+          };
+        }),
+        templates: pageTemplates.map((template) => ({
+          id: template.id,
+          title: template.title,
+          description: template.description,
+          thumbnail: resolvePublicAssetUrl(template.thumbnail)
+        }))
+      }, '*');
+    };
+    const handleParentMessage = (event: MessageEvent) => {
+      if (event.source !== window.parent) return;
+      if (event.data?.type === 'tile-tools:request-pdf-templates') {
+        publishTemplates();
+        return;
+      }
+      if (event.data?.type === 'tile-tools:select-pdf-preset') {
+        const presetId = String(event.data.presetId || '') as PresetId;
+        if (availablePresetIds.has(presetId)) pdfTemplateActionsRef.current.openPreset(presetId);
+        return;
+      }
+      if (event.data?.type !== 'tile-tools:add-pdf-template') return;
+      const templateId = String(event.data.templateId || '');
+      if (!availableTemplateIds.has(templateId)) return;
+      pdfTemplateActionsRef.current.addPage(templateId);
+      setWorkspaceTab('editor');
+    };
+    publishTemplates();
+    window.addEventListener('message', handleParentMessage);
+    return () => window.removeEventListener('message', handleParentMessage);
+  }, []);
+
   function addBlankPage() {
     const page = createBlankPage(pages.length);
     updateProject((current) => addProjectPage(current, page));
@@ -1240,7 +1298,7 @@ export function App() {
               onClick={() => setWorkspaceTab('templates')}
             >
               <LayoutTemplate size={17} />
-              <span>Шаблоны</span>
+              <span>Библиотека</span>
             </button>
             <button
               type="button"

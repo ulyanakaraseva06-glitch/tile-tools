@@ -285,6 +285,96 @@
     });
   }
 
+  const pdfTemplateMenu = document.querySelector('[data-pdf-template-menu]');
+  if (pdfTemplateMenu && servicePage === 'pdf') {
+    const trigger = pdfTemplateMenu.querySelector('[data-pdf-template-trigger]');
+    const label = pdfTemplateMenu.querySelector('[data-pdf-template-label]');
+    const popover = pdfTemplateMenu.querySelector('[data-pdf-template-popover]');
+    const list = pdfTemplateMenu.querySelector('[data-pdf-template-list]');
+    const count = pdfTemplateMenu.querySelector('[data-pdf-template-count]');
+
+    const closeTemplateMenu = () => {
+      popover.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+    const positionTemplateMenu = () => {
+      const rect = trigger.getBoundingClientRect();
+      const width = Math.min(760, window.innerWidth - 24);
+      const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+      popover.style.width = `${width}px`;
+      popover.style.left = `${left}px`;
+      popover.style.top = `${rect.bottom + 10}px`;
+    };
+    const renderTemplates = (presets, templates) => {
+      list.replaceChildren();
+      count.textContent = `${presets.length} наборов · ${templates.length} страниц`;
+      const appendSection = (heading, items, type) => {
+        if (!items.length) return;
+        const sectionHeading = document.createElement('h3');
+        sectionHeading.className = 'pdf-template-section-heading';
+        sectionHeading.textContent = heading;
+        list.append(sectionHeading);
+        items.forEach(template => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'pdf-template-card';
+        card.dataset.templateId = template.id;
+
+        const image = document.createElement('img');
+        image.src = template.thumbnail || '/services/pdf/placeholders/catalog/previews/catalog-sample-grid.svg';
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+
+        const copy = document.createElement('span');
+        const title = document.createElement('strong');
+        title.textContent = template.title || 'Шаблон страницы';
+        const description = document.createElement('small');
+        description.textContent = template.description || 'Добавить страницу в документ';
+        copy.append(title, description);
+        card.append(image, copy);
+        card.addEventListener('click', () => {
+          label.textContent = title.textContent;
+          serviceFrame?.contentWindow?.postMessage(type === 'preset'
+            ? { type: 'tile-tools:select-pdf-preset', presetId: template.id }
+            : { type: 'tile-tools:add-pdf-template', templateId: template.id }, '*');
+          closeTemplateMenu();
+        });
+        list.append(card);
+        });
+      };
+      appendSection('Готовые наборы', presets, 'preset');
+      appendSection('Шаблоны страниц', templates, 'page');
+    };
+    const requestTemplates = () => serviceFrame?.contentWindow?.postMessage({ type: 'tile-tools:request-pdf-templates' }, '*');
+
+    trigger.addEventListener('click', event => {
+      event.stopPropagation();
+      if (popover.hidden) {
+        popover.hidden = false;
+        trigger.setAttribute('aria-expanded', 'true');
+        positionTemplateMenu();
+        requestTemplates();
+      } else {
+        closeTemplateMenu();
+      }
+    });
+    window.addEventListener('message', event => {
+      if (event.source !== serviceFrame?.contentWindow || event.data?.type !== 'tile-tools:pdf-templates') return;
+      const presets = Array.isArray(event.data.presets) ? event.data.presets : [];
+      const templates = Array.isArray(event.data.templates) ? event.data.templates : [];
+      renderTemplates(presets.filter(item => item && item.id && item.title), templates.filter(item => item && item.id && item.title));
+    });
+    document.addEventListener('click', event => {
+      if (!pdfTemplateMenu.contains(event.target)) closeTemplateMenu();
+    });
+    window.addEventListener('resize', () => {
+      if (!popover.hidden) positionTemplateMenu();
+    });
+    serviceFrame?.addEventListener('load', () => window.setTimeout(requestTemplates, 100));
+    window.setTimeout(requestTemplates, 100);
+  }
+
   const resumedProjectId = new URLSearchParams(window.location.search).get('project');
   if (serviceFrame) {
     window.addEventListener('resize', () => {
