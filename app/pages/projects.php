@@ -43,5 +43,5 @@
     <a href="<?= tt_url('pdf') ?>"><span>▤</span><strong>PDF и документы</strong><small>Создать документ или презентацию</small></a>
   </div>
 </dialog>
-<script src="/shared/js/projects.js" defer></script>
+<script src="/shared/js/projects.js?v=20261007-2" defer></script>
 <?php endif; ?>

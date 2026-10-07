@@ -38,20 +38,37 @@
   }
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
   const formatDate = (value) => { const date = new Date(value); if (Number.isNaN(date.getTime())) return '—'; return `${new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)}<small>${new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(date)}</small>`; };
+  function selectedView() {
+    return ['all', 'active', 'done', 'favorite', 'archived'].includes(view) ? view : 'all';
+  }
+  function matchesView(project, currentView = selectedView()) {
+    if (currentView === 'active') return project.status === 'active';
+    if (currentView === 'done') return project.status === 'done';
+    if (currentView === 'favorite') return project.favorite;
+    if (currentView === 'archived') return project.status === 'archived';
+    return true;
+  }
   function filteredProjects() {
-    const query = els.search.value.trim().toLocaleLowerCase('ru');
+    const query = String(els.search?.value || '').trim().toLocaleLowerCase('ru');
+    const status = String(els.status?.value || '');
+    const type = String(els.type?.value || '');
+    const sort = String(els.sort?.value || 'updated-desc');
+    const currentView = selectedView();
     return projects.filter((project) => {
-      if (view === 'active' && project.status !== 'active') return false; if (view === 'done' && project.status !== 'done') return false; if (view === 'favorite' && !project.favorite) return false; if (view === 'archived' && project.status !== 'archived') return false;
-      if (view !== 'archived' && view !== 'all' && project.status === 'archived') return false; if (els.status.value && project.status !== els.status.value) return false; if (els.type.value && project.type !== els.type.value) return false;
+      if (!matchesView(project, currentView)) return false;
+      if (status && project.status !== status) return false;
+      if (type && project.type !== type) return false;
       return !query || project.title.toLocaleLowerCase('ru').includes(query) || (TYPE_LABELS[project.type] || '').toLocaleLowerCase('ru').includes(query);
-    }).sort((a, b) => els.sort.value === 'title' ? a.title.localeCompare(b.title, 'ru') : els.sort.value === 'updated-asc' ? new Date(a.updatedAt) - new Date(b.updatedAt) : new Date(b.updatedAt) - new Date(a.updatedAt));
+    }).sort((a, b) => sort === 'title' ? a.title.localeCompare(b.title, 'ru') : sort === 'updated-asc' ? new Date(a.updatedAt) - new Date(b.updatedAt) : new Date(b.updatedAt) - new Date(a.updatedAt));
   }
   function updateCounts() {
     const counts = { all: projects.length, active: projects.filter((p) => p.status === 'active').length, done: projects.filter((p) => p.status === 'done').length, favorite: projects.filter((p) => p.favorite).length, archived: projects.filter((p) => p.status === 'archived').length };
     Object.entries(counts).forEach(([key, value]) => { const el = root.querySelector(`[data-project-count="${key}"]`); if (el) el.textContent = value; });
   }
   function render() {
-    updateCounts(); const visible = filteredProjects(); els.empty.hidden = visible.length > 0;
+    updateCounts();
+    const visible = filteredProjects();
+    els.empty.hidden = visible.length > 0;
     els.list.innerHTML = visible.map((project) => `<article class="project-row" data-project-id="${escapeHtml(project.id)}"><div class="project-main"><div class="project-thumb project-thumb-${escapeHtml(project.type)}">${project.previewUrl ? `<img src="${escapeHtml(project.previewUrl)}" alt="">` : '<i></i>'}</div><div><strong>${escapeHtml(project.title)}</strong><small>Сохранён в аккаунте</small></div></div><div><span class="project-type-icon">${project.type === 'visualization' ? '◩' : project.type === 'pdf' ? '▤' : '⊞'}</span>${escapeHtml(TYPE_LABELS[project.type] || project.type)}</div><time datetime="${escapeHtml(project.updatedAt)}">${formatDate(project.updatedAt)}</time><div class="project-metric">${escapeHtml(project.metric)}</div><label class="project-status"><span class="sr-only">Статус проекта</span><select data-project-status-change class="status-${escapeHtml(project.status)}"><option value="draft" ${project.status === 'draft' ? 'selected' : ''}>Черновик</option><option value="active" ${project.status === 'active' ? 'selected' : ''}>В работе</option><option value="done" ${project.status === 'done' ? 'selected' : ''}>Завершён</option><option value="archived" ${project.status === 'archived' ? 'selected' : ''}>Архив</option></select></label><div class="project-actions"><button class="project-resume" type="button" data-project-resume>Вернуться к работе</button><button class="project-heart ${project.favorite ? 'is-favorite' : ''}" type="button" data-project-favorite aria-label="Избранное" aria-pressed="${project.favorite}">${project.favorite ? '♥' : '♡'}</button><button class="project-more" type="button" data-project-archive aria-label="${project.status === 'archived' ? 'Вернуть из архива' : 'В архив'}">•••<span>${project.status === 'archived' ? 'Вернуть в работу' : 'Переместить в архив'}</span></button></div></article>`).join('');
     els.summary.textContent = `Показано ${visible.length} из ${projects.length} проектов`;
   }
