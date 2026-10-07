@@ -63,16 +63,16 @@
 /* The working area uses calm, light controls. A solid purple fill is reserved
    for the service toolbar and the active tab heading only. */
 .workspace button {
-  color:#A385C4;
-  background:#F2EBF9;
+  color:#6B6B80;
+  background:#FFFFFF;
   border-color:#E8E8EC;
 }
 
 .workspace button:hover:not(:disabled),
 .workspace button.active:not(:disabled) {
-  color:#A385C4;
-  background:#F2EBF9;
-  border-color:#A385C4;
+  color:#6B6B80;
+  background:#F7F6F9;
+  border-color:#D0D0D8;
   box-shadow:none;
   transform:none;
 }
