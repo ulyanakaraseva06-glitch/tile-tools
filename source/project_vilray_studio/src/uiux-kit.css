@@ -60,6 +60,30 @@
   border-color:#A385C4;
 }
 
+/* The working area uses calm, light controls. A solid purple fill is reserved
+   for the service toolbar and the active tab heading only. */
+.workspace button {
+  color:#A385C4;
+  background:#F2EBF9;
+  border-color:#E8E8EC;
+}
+
+.workspace button:hover:not(:disabled),
+.workspace button.active:not(:disabled) {
+  color:#A385C4;
+  background:#F2EBF9;
+  border-color:#A385C4;
+  box-shadow:none;
+  transform:none;
+}
+
+.workspace .panel-tabs button.active {
+  color:#FFFFFF;
+  background:#A385C4;
+  border-color:#A385C4;
+  box-shadow:0 2px 8px rgba(163,133,196,.28);
+}
+
 .icon-button:hover,.tool-button:hover,.canvas-toolbar button:hover { border-color:var(--primary); color:var(--primary-dark); background:var(--primary-light); }
 .primary-button:hover { border-color:var(--primary-dark); background:var(--primary-dark); transform:translateY(-1px); }
 
