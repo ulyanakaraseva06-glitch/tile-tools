@@ -132,9 +132,8 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'about'): ?>
-      <div class="about-topbar-title" aria-label="О сервисе">
+      <div class="about-topbar-title">
         <strong>О сервисе</strong>
-        <span>Как Tile Tools помогает пройти путь от выбора плитки до готового проекта</span>
       </div>
     <?php endif; ?>
     <?php if ($page === 'help'): ?>
