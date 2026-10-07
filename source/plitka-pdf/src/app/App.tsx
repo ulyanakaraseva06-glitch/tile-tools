@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Download, Files, LayoutTemplate, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Files, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
 import { track } from '../analytics/analyticsClient';
 import { projectAnalyticsProperties, zoneAnalyticsProperties } from '../analytics/projectAnalytics';
 import { applyCompanyProfileToProject } from './projectContactOperations';
@@ -27,8 +27,7 @@ import {
   sortProjectPages,
   updateProjectZone
 } from './projectPageOperations';
-import { TopBar } from '../components/TopBar/TopBar';
-import { PageLibrary } from '../components/PageLibrary/PageLibrary';
+import { DocumentControls, TopBar } from '../components/TopBar/TopBar';
 import { Canvas } from '../components/Canvas/Canvas';
 import { DocumentPageStrip } from '../components/DocumentPageStrip/DocumentPageStrip';
 import { RightEditorPanel } from '../components/RightEditorPanel/RightEditorPanel';
@@ -182,7 +181,7 @@ export function App() {
   const [project, setProject] = useState<Project>(() => getInitialProject());
   const [selectedPageId, setSelectedPageId] = useState(() => project.pages[0]?.id ?? '');
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
-  const [workspaceTab, setWorkspaceTab] = useState<'templates' | 'editor' | 'pages'>('editor');
+  const [workspaceTab, setWorkspaceTab] = useState<'editor' | 'pages'>('editor');
   const [isExportCheckOpen, setExportCheckOpen] = useState(false);
   const [isLibraryOpen, setLibraryOpen] = useState(false);
   const [isPromoOpen, setPromoOpen] = useState(false);
@@ -1196,13 +1195,6 @@ export function App() {
       onClick: openExportCheck,
       variant: 'primary' as const
     },
-    {
-      label: 'Кабинет',
-      icon: <UserRound size={21} strokeWidth={2.6} />,
-      onClick: openLibrary,
-      variant: 'ghost' as const,
-      iconOnly: true
-    }
   ];
 
   if (isMobileDevice) {
@@ -1246,6 +1238,7 @@ export function App() {
         onSchemeChange={applyDocumentScheme}
         onResetDesignToScheme={resetDesignToSelectedScheme}
         actions={topBarActions}
+        showDocumentControls={false}
       />
 
       <main className="workspace pdf-workspace-two-pane">
@@ -1270,6 +1263,26 @@ export function App() {
         </section>
 
         <aside className="pdf-side-panel">
+          <DocumentControls
+            project={project}
+            recentCustomColors={serviceSettings.recentCustomColors ?? []}
+            onRememberCustomColor={rememberCustomColor}
+            onThemeChange={handleThemeChange}
+            onBackgroundColorChange={handleBackgroundColorChange}
+            onAccentChange={handleAccentChange}
+            onAccentColorChange={handleAccentColorChange}
+            onTextPrimaryColorChange={handleTextPrimaryColorChange}
+            onTextSecondaryColorChange={handleTextSecondaryColorChange}
+            onDividerColorChange={handleDividerColorChange}
+            onFormatChange={handlePageFormatChange}
+            onShowLogosChange={handleShowLogosChange}
+            onShowPageNumbersChange={handleShowPageNumbersChange}
+            onShowDividersChange={handleShowDividersChange}
+            selectedSchemeId={serviceSettings.defaultDocumentScheme ?? 'classic'}
+            onSchemeChange={applyDocumentScheme}
+            onResetDesignToScheme={resetDesignToSelectedScheme}
+          />
+
           <section className="right-toolbar" aria-label="Быстрые действия">
             <button className="btn btn-ghost action-short-btn" onClick={createEmptyDocument} title="Новый документ">
               <Plus size={18} />
@@ -1287,19 +1300,12 @@ export function App() {
             <button className="btn btn-ghost top-icon-action" onClick={saveCurrentProjectAsTemplate} title="Сохранить как шаблон" aria-label="Сохранить как шаблон">
               <Star size={19} strokeWidth={2.6} />
             </button>
+            <button className="btn btn-ghost top-icon-action" onClick={openLibrary} title="Кабинет" aria-label="Кабинет">
+              <UserRound size={19} strokeWidth={2.6} />
+            </button>
           </section>
 
           <nav className="pdf-workspace-tabs" role="tablist" aria-label="Рабочие панели">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={workspaceTab === 'templates'}
-              className={workspaceTab === 'templates' ? 'active' : ''}
-              onClick={() => setWorkspaceTab('templates')}
-            >
-              <LayoutTemplate size={17} />
-              <span>Библиотека</span>
-            </button>
             <button
               type="button"
               role="tab"
@@ -1324,22 +1330,6 @@ export function App() {
           </nav>
 
           <div className="pdf-side-panel-content">
-            <section className="pdf-tab-pane" role="tabpanel" hidden={workspaceTab !== 'templates'}>
-              <PageLibrary
-                currentPreset={project.preset}
-                projectTitle={project.title}
-                renderSettings={renderSettings}
-                initialPresetsOpen={initialDebugView.openPresets}
-                onProjectTitleChange={(title) => updateProject((current) => ({ ...current, title }))}
-                onPresetChange={openPresetFromLibrary}
-                userTemplates={userTemplates}
-                onApplyUserTemplate={openUserTemplate}
-                onDeleteUserTemplate={removeUserTemplate}
-                onAddPage={addPage}
-                onApplyPageFormat={(pageFormat) => updateProject((current) => ({ ...current, pageFormat }))}
-              />
-            </section>
-
             <section className="pdf-tab-pane" role="tabpanel" hidden={workspaceTab !== 'editor'}>
               <RightEditorPanel
                 zone={selectedZone}

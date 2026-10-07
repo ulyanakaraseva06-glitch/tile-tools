@@ -32,7 +32,10 @@ type TopBarProps = {
   selectedSchemeId: string;
   onSchemeChange: (schemeId: DocumentSchemeId) => void;
   onResetDesignToScheme: () => void;
+  showDocumentControls?: boolean;
 };
+
+type DocumentControlsProps = Omit<TopBarProps, 'actions' | 'showDocumentControls'>;
 
 type PaletteColor = {
   color: string;
@@ -272,10 +275,9 @@ function DesignMenu({
   );
 }
 
-export function TopBar(props: TopBarProps) {
+export function DocumentControls(props: DocumentControlsProps) {
   const {
     project,
-    actions,
     recentCustomColors,
     onRememberCustomColor,
     onThemeChange,
@@ -293,21 +295,14 @@ export function TopBar(props: TopBarProps) {
     onSchemeChange,
     onResetDesignToScheme
   } = props;
-  const [feedbackKey, setFeedbackKey] = useState<string | null>(null);
   const activeThemeColor = project.documentBackgroundColor ?? themes.find((theme) => theme.id === project.documentTheme)?.color ?? '#ffffff';
   const activeAccentColor = project.documentAccentColor ?? accents.find((accent) => accent.id === project.documentAccent)?.color ?? '#a385c4';
   const primaryTextColor = project.documentTextPrimaryColor ?? '#1f2227';
   const secondaryTextColor = project.documentTextSecondaryColor ?? '#8a8d8f';
   const dividerColor = project.documentDividerColor ?? '#B7B7B7';
 
-  function runWithFeedback(key: string, action: () => void) {
-    action();
-    setFeedbackKey(key);
-    window.setTimeout(() => setFeedbackKey((current) => current === key ? null : current), 700);
-  }
-
   return (
-    <header className="top-bar">
+    <div className="document-controls">
       <label className="top-scheme-select">
         <span>Дизайн-схема</span>
         <select value={selectedSchemeId} onChange={(event) => onSchemeChange(event.target.value as DocumentSchemeId)}>
@@ -362,6 +357,23 @@ export function TopBar(props: TopBarProps) {
         <Toggle label="Номера страниц" checked={project.showPageNumbers !== false} onChange={onShowPageNumbersChange} />
       </div>
 
+    </div>
+  );
+}
+
+export function TopBar(props: TopBarProps) {
+  const { actions, showDocumentControls = true, ...documentControls } = props;
+  const [feedbackKey, setFeedbackKey] = useState<string | null>(null);
+
+  function runWithFeedback(key: string, action: () => void) {
+    action();
+    setFeedbackKey(key);
+    window.setTimeout(() => setFeedbackKey((current) => current === key ? null : current), 700);
+  }
+
+  return (
+    <header className="top-bar">
+      {showDocumentControls && <DocumentControls {...documentControls} />}
       <div className="top-actions">
         {actions.map((action) => (
           <button
