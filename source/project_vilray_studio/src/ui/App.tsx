@@ -3307,10 +3307,10 @@ function WorkspaceCanvas({
         }}
       >
         <Layer>
-          <Rect name="pan-bg" x={0} y={0} width={size.width} height={size.height} fill="#FBFBFC" />
+          <Rect name="pan-bg" x={0} y={0} width={size.width} height={size.height} fill="#FDFDFE" />
           <Group x={viewport.x} y={viewport.y} scaleX={viewport.zoom} scaleY={viewport.zoom} listening={false}>
-            {drawingMode === 'idle' && layers.floor ? <Rect {...sectionBlocks.floor} fillEnabled={false} stroke="rgba(96, 65, 126, 0.6)" strokeWidth={1.5} cornerRadius={12} /> : null}
-            {drawingMode === 'idle' && layers.walls && !dimensionEntryAreaId ? <Rect {...sectionBlocks.walls} fillEnabled={false} stroke="rgba(96, 65, 126, 0.6)" strokeWidth={1.5} cornerRadius={12} /> : null}
+            {drawingMode === 'idle' && layers.floor ? <Rect {...sectionBlocks.floor} fillEnabled={false} stroke="rgba(163, 133, 196, 0.38)" strokeWidth={1.5} cornerRadius={12} /> : null}
+            {drawingMode === 'idle' && layers.walls && !dimensionEntryAreaId ? <Rect {...sectionBlocks.walls} fillEnabled={false} stroke="rgba(163, 133, 196, 0.38)" strokeWidth={1.5} cornerRadius={12} /> : null}
           </Group>
           {layers.grid ? <Grid width={size.width} height={size.height} viewport={viewport} /> : null}
           <Group x={viewport.x} y={viewport.y} scaleX={viewport.zoom} scaleY={viewport.zoom}>
@@ -3569,7 +3569,7 @@ const Grid = memo(function Grid({ width, height, viewport }: { width: number; he
     <Shape
       listening={false}
       perfectDrawEnabled={false}
-      stroke={major ? '#C4C4D1' : '#E4E4EA'}
+      stroke={major ? '#DDDDE5' : '#F0F0F4'}
       strokeWidth={major ? 1.25 : 1}
       sceneFunc={(context, shape) => {
         context.beginPath();
