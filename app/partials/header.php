@@ -27,7 +27,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-5">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-6">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-3">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
@@ -44,6 +44,28 @@ $headerUserInitials = tt_user_initials($headerUser);
         <a class="header-account-link <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><span><b><?= tt_escape($headerUserName) ?></b><small><?= $headerUser ? 'Открыть личный кабинет' : 'Войти или зарегистрироваться' ?></small></span><i>→</i></a>
       </div>
     </details>
+    <?php if ($page === 'visualizer'): ?>
+      <div class="visualizer-room-menu" data-visualizer-room-menu>
+        <button class="visualizer-room-trigger" type="button" data-visualizer-room-trigger aria-expanded="false">
+          <span data-visualizer-room-label>Выберите помещение</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="visualizer-room-popover" data-visualizer-room-popover hidden>
+          <?php foreach ([
+              ['bathroom_m', 'Ванная M', 'r1.jpg'],
+              ['bathroom_xl', 'Ванная XL', 'r2.jpg'],
+              ['bathroom_s', 'Ванная S', 'r3.jpg'],
+              ['hall', 'Зал', 'r4.jpg'],
+              ['kitchen', 'Кухня-гостиная', 'r5.jpg'],
+          ] as [$roomId, $roomLabel, $roomImage]): ?>
+            <button class="visualizer-room-card <?= $roomId === 'bathroom_m' ? 'is-active' : '' ?>" type="button" data-room-id="<?= tt_escape($roomId) ?>">
+              <img src="/source/sravni-plitku/images/renders/<?= tt_escape($roomImage) ?>" alt="<?= tt_escape($roomLabel) ?>">
+              <span><?= tt_escape($roomLabel) ?></span>
+            </button>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    <?php endif; ?>
     <div class="topbar-context" aria-current="page">
       <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
       <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>

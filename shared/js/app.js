@@ -172,23 +172,6 @@
     toolbar.dataset.toolbarScale = scale.toFixed(3);
   }
 
-  function positionMirroredDropdown(dropdown) {
-    const menu = dropdown?.querySelector('.filter-dropdown__menu');
-    if (!menu) return;
-    const rect = dropdown.getBoundingClientRect();
-    const width = Math.min(470, Math.max(280, window.innerWidth * 0.7));
-    const left = Math.max(8, Math.min(rect.left + rect.width / 2 - width / 2, window.innerWidth - width - 8));
-    menu.style.position = 'fixed';
-    menu.style.top = `${Math.min(window.innerHeight - 24, rect.bottom + 8)}px`;
-    menu.style.left = `${left}px`;
-    menu.style.width = `${width}px`;
-    menu.style.maxHeight = `min(360px, calc(100dvh - 24px))`;
-    menu.style.display = 'grid';
-    menu.style.zIndex = '10000';
-    const toolbarScale = Number(dropdown.closest('.mirrored-service-toolbar')?.dataset.toolbarScale || 1);
-    menu.style.zoom = toolbarScale > 0 && toolbarScale < 1 ? String((1 / toolbarScale).toFixed(3)) : '1';
-  }
-
   function mirrorServiceToolbar() {
     if (!serviceFrame || !serviceToolbarHost || !servicePage) return;
     const config = toolbarConfigs[servicePage];
@@ -219,6 +202,7 @@
       const computed = frameWindow.getComputedStyle(sourceNode);
       for (const property of computed) cloneNode.style.setProperty(property, computed.getPropertyValue(property), computed.getPropertyPriority(property));
     });
+    if (servicePage === 'visualizer') clone.querySelector('[data-room-picker]')?.remove();
 
     const sourceControls = [...sourceToolbar.querySelectorAll('button,input,select,textarea,a')];
     const cloneControls = [...clone.querySelectorAll('button,input,select,textarea,a')];
@@ -257,30 +241,47 @@
     window.requestAnimationFrame(() => fitMirroredToolbar(clone));
   }
 
-  // Делегированный обработчик остаётся на стабильном контейнере: зеркало
-  // панели пересоздаётся после изменений iframe, поэтому слушатель на самой
-  // копии мог теряться.
-  if (serviceToolbarHost && !serviceToolbarHost.dataset.dropdownBound) {
-    serviceToolbarHost.dataset.dropdownBound = 'true';
-    serviceToolbarHost.addEventListener('click', event => {
-      const dropdown = event.target.closest('.filter-dropdown');
-      if (!dropdown || !serviceToolbarHost.contains(dropdown)) return;
+  const visualizerRoomMenu = document.querySelector('[data-visualizer-room-menu]');
+  if (visualizerRoomMenu && servicePage === 'visualizer') {
+    const trigger = visualizerRoomMenu.querySelector('[data-visualizer-room-trigger]');
+    const label = visualizerRoomMenu.querySelector('[data-visualizer-room-label]');
+    const popover = visualizerRoomMenu.querySelector('[data-visualizer-room-popover]');
+    const cards = [...visualizerRoomMenu.querySelectorAll('[data-room-id]')];
+
+    const closeRoomMenu = () => {
+      popover.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    };
+    const positionRoomMenu = () => {
+      const rect = trigger.getBoundingClientRect();
+      const width = Math.min(760, window.innerWidth - 24);
+      const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+      popover.style.width = `${width}px`;
+      popover.style.left = `${left}px`;
+      popover.style.top = `${rect.bottom + 10}px`;
+    };
+
+    trigger.addEventListener('click', event => {
       event.stopPropagation();
-      const option = event.target.closest('[data-room-option]');
-      if (option) {
-        const frameDropdown = serviceFrame?.contentDocument?.querySelector('[data-room-picker]');
-        const frameOption = [...(frameDropdown?.querySelectorAll('[data-room-option]') || [])]
-          .find(item => item.dataset.roomOption === option.dataset.roomOption);
-        frameOption?.click();
-        window.setTimeout(mirrorServiceToolbar, 60);
-        return;
+      if (popover.hidden) {
+        popover.hidden = false;
+        trigger.setAttribute('aria-expanded', 'true');
+        positionRoomMenu();
+      } else {
+        closeRoomMenu();
       }
-      const wasOpen = dropdown.classList.contains('open');
-      serviceToolbarHost.querySelectorAll('.filter-dropdown').forEach(item => item.classList.remove('open'));
-      if (!wasOpen) {
-        dropdown.classList.add('open');
-        positionMirroredDropdown(dropdown);
-      }
+    });
+    cards.forEach(card => card.addEventListener('click', () => {
+      cards.forEach(item => item.classList.toggle('is-active', item === card));
+      label.textContent = card.querySelector('span')?.textContent || 'Выберите помещение';
+      serviceFrame?.contentWindow?.postMessage({ type: 'tile-tools:select-room', roomId: card.dataset.roomId }, '*');
+      closeRoomMenu();
+    }));
+    document.addEventListener('click', event => {
+      if (!visualizerRoomMenu.contains(event.target)) closeRoomMenu();
+    });
+    window.addEventListener('resize', () => {
+      if (!popover.hidden) positionRoomMenu();
     });
   }
 

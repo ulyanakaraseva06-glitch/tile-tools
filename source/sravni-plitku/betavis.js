@@ -1742,7 +1742,12 @@ function init() {
 }
 
 window.addEventListener('message', event => {
-  if (event.source !== window.parent || event.data?.type !== 'tile-tools:resume-project') return;
+  if (event.source !== window.parent) return;
+  if (event.data?.type === 'tile-tools:select-room') {
+    if (ROOMS.some(room => room.id === event.data.roomId)) selectRoom(event.data.roomId);
+    return;
+  }
+  if (event.data?.type !== 'tile-tools:resume-project') return;
   const payload = event.data.payload;
   if (!payload || !ROOMS.some(room => room.id === payload.roomId) || !payload.selection || typeof payload.selection !== 'object') return;
   S.roomId = payload.roomId;
