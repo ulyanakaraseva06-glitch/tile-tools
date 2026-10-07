@@ -7,6 +7,9 @@ import { defineConfig } from 'vite';
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 const config = {
+  // The editor is hosted inside /services/calculator/app/. Relative asset
+  // paths keep this bundle self-contained instead of resolving to /assets.
+  base: './',
   plugins: [
     react({
       // App.tsx is large enough that the esbuild-only path can fail silently in dev
