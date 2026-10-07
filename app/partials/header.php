@@ -127,9 +127,8 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'services'): ?>
-      <div class="services-topbar-title" aria-label="Описание раздела услуг">
+      <div class="services-topbar-title">
         <strong>Профессиональный контент для ваших продаж</strong>
-        <span>Визуализация, каталоги, инфографика, видео и digital</span>
       </div>
     <?php endif; ?>
     <?php if ($page === 'about'): ?>
