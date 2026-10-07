@@ -27,7 +27,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-8">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261006-3">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
