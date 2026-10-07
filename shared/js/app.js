@@ -185,6 +185,8 @@
     menu.style.maxHeight = `min(360px, calc(100dvh - 24px))`;
     menu.style.display = 'grid';
     menu.style.zIndex = '10000';
+    const toolbarScale = Number(dropdown.closest('.mirrored-service-toolbar')?.dataset.toolbarScale || 1);
+    menu.style.zoom = toolbarScale > 0 && toolbarScale < 1 ? String((1 / toolbarScale).toFixed(3)) : '1';
   }
 
   function mirrorServiceToolbar() {
@@ -247,33 +249,6 @@
       };
       control.addEventListener('input', () => forwardValue('input'));
       control.addEventListener('change', () => forwardValue('change'));
-    });
-
-    // Нестандартные выпадающие списки (например, помещения с превью) не
-    // являются обычными form-контролами, поэтому отдельно связываем копию
-    // верхней панели с оригиналом внутри iframe.
-    const sourceDropdowns = [...sourceToolbar.querySelectorAll('.filter-dropdown')];
-    const cloneDropdowns = [...clone.querySelectorAll('.filter-dropdown')];
-    cloneDropdowns.forEach((dropdown, index) => {
-      const sourceDropdown = sourceDropdowns[index];
-      if (!sourceDropdown) return;
-      dropdown.addEventListener('click', event => {
-        event.stopPropagation();
-        const option = event.target.closest('[data-room-option]');
-        if (option) {
-          const sourceOption = [...sourceDropdown.querySelectorAll('[data-room-option]')]
-            .find(item => item.dataset.roomOption === option.dataset.roomOption);
-          sourceOption?.click();
-          window.setTimeout(mirrorServiceToolbar, 40);
-          return;
-        }
-        const isOpen = dropdown.classList.contains('open');
-        cloneDropdowns.forEach(item => item.classList.remove('open'));
-        if (!isOpen) {
-          dropdown.classList.add('open');
-          positionMirroredDropdown(dropdown);
-        }
-      });
     });
 
     serviceToolbarHost.replaceChildren(clone);
