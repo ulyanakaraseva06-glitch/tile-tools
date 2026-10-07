@@ -172,6 +172,21 @@
     toolbar.dataset.toolbarScale = scale.toFixed(3);
   }
 
+  function positionMirroredDropdown(dropdown) {
+    const menu = dropdown?.querySelector('.filter-dropdown__menu');
+    if (!menu) return;
+    const rect = dropdown.getBoundingClientRect();
+    const width = Math.min(470, Math.max(280, window.innerWidth * 0.7));
+    const left = Math.max(8, Math.min(rect.left + rect.width / 2 - width / 2, window.innerWidth - width - 8));
+    menu.style.position = 'fixed';
+    menu.style.top = `${Math.min(window.innerHeight - 24, rect.bottom + 8)}px`;
+    menu.style.left = `${left}px`;
+    menu.style.width = `${width}px`;
+    menu.style.maxHeight = `min(360px, calc(100dvh - 24px))`;
+    menu.style.display = 'grid';
+    menu.style.zIndex = '10000';
+  }
+
   function mirrorServiceToolbar() {
     if (!serviceFrame || !serviceToolbarHost || !servicePage) return;
     const config = toolbarConfigs[servicePage];
@@ -234,10 +249,64 @@
       control.addEventListener('change', () => forwardValue('change'));
     });
 
+    // Нестандартные выпадающие списки (например, помещения с превью) не
+    // являются обычными form-контролами, поэтому отдельно связываем копию
+    // верхней панели с оригиналом внутри iframe.
+    const sourceDropdowns = [...sourceToolbar.querySelectorAll('.filter-dropdown')];
+    const cloneDropdowns = [...clone.querySelectorAll('.filter-dropdown')];
+    cloneDropdowns.forEach((dropdown, index) => {
+      const sourceDropdown = sourceDropdowns[index];
+      if (!sourceDropdown) return;
+      dropdown.addEventListener('click', event => {
+        event.stopPropagation();
+        const option = event.target.closest('[data-room-option]');
+        if (option) {
+          const sourceOption = [...sourceDropdown.querySelectorAll('[data-room-option]')]
+            .find(item => item.dataset.roomOption === option.dataset.roomOption);
+          sourceOption?.click();
+          window.setTimeout(mirrorServiceToolbar, 40);
+          return;
+        }
+        const isOpen = dropdown.classList.contains('open');
+        cloneDropdowns.forEach(item => item.classList.remove('open'));
+        if (!isOpen) {
+          dropdown.classList.add('open');
+          positionMirroredDropdown(dropdown);
+        }
+      });
+    });
+
     serviceToolbarHost.replaceChildren(clone);
     serviceToolbarHost.hidden = false;
     serviceToolbarHost.scrollLeft = previousScroll;
     window.requestAnimationFrame(() => fitMirroredToolbar(clone));
+  }
+
+  // Делегированный обработчик остаётся на стабильном контейнере: зеркало
+  // панели пересоздаётся после изменений iframe, поэтому слушатель на самой
+  // копии мог теряться.
+  if (serviceToolbarHost && !serviceToolbarHost.dataset.dropdownBound) {
+    serviceToolbarHost.dataset.dropdownBound = 'true';
+    serviceToolbarHost.addEventListener('click', event => {
+      const dropdown = event.target.closest('.filter-dropdown');
+      if (!dropdown || !serviceToolbarHost.contains(dropdown)) return;
+      event.stopPropagation();
+      const option = event.target.closest('[data-room-option]');
+      if (option) {
+        const frameDropdown = serviceFrame?.contentDocument?.querySelector('[data-room-picker]');
+        const frameOption = [...(frameDropdown?.querySelectorAll('[data-room-option]') || [])]
+          .find(item => item.dataset.roomOption === option.dataset.roomOption);
+        frameOption?.click();
+        window.setTimeout(mirrorServiceToolbar, 60);
+        return;
+      }
+      const wasOpen = dropdown.classList.contains('open');
+      serviceToolbarHost.querySelectorAll('.filter-dropdown').forEach(item => item.classList.remove('open'));
+      if (!wasOpen) {
+        dropdown.classList.add('open');
+        positionMirroredDropdown(dropdown);
+      }
+    });
   }
 
   const resumedProjectId = new URLSearchParams(window.location.search).get('project');

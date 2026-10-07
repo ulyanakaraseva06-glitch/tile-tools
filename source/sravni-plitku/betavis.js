@@ -1542,6 +1542,27 @@ function resetAll() {
 ================================================================ */
 function bindEvents() {
 
+  // Меню помещений в шапке: отдельный обработчик не зависит от кликов каталога.
+  const roomPicker = $id('roomPickerMenu')?.closest('[data-room-picker]');
+  if (roomPicker) {
+    roomPicker.setAttribute('role', 'button');
+    roomPicker.setAttribute('tabindex', '0');
+    const toggleRoomPicker = event => {
+      if (event.target.closest('[data-room-option]')) return;
+      event.stopPropagation();
+      const isOpen = roomPicker.classList.contains('open');
+      closeAllDropdowns();
+      if (!isOpen) {
+        roomPicker.classList.add('open');
+        positionRoomPickerMenu(roomPicker);
+      }
+    };
+    roomPicker.addEventListener('click', toggleRoomPicker);
+    roomPicker.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleRoomPicker(event); }
+    });
+  }
+
   // Освещение (температура): шкала в шапке + кнопка-лампочка = сброс к нейтрали
   const _ls = $id('lightSlider');
   if (_ls) _ls.addEventListener('input', e => setLightTemp(e.target.value / 100));

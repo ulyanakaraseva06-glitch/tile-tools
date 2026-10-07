@@ -319,7 +319,7 @@ body.shared-catalog-open { overflow: hidden; }
 .service-toolbar button,.service-toolbar label,.service-toolbar span{white-space:nowrap}
 body.page-visualizer .service-toolbar>.app-header{display:flex!important;align-items:center!important;justify-content:center!important;padding:0 8px!important}
 body.page-visualizer .service-toolbar .header-scroll{flex:1 1 auto!important;min-width:0!important;width:100%!important;overflow:visible!important}
-body.page-visualizer .service-toolbar .header-inner{display:flex!important;align-items:center!important;justify-content:center!important;width:max-content!important;min-width:100%!important;gap:10px!important}
+body.page-visualizer .service-toolbar .header-inner{display:flex!important;align-items:center!important;justify-content:flex-start!important;width:max-content!important;min-width:100%!important;gap:10px!important}
 body.page-visualizer .service-toolbar .header-left,body.page-visualizer .service-toolbar .header-actions{display:flex!important;flex:0 0 auto!important;align-items:center!important;flex-wrap:nowrap!important;gap:8px!important}
 body.page-calculator .service-toolbar>.topbar{display:flex!important;align-items:center!important;justify-content:flex-start!important;grid-template-columns:none!important;gap:10px!important;padding:0 4px!important}
 body.page-calculator .service-toolbar .topbar-tools,body.page-calculator .service-toolbar .topbar-actions{display:flex!important;flex:0 0 auto!important;align-items:center!important;flex-wrap:nowrap!important;gap:7px!important}

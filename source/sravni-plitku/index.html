@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>СравниПлитку — Визуализатор плитки</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="stylevis.css?v=20261006-1"/>
+  <link rel="stylesheet" href="stylevis.css?v=20261007-1"/>
 </head>
 <body>
 
@@ -13,6 +13,12 @@
 <header class="app-header" id="appHeader">
   <div class="header-scroll" id="headerScroll">
   <div class="header-inner">
+  <!-- Выбор макета помещения — первый контрол рабочей панели после логотипа -->
+  <div class="filter-dropdown room-picker-dropdown header-room-picker" data-room-picker>
+    <span class="filter-label" id="roomPickerLabel">Выберите помещение</span>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    <div class="filter-dropdown__menu" id="roomPickerMenu"></div>
+  </div>
   <div class="header-left">
     <!-- Регулятор освещения (температура) — слева в шапке, всегда виден -->
     <div class="header-light" id="headerLight">
@@ -52,12 +58,6 @@
   </div>
 
   <div class="header-actions">
-    <!-- Выбор макета помещения перенесён из каталога в верхнюю панель -->
-    <div class="filter-dropdown room-picker-dropdown header-room-picker" data-room-picker>
-      <span class="filter-label" id="roomPickerLabel">Выберите помещение</span>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      <div class="filter-dropdown__menu" id="roomPickerMenu"></div>
-    </div>
     <button class="header-btn" id="btnReset" title="Сбросить расставленную плитку во всех зонах текущего интерьера">
       <svg width="15" height="15" viewBox="0 0 7.18 6.44" xmlns="http://www.w3.org/2000/svg">
         <path fill="currentColor" fill-rule="nonzero" d="M0 2.42l0.69 1.77 1.23 -1.45 -0.8 -0.14c0.29,-1.33 1.46,-2.29 2.84,-2.29 1.6,0 2.91,1.31 2.91,2.91 0,1.61 -1.31,2.91 -2.91,2.91 -0.83,0 -1.62,-0.36 -2.17,-0.98l-0.24 0.21c0.61,0.69 1.48,1.08 2.41,1.08 1.79,-0.01 3.21,-1.43 3.22,-3.22 -0.01,-1.79 -1.43,-3.21 -3.22,-3.22 -1.18,0.01 -2.24,0.63 -2.82,1.66 -0.15,0.28 -0.26,0.58 -0.33,0.89l-0.81 -0.13z"/>
@@ -244,6 +244,6 @@
 </div>
 
 <script src="export-image.js"></script>
-<script src="betavis.js?v=20261006-1"></script>
+<script src="betavis.js?v=20261007-1"></script>
 </body>
 </html>
