@@ -192,7 +192,9 @@ body {
 }
 
 /* Foundations: headings, surfaces and fields */
-.app-main:not(.app-main-service) { max-width:1640px; padding:28px; }
+/* Рабочие страницы всегда используют ширину окна, а не фиксированный макет.
+   Это не даёт интерфейсу занимать визуально половину 2K/4K-экрана. */
+.app-main:not(.app-main-service) { width:100%; max-width:none; padding:clamp(14px,1.15vw,30px); }
 .page-heading,.panel-card,.hero-panel,.workspace-preview,.document-layout,.catalog-layout,.media-layout,.services-layout,.partner-grid,.project-table-card,
 .favorites-panel,.equipment-sidebar,.equipment-content,.projects-sidebar,.projects-table-wrap,.projects-promo,.projects-tip,.services-sidebar,.services-content,
 .side-card,.info-panel,.module-card,.product-card,.service-card,.favorite-card,.equipment-card,.media-tile-card,.useful-card,.consultation-card {
@@ -694,6 +696,16 @@ body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
   .vilray-services { height:auto; align-items:start; }
   .vilray-services>.services-content { height:auto; overflow:visible; }
   .services-rail { max-height:none; overflow:visible; }
+}
+
+/* На широких мониторах сохраняем ту же композицию, но масштабируем отступы,
+   панели и типографику относительно доступной области. */
+@media (min-width:1800px) {
+  .topbar { height:clamp(70px,4vw,84px); padding-inline:clamp(18px,1.35vw,42px); }
+  .app-main:not(.app-main-service) { padding:clamp(22px,1.35vw,44px); }
+  .page-heading,.hero-panel,.simple-info-hero { padding:clamp(26px,2vw,52px); }
+  .equipment-page,.projects-page,.vilray-services,.favorites-page,.about-workspace,.help-workspace { gap:clamp(14px,1vw,26px); }
+  .equipment-card,.media-tile-card,.vilray-service-card,.favorite-card,.project-row { font-size:clamp(13px,.72vw,16px); }
 }
 
 @media (prefers-reduced-motion:reduce) {
