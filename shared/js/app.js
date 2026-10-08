@@ -254,8 +254,8 @@
     };
     const positionRoomMenu = () => {
       const rect = trigger.getBoundingClientRect();
-      const width = Math.min(760, window.innerWidth - 24);
-      const left = Math.max(12, Math.min(rect.left, window.innerWidth - width - 12));
+      const width = Math.min(1180, Math.max(520, Math.round(window.innerWidth * 0.60) - 24));
+      const left = 12;
       popover.style.width = `${width}px`;
       popover.style.left = `${left}px`;
       popover.style.top = `${rect.bottom + 10}px`;
@@ -275,7 +275,7 @@
       cards.forEach(item => item.classList.toggle('is-active', item === card));
       label.textContent = card.querySelector('span')?.textContent || 'Выберите помещение';
       serviceFrame?.contentWindow?.postMessage({ type: 'tile-tools:select-room', roomId: card.dataset.roomId }, '*');
-      closeRoomMenu();
+      // Лента остаётся открытой: можно сразу сравнить и выбрать другой интерьер.
     }));
     document.addEventListener('click', event => {
       if (!visualizerRoomMenu.contains(event.target)) closeRoomMenu();

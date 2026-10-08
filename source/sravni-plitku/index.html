@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>СравниПлитку — Визуализатор плитки</title>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="stylevis.css?v=20261007-1"/>
+  <link rel="stylesheet" href="stylevis.css?v=20261008-1"/>
 </head>
 <body>
 
@@ -14,56 +14,12 @@
   <div class="header-scroll" id="headerScroll">
   <div class="header-inner">
   <!-- Выбор макета помещения — первый контрол рабочей панели после логотипа -->
-  <div class="filter-dropdown room-picker-dropdown header-room-picker" data-room-picker>
+  <div class="header-room-picker" data-room-picker aria-label="Выберите помещение">
     <span class="filter-label" id="roomPickerLabel">Выберите помещение</span>
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    <div class="filter-dropdown__menu" id="roomPickerMenu"></div>
-  </div>
-  <div class="header-left">
-    <!-- Регулятор освещения (температура) — слева в шапке, всегда виден -->
-    <div class="header-light" id="headerLight">
-      <div class="hl-control">
-        <div class="hl-slider-wrap">
-          <span class="hl-label">Настроить освещение</span>
-          <input type="range" id="lightSlider" class="hl-slider" min="-100" max="100" value="0" step="1" aria-label="Температура освещения" title="Температура освещения: теплее ← → холоднее">
-        </div>
-        <span class="hl-readout" id="lightReadout">нейтрально</span>
-      </div>
-      <button class="hl-btn" id="btnLightReset" title="Сбросить освещение к нейтрали">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18h6"/><path d="M10 22h4"/>
-          <path d="M15.1 14c.2-1 .7-1.7 1.4-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.8 1.2 1.5 1.4 2.5"/>
-        </svg>
-        <span>Сброс</span>
-      </button>
-    </div>
-
-    <!-- Регулятор экспозиции (яркость/контраст) — рядом с освещением -->
-    <div class="header-light" id="headerExposure">
-      <div class="hl-control">
-        <div class="hl-slider-wrap">
-          <span class="hl-label">Настроить экспозицию</span>
-          <input type="range" id="expSlider" class="hl-slider hl-slider--exp" min="-100" max="100" value="0" step="1" aria-label="Экспозиция" title="Экспозиция: темнее ← → ярче">
-        </div>
-        <span class="hl-readout" id="expReadout">нейтрально</span>
-      </div>
-      <button class="hl-btn" id="btnExpReset" title="Сбросить экспозицию к нейтрали">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
-        </svg>
-        <span>Сброс</span>
-      </button>
-    </div>
   </div>
 
   <div class="header-actions">
-    <button class="header-btn" id="btnReset" title="Сбросить расставленную плитку во всех зонах текущего интерьера">
-      <svg width="15" height="15" viewBox="0 0 7.18 6.44" xmlns="http://www.w3.org/2000/svg">
-        <path fill="currentColor" fill-rule="nonzero" d="M0 2.42l0.69 1.77 1.23 -1.45 -0.8 -0.14c0.29,-1.33 1.46,-2.29 2.84,-2.29 1.6,0 2.91,1.31 2.91,2.91 0,1.61 -1.31,2.91 -2.91,2.91 -0.83,0 -1.62,-0.36 -2.17,-0.98l-0.24 0.21c0.61,0.69 1.48,1.08 2.41,1.08 1.79,-0.01 3.21,-1.43 3.22,-3.22 -0.01,-1.79 -1.43,-3.21 -3.22,-3.22 -1.18,0.01 -2.24,0.63 -2.82,1.66 -0.15,0.28 -0.26,0.58 -0.33,0.89l-0.81 -0.13z"/>
-      </svg>
-      <span>Сбросить зоны</span>
-    </button>
     <button class="header-btn header-btn--export" id="btnExport" title="Сформировать единое изображение в JPG">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
         <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
@@ -89,6 +45,41 @@
     <div class="render-wrapper">
       <!-- SVG scene (filled by JS) -->
       <div id="renderScene" class="render-scene"></div>
+
+      <!-- Инструменты рендера: отдельная панель, не перегружающая верхнюю строку -->
+      <section class="visualizer-tools-popover" id="visualizerToolsPopover" aria-label="Инструменты визуализации">
+        <div class="visualizer-tools-popover__head">
+          <strong>Инструменты</strong>
+          <div class="visualizer-tools-popover__actions">
+            <button type="button" id="btnToolsCollapse" title="Свернуть панель">Свернуть</button>
+            <button type="button" id="btnToolsClose" aria-label="Закрыть панель" title="Закрыть">×</button>
+          </div>
+        </div>
+        <div class="visualizer-tools-popover__body">
+          <div class="header-light" id="headerLight">
+            <div class="hl-control">
+              <div class="hl-slider-wrap">
+                <span class="hl-label">Настроить освещение</span>
+                <input type="range" id="lightSlider" class="hl-slider" min="-100" max="100" value="0" step="1" aria-label="Температура освещения" title="Температура освещения: теплее ← → холоднее">
+              </div>
+              <span class="hl-readout" id="lightReadout">нейтрально</span>
+            </div>
+            <button class="hl-btn" id="btnLightReset" title="Сбросить освещение к нейтрали"><span>Сбросить свет</span></button>
+          </div>
+          <div class="header-light" id="headerExposure">
+            <div class="hl-control">
+              <div class="hl-slider-wrap">
+                <span class="hl-label">Настроить экспозицию</span>
+                <input type="range" id="expSlider" class="hl-slider hl-slider--exp" min="-100" max="100" value="0" step="1" aria-label="Экспозиция" title="Экспозиция: темнее ← → ярче">
+              </div>
+              <span class="hl-readout" id="expReadout">нейтрально</span>
+            </div>
+            <button class="hl-btn" id="btnExpReset" title="Сбросить экспозицию к нейтрали"><span>Сбросить экспозицию</span></button>
+          </div>
+          <button class="header-btn visualizer-tools-popover__reset" id="btnReset" title="Сбросить расставленную плитку во всех зонах текущего интерьера">Сбросить зоны</button>
+        </div>
+      </section>
+      <button class="visualizer-tools-reveal" type="button" id="btnToolsReveal" hidden>Инструменты</button>
 
       <!-- Controls (bottom-left) -->
       <div class="render-controls">
@@ -244,6 +235,6 @@
 </div>
 
 <script src="export-image.js"></script>
-<script src="betavis.js?v=20261007-2"></script>
+<script src="betavis.js?v=20261008-1"></script>
 </body>
 </html>
