@@ -717,6 +717,7 @@ body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
 .header-brand-menu .header-menu-grid { gap:8px; }
 .header-brand-menu .header-menu-grid a { min-height:78px; padding:12px 10px; grid-template-columns:16px minmax(0,1fr); grid-template-rows:auto auto; align-content:center; gap:2px 8px; border:1px solid #dedee3; border-radius:9px; background:#fff; }
 .header-brand-menu .header-menu-grid a>span { grid-column:1; grid-row:1; align-self:center; justify-self:center; width:16px; height:16px; color:#9570bd; background:transparent; border-radius:0; font-size:16px; font-weight:400; }
+.header-brand-menu .header-menu-grid .header-menu-icon svg { display:block; width:18px; height:18px; overflow:visible; }
 .header-brand-menu .header-menu-grid b { grid-column:2; grid-row:1; align-self:center; color:#535563; font-size:14px; font-weight:700; line-height:1.16; letter-spacing:0; }
 .header-brand-menu .header-menu-grid small { grid-column:2; grid-row:2; align-self:start; color:#7b7d8d; font-size:10px; font-weight:500; line-height:1.25; white-space:normal; }
 .header-brand-menu .header-menu-grid a:hover,.header-brand-menu .header-menu-grid a.is-active { border-color:#b99bdd; background:#f2ebf9; transform:none; }

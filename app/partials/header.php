@@ -10,6 +10,17 @@ $navigation = [
     'projects' => ['Проекты', '⊟'],
     'services' => ['Услуги', '◇'],
 ];
+$menuIcons = [
+    'visualizer' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8.5h16M4 12h16M4 15.5h16" stroke-linecap="round"/><path d="M6 5.5h12" stroke-linecap="round"/></svg>',
+    'calculator' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="5" width="14" height="14" rx="1"/><path d="M12 5v14M5 12h14"/></svg>',
+    'pdf' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="4.5" width="12" height="15" rx="2"/><path d="M9 9h6M9 12h6M9 15h4" stroke-linecap="round"/></svg>',
+    'equipment' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4.5" y="5" width="7" height="7" rx="1"/><rect x="12.5" y="12" width="7" height="7" rx="1"/><path d="M12.5 7h4v4M7.5 13v4h4" stroke-linecap="round"/></svg>',
+    'media' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="5" width="12" height="12" rx="2"/><path d="M5 8v10a1 1 0 0 0 1 1h10"/><circle cx="14.5" cy="9.5" r="1"/><path d="m9 15 2.6-2.5 2 1.8 1.5-1.4L18 16" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    'projects' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8.5a2 2 0 0 1 2-2h4l1.6 2H18a2 2 0 0 1 2 2v6.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" stroke-linejoin="round"/></svg>',
+    'favorites' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19s-6.5-3.8-6.5-8.1A3.5 3.5 0 0 1 12 8.8a3.5 3.5 0 0 1 6.5 2.1C18.5 15.2 12 19 12 19Z" stroke-linejoin="round"/></svg>',
+    'services' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="8" width="16" height="11" rx="2"/><path d="M9 8V6.5A1.5 1.5 0 0 1 10.5 5h3A1.5 1.5 0 0 1 15 6.5V8M4 12h16M10 12v2h4v-2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    'about' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 10.5v5M12 8h.01" stroke-linecap="round"/></svg>',
+];
 $headerUser = tt_current_user();
 $headerUserName = tt_user_display_name($headerUser);
 $headerUserInitials = tt_user_initials($headerUser);
@@ -28,7 +39,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261008-6">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-16">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-17">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -40,9 +51,9 @@ $headerUserInitials = tt_user_initials($headerUser);
       <div class="header-menu-popover">
         <header class="header-menu-heading"><strong>Инструменты и разделы</strong><button type="button" data-menu-close aria-label="Закрыть меню">×</button></header>
         <nav class="header-menu-grid" aria-label="Все разделы Tile Tools">
-          <?php foreach ($navigation as $key => [$label, $icon]): ?><a class="<?= $page === $key ? 'is-active' : '' ?>" href="<?= tt_url($key) ?>"><span aria-hidden="true"><?= $icon ?></span><b><?= tt_escape($label) ?></b><small><?= tt_escape(['visualizer'=>'Примерить в интерьере','calculator'=>'Расчёт и раскладка','pdf'=>'Документы и презентации','equipment'=>'Каталог решений','media'=>'Общий каталог плитки','projects'=>'Сохранённые работы','services'=>'Vilray Studio'][$key]) ?></small></a><?php endforeach; ?>
-          <a class="<?= $page === 'favorites' ? 'is-active' : '' ?>" href="<?= tt_url('favorites') ?>"><span aria-hidden="true">♡</span><b>Избранное</b><small>Сохранённые материалы</small></a>
-          <a class="<?= $page === 'about' ? 'is-active' : '' ?>" href="<?= tt_url('about') ?>"><span aria-hidden="true">ⓘ</span><b>О сервисе</b><small>Возможности платформы</small></a>
+          <?php foreach ($navigation as $key => [$label, $icon]): ?><a class="<?= $page === $key ? 'is-active' : '' ?>" href="<?= tt_url($key) ?>"><span class="header-menu-icon" aria-hidden="true"><?= $menuIcons[$key] ?></span><b><?= tt_escape($label) ?></b><small><?= tt_escape(['visualizer'=>'Примерить в интерьере','calculator'=>'Расчёт и раскладка','pdf'=>'Документы и презентации','equipment'=>'Каталог решений','media'=>'Общий каталог плитки','projects'=>'Сохранённые работы','services'=>'Vilray Studio'][$key]) ?></small></a><?php endforeach; ?>
+          <a class="<?= $page === 'favorites' ? 'is-active' : '' ?>" href="<?= tt_url('favorites') ?>"><span class="header-menu-icon" aria-hidden="true"><?= $menuIcons['favorites'] ?></span><b>Избранное</b><small>Сохранённые материалы</small></a>
+          <a class="<?= $page === 'about' ? 'is-active' : '' ?>" href="<?= tt_url('about') ?>"><span class="header-menu-icon" aria-hidden="true"><?= $menuIcons['about'] ?></span><b>О сервисе</b><small>Возможности платформы</small></a>
         </nav>
         <footer class="header-menu-footer">
           <a class="header-help-link <?= $page === 'help' ? 'is-active' : '' ?>" href="<?= tt_url('help') ?>"><span aria-hidden="true">?</span><b>Помощь</b></a>
