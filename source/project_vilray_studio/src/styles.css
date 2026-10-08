@@ -2425,20 +2425,21 @@ input {
 }
 
 .canvas-manual-zone-controls.drawing-room-controls {
-  top: 12px;
-  right: 12px;
-  left: min(520px, 42%);
-  width: auto;
-  grid-template-columns: minmax(170px, 1fr) repeat(5, minmax(82px, auto));
+  top: 54px;
+  right: auto;
+  left: 50%;
+  width: min(720px, calc(100% - 24px));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
   padding: 6px;
   background: #FFFFFF;
   border-color: var(--border);
   box-shadow: var(--shadow);
+  transform: translateX(-50%);
 }
 
 .canvas-manual-zone-controls.drawing-room-controls > span {
-  grid-column: auto;
+  grid-column: 1 / -1;
   color: var(--text);
   font-size: 13px;
   font-weight: 500;
@@ -2468,9 +2469,10 @@ input {
 
 @media (max-width: 1400px) {
   .canvas-manual-zone-controls.drawing-room-controls {
-    top: 58px;
-    right: 12px;
-    left: 12px;
+    top: 54px;
+    right: auto;
+    left: 50%;
+    width: min(720px, calc(100% - 24px));
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
