@@ -20,6 +20,14 @@ function tt_integration_url(string $service): string
 function tt_render_integrated_service(string $service, string $heading): void
 {
     $url = tt_integration_url($service);
+    // Визуализатор загружается внутри iframe. Версия в URL не даёт браузеру
+    // оставить прежнюю разметку после обновления интерфейса сервиса.
+    $revisions = [
+        'visualizer' => '20261008-1',
+    ];
+    if (isset($revisions[$service])) {
+        $url .= (str_contains($url, '?') ? '&' : '?') . 'ui=' . $revisions[$service];
+    }
     $user = tt_current_user();
     if ($user) {
         $url .= (str_contains($url, '?') ? '&' : '?') . 'account=' . rawurlencode((string) $user['id']);
