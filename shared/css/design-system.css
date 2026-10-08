@@ -596,10 +596,15 @@ body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:vi
 .services-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
 .services-filter-heading h2 { margin:0; font-size:16px; }
 .services-filter-heading span { color:var(--tt-text-secondary); font-size:11px; }
-.services-category-select { display:block; }
-.services-category-select .input { width:100%; min-height:42px; color:var(--tt-text); font-weight:600; }
-.services-rail .services-nav { gap:6px; }
-.services-rail .services-nav button { min-height:40px; padding:9px 10px; }
+.services-category-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.services-category-grid button { border:1px solid var(--tt-border); cursor:pointer; font:inherit; }
+.services-show-all { grid-column:1/-1; min-height:40px; border-radius:10px; background:var(--tt-surface); color:var(--tt-text-secondary); font-size:13px; font-weight:700; }
+.services-show-all:hover,.services-show-all.is-active { border-color:#d3b9ef; background:var(--tt-violet-soft); color:var(--tt-violet); }
+.services-category-card { position:relative; min-height:94px; overflow:hidden; border-radius:10px; background:#f7f4f9; color:#fff; text-align:left; }
+.services-category-card img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.services-category-card::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(34,28,45,.04),rgba(34,28,45,.72)); }
+.services-category-card span { position:relative; z-index:1; display:block; padding:10px 8px; font-size:11px; font-weight:700; line-height:1.2; text-shadow:0 1px 3px rgba(0,0,0,.55); }
+.services-category-card:hover,.services-category-card.is-active { border-color:#b78cdd; box-shadow:0 0 0 2px rgba(161,118,204,.2); }
 .services-links-card { padding:8px 16px; }
 .services-links-card a { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--tt-border); color:var(--tt-text-secondary); font-size:12px; text-decoration:none; }
 .services-links-card a:last-child { border-bottom:0; }
