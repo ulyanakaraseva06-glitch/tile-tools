@@ -111,6 +111,13 @@
   }
 
   document.addEventListener('click', (event) => {
+    const closeMenu = event.target.closest('[data-menu-close]');
+    if (closeMenu) {
+      event.preventDefault();
+      const menu = closeMenu.closest('[data-header-menu]');
+      if (menu) menu.open = false;
+      return;
+    }
     const trigger = event.target.closest('[data-notice]');
     if (trigger) {
       event.preventDefault();

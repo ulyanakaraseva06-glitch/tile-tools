@@ -27,21 +27,27 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261008-1">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261008-2">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-13">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
     <details class="header-menu header-brand-menu" data-header-menu>
-      <summary class="brand brand-stacked" aria-label="Открыть меню Tile Tools"><img class="brand-logo-image" src="/shared/images/tile-tools-logo-final.svg?v=20261008-5" alt="Tile Tools"></summary>
+      <summary class="brand brand-stacked" aria-label="Открыть меню Tile Tools">
+        <img class="brand-logo-image" src="/shared/images/tile-tools-logo-final.svg?v=20261008-5" alt="Tile Tools">
+        <span class="brand-menu-zone"><small>Меню</small><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </summary>
       <div class="header-menu-popover">
+        <header class="header-menu-heading"><strong>Инструменты и разделы</strong><button type="button" data-menu-close aria-label="Закрыть меню">×</button></header>
         <nav class="header-menu-grid" aria-label="Все разделы Tile Tools">
           <?php foreach ($navigation as $key => [$label, $icon]): ?><a class="<?= $page === $key ? 'is-active' : '' ?>" href="<?= tt_url($key) ?>"><span aria-hidden="true"><?= $icon ?></span><b><?= tt_escape($label) ?></b><small><?= tt_escape(['visualizer'=>'Примерить в интерьере','calculator'=>'Расчёт и раскладка','pdf'=>'Документы и презентации','equipment'=>'Каталог решений','media'=>'Общий каталог плитки','projects'=>'Сохранённые работы','services'=>'Vilray Studio'][$key]) ?></small></a><?php endforeach; ?>
           <a class="<?= $page === 'favorites' ? 'is-active' : '' ?>" href="<?= tt_url('favorites') ?>"><span aria-hidden="true">♡</span><b>Избранное</b><small>Сохранённые материалы</small></a>
           <a class="<?= $page === 'about' ? 'is-active' : '' ?>" href="<?= tt_url('about') ?>"><span aria-hidden="true">ⓘ</span><b>О сервисе</b><small>Возможности платформы</small></a>
-          <a class="<?= $page === 'help' ? 'is-active' : '' ?>" href="<?= tt_url('help') ?>"><span aria-hidden="true">?</span><b>Помощь</b><small>Подсказки по работе</small></a>
         </nav>
-        <a class="header-account-link <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><span><b><?= tt_escape($headerUserName) ?></b><small><?= $headerUser ? 'Открыть личный кабинет' : 'Войти или зарегистрироваться' ?></small></span><i>→</i></a>
+        <footer class="header-menu-footer">
+          <a class="header-help-link <?= $page === 'help' ? 'is-active' : '' ?>" href="<?= tt_url('help') ?>"><span aria-hidden="true">?</span><b>Помощь</b></a>
+          <a class="header-account-link <?= $page === 'account' ? 'is-active' : '' ?>" href="<?= tt_url('account') ?>"><span class="avatar"><?= tt_escape($headerUserInitials) ?></span><b><?= tt_escape($headerUser ? $headerUserName : 'Гость — Войти / Регистрация') ?></b><i>→</i></a>
+        </footer>
       </div>
     </details>
     <?php if ($page === 'visualizer'): ?>
