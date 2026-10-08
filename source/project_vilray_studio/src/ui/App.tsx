@@ -7,7 +7,6 @@ import {
   Calculator,
   FolderOpen,
   Grid3X3,
-  Maximize2,
   Minus,
   Plus,
   Redo2,
@@ -3323,18 +3322,17 @@ function WorkspaceCanvas({
             }) ? 'Тяните стены. Прямые углы сохраняются.' : 'Тяните нужную точку. Остальные точки остаются на месте.'}</span>
           </div>
         ) : null}
-        <div className="canvas-toolbar">
-          <button type="button" aria-label="Уменьшить" onClick={() => onViewportChange(constrainWorkspaceViewport(changeCanvasZoom(viewport, viewport.zoom - 0.15)))}>
-            <Minus size={16} />
-          </button>
-          <span>{Math.round(viewport.zoom * 100)}%</span>
-          <button type="button" aria-label="Увеличить" onClick={() => onViewportChange(constrainWorkspaceViewport(changeCanvasZoom(viewport, viewport.zoom + 0.15)))}>
-            <Plus size={16} />
-          </button>
-          <button type="button" aria-label="Вписать" onClick={() => onViewportChange(dimensionCanvasBounds ? frameRoomEditor(resetViewport(), dimensionCanvasBounds, size, true) : resetViewport())}>
-            <Maximize2 size={16} />
-          </button>
-        </div>
+      </div>
+      <div className="canvas-toolbar canvas-zoom-widget" aria-label="Масштаб схемы">
+        <button type="button" aria-label="Уменьшить" onClick={() => onViewportChange(constrainWorkspaceViewport(changeCanvasZoom(viewport, viewport.zoom - 0.15)))}>
+          <Minus size={16} />
+        </button>
+        <button type="button" aria-label="Увеличить" onClick={() => onViewportChange(constrainWorkspaceViewport(changeCanvasZoom(viewport, viewport.zoom + 0.15)))}>
+          <Plus size={16} />
+        </button>
+        <button type="button" className="canvas-zoom-value" aria-label="Сбросить масштаб" onClick={() => onViewportChange(dimensionCanvasBounds ? frameRoomEditor(resetViewport(), dimensionCanvasBounds, size, true) : resetViewport())}>
+          {Math.round(viewport.zoom * 100)}%
+        </button>
       </div>
       <div className="canvas-stage-holder" ref={holderRef}>
       <Stage

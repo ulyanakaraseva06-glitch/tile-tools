@@ -1,4 +1,4 @@
-import { BadgePercent, BookOpen, FileText, Grid2X2, Layers, Maximize2, Pencil, Quote, RectangleHorizontal, RotateCcw, Save, Star, Trees, ZoomIn, ZoomOut } from 'lucide-react';
+import { BadgePercent, BookOpen, FileText, Grid2X2, Layers, Pencil, Quote, RectangleHorizontal, RotateCcw, Save, Star, Trees, ZoomIn, ZoomOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { visiblePresetSummaries } from '../../data/createProject';
 import {
@@ -61,7 +61,6 @@ export function Canvas({
   onCommitPageLayout
 }: CanvasProps) {
   const [zoom, setZoom] = useState(getInitialZoom);
-  const [fullscreen, setFullscreen] = useState(false);
   const [layoutEditMode, setLayoutEditMode] = useState(false);
   const [draftPage, setDraftPage] = useState<Page | undefined>(page);
   const [layoutBaseline, setLayoutBaseline] = useState<Page | null>(null);
@@ -493,7 +492,7 @@ onZoneDelete={(zoneId) => {
   return (
     <section className="canvas-wrap">
       {widgetPanel}
-      <div className="canvas-toolbar">
+      <div className="canvas-toolbar canvas-layout-toolbar">
         <div className="layout-toolbar-actions">
           <button
             className={`btn ${layoutEditMode ? 'btn-ghost active' : 'btn-primary'}`}
@@ -507,16 +506,15 @@ onZoneDelete={(zoneId) => {
           <button className={`btn ${layoutEditMode ? 'btn-primary' : 'btn-ghost'}`} onClick={saveLayout} disabled={!layoutEditMode}><Save size={16} />Сохранить</button>
           <button className="btn btn-ghost" onClick={restoreLayout} disabled={!layoutBaseline}><RotateCcw size={16} />Вернуть</button>
         </div>
-        <span>{zoom}%</span>
+      </div>
+      <div className="canvas-zoom-widget" aria-label="Масштаб документа">
         <button className="tool" title="Уменьшить" onClick={() => changeZoom(-1)} disabled={zoom === zoomSteps[0]}>
           <ZoomOut size={17} />
         </button>
         <button className="tool" title="Увеличить" onClick={() => changeZoom(1)} disabled={zoom === zoomSteps[zoomSteps.length - 1]}>
           <ZoomIn size={17} />
         </button>
-        <button className="tool" title="Полноэкранный просмотр" onClick={() => setFullscreen(true)}>
-          <Maximize2 size={17} />
-        </button>
+        <button className="canvas-zoom-value" title="Сбросить масштаб" onClick={() => setZoom(getInitialZoom())}>{zoom}%</button>
       </div>
       <div
   className={`canvas-stage ${layoutEditMode ? 'layout-grid-active' : ''}`}
@@ -527,16 +525,6 @@ onZoneDelete={(zoneId) => {
   {pageView}
 </div>
 
-      {fullscreen && page && (
-        <div className="fullscreen-page-view" onClick={() => setFullscreen(false)}>
-          <button className="btn btn-ghost" onClick={() => setFullscreen(false)}>Закрыть просмотр</button>
-          <PdfPageRenderer
-            page={page}
-            renderSettings={renderSettings}
-            isLastPage={false}
-          />
-        </div>
-      )}
     </section>
   );
 }

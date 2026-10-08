@@ -2270,6 +2270,52 @@ svg {
   text-align: center;
 }
 
+.canvas-layout-toolbar {
+  left: auto;
+  right: 20px;
+}
+
+.canvas-zoom-widget {
+  position: absolute;
+  z-index: 7;
+  left: 20px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.canvas-zoom-widget .tool,
+.canvas-zoom-widget .canvas-zoom-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.canvas-zoom-widget .canvas-zoom-value {
+  width: 54px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.canvas-zoom-widget .tool:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .project-title,
 .search-field,
 .field input,
