@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-10">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-11">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -83,7 +83,7 @@ $headerUserInitials = tt_user_initials($headerUser);
         </div>
       </div>
     <?php endif; ?>
-    <?php if ($page !== 'about' && $page !== 'help' && $page !== 'services'): ?>
+    <?php if ($page !== 'about' && $page !== 'help' && $page !== 'services' && $page !== 'equipment'): ?>
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
@@ -113,6 +113,7 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'equipment'): ?>
+      <div class="equipment-topbar-title" aria-current="page"><strong>Оборудование</strong></div>
       <div class="equipment-topbar-tools" aria-label="Поиск и оглавление оборудования">
         <form class="equipment-topbar-search" data-equipment-search>
           <label class="sr-only" for="equipment-query">Поиск оборудования</label>
@@ -120,12 +121,6 @@ $headerUserInitials = tt_user_initials($headerUser);
           <input id="equipment-query" name="q" data-equipment-control type="search" placeholder="Поиск оборудования, брендов, категорий...">
           <button class="button button-primary" type="submit">Найти</button>
         </form>
-        <label class="equipment-topbar-outline">
-          <span>Оглавление</span>
-          <select class="input" name="category" data-equipment-control aria-label="Оглавление оборудования">
-            <option value="">Все категории</option>
-          </select>
-        </label>
       </div>
     <?php endif; ?>
     <?php if ($page === 'services'): ?>

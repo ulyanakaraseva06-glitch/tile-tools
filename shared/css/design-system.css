@@ -564,7 +564,8 @@ body.page-projects>.topbar>.topbar-context { flex:0 0 auto; }
 /* Equipment: the catalog keeps the broad left workspace while controls live in
    the right rail. Search and the category outline stay beside the page title. */
 body.page-equipment>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
-body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
+.equipment-topbar-title { flex:0 0 auto; min-width:0; }
+.equipment-topbar-title strong { display:block; overflow:hidden; color:var(--tt-text); font-size:18px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
 .equipment-topbar-tools { display:flex; flex:1 1 auto; min-width:0; align-items:center; gap:8px; }
 .equipment-topbar-search { display:flex; flex:1 1 auto; min-width:260px; height:38px; align-items:center; gap:7px; padding:0 5px 0 10px; border:1px solid var(--tt-border); border-radius:var(--tt-radius-sm); color:var(--tt-text-secondary); background:var(--tt-surface); }
 .equipment-topbar-search>span { font-size:21px; line-height:1; }
@@ -646,7 +647,6 @@ body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
   .projects-topbar-tools select { flex:1 1 calc(33.33% - 8px); min-width:0; width:auto; }
   .projects-topbar-new { display:none; }
   body.page-equipment>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
-  body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
   .equipment-topbar-tools { order:5; flex:1 0 100%; }
   .equipment-topbar-outline { flex-basis:170px; }
   .equipment-page { grid-template-columns:1fr; }
