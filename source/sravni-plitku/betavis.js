@@ -1182,6 +1182,7 @@ function renderCatalog() {
       <div class="tile-card__info">
         <span class="tile-card__name">${displayName}</span>
         <span class="tile-card__meta">${fv(tile,'size')} · ${fv(tile,'surface')}</span>
+        <button class="tile-card__apply" type="button" data-apply-all="${tile.id}">Применить на все</button>
       </div>
     </div>`;
   }).join('');
@@ -1338,7 +1339,6 @@ function showTileInfoPopup(tid) {
         <div class="popup__title" style="margin-bottom:4px">${displayName}</div>
         ${tile.brand ? `<div style="font-size:13px;color:var(--text-sec);margin-bottom:10px">${tile.brand}${tile.collection?' · '+tile.collection:''}</div>` : ''}
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="popup-action-btn popup-action-btn--primary" data-apply-all-popup="${tile.id}">Применить на все</button>
           <button class="popup-action-btn ${isFav?'popup-action-btn--active':''}" data-fav-popup="${tile.id}">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -1591,6 +1591,9 @@ function bindEvents() {
 
   // Tile grid clicks (delegated)
   $id('tileGrid').addEventListener('click', e => {
+    const applyAllBtn = e.target.closest('[data-apply-all]');
+    if (applyAllBtn) { e.stopPropagation(); applyTileToAllZones(applyAllBtn.dataset.applyAll); return; }
+
     const infoBtn = e.target.closest('[data-info]');
     if (infoBtn) { e.stopPropagation(); showTileInfoPopup(infoBtn.dataset.info); return; }
 
@@ -1679,12 +1682,6 @@ function bindEvents() {
 
   // Делегированная обработка кнопок внутри инфо-попапа плитки
   $id('popupContent').addEventListener('click', e => {
-    const applyAllBtn = e.target.closest('[data-apply-all-popup]');
-    if (applyAllBtn) {
-      applyTileToAllZones(applyAllBtn.dataset.applyAllPopup);
-      closePopup();
-      return;
-    }
     const favBtn = e.target.closest('[data-fav-popup]');
     if (favBtn) {
       const tid = favBtn.dataset.favPopup;
