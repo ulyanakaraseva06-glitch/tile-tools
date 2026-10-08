@@ -504,8 +504,8 @@ body.page-help>.topbar { gap:12px; height:66px; min-height:66px; overflow:visibl
 .help-topbar-title strong { display:block; overflow:hidden; color:var(--tt-text); font-size:18px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
 .page-help { height:100dvh; overflow:hidden; }
 body.page-help>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
-.help-workspace { height:100%; min-height:0; display:grid; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:stretch; }
-.help-video { grid-column:1; min-width:0; padding:14px; display:flex; flex-direction:column; }
+.help-workspace { height:100%; min-height:0; display:grid; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); grid-template-rows:minmax(0,1fr); gap:16px; align-items:stretch; }
+.help-video { grid-column:1; min-width:0; min-height:0; height:100%; padding:14px; display:flex; flex-direction:column; overflow:hidden; }
 .help-video-stage { position:relative; min-height:0; flex:1 1 auto; overflow:hidden; border-radius:var(--tt-radius-md); background:#292133; }
 .help-video-stage::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg,rgba(25,20,36,.68),rgba(49,37,61,.2)); }
 .help-video-stage img { display:block; width:100%; height:100%; object-fit:cover; }
@@ -516,7 +516,7 @@ body.page-help>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
 .help-video-caption { display:none; }
 .help-video-caption h1 { margin:5px 0 6px; color:var(--tt-text); font-size:22px; letter-spacing:-.025em; }
 .help-video-caption p { margin:0; color:var(--tt-text-secondary); font-size:13px; line-height:1.5; }
-.help-faq { grid-column:2; min-width:0; padding:18px 22px; overflow:hidden; }
+.help-faq { grid-column:2; min-width:0; min-height:0; height:100%; padding:18px 22px; overflow:hidden; }
 .help-faq-heading { padding-bottom:8px; }
 .help-faq-heading h2 { margin:4px 0 5px; color:var(--tt-text); font-size:23px; letter-spacing:-.03em; }
 .help-faq-heading p { margin:0; color:var(--tt-text-secondary); font-size:12px; line-height:1.4; }
@@ -664,7 +664,7 @@ body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
   .about-gallery { min-height:58vh; }
   .about-faq { max-height:none; overflow:visible; }
   body.page-help>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
-  .help-workspace { grid-template-columns:1fr; min-height:0; }
+  .help-workspace { grid-template-columns:1fr; grid-template-rows:auto; min-height:0; }
   .help-video,.help-faq { grid-column:1; }
   .help-video-stage { min-height:48vh; }
   .page-help { height:auto; overflow:auto; }
