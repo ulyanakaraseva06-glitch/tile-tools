@@ -28,12 +28,12 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-12">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-13">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
     <details class="header-menu header-brand-menu" data-header-menu>
-      <summary class="brand brand-stacked" aria-label="Открыть меню Tile Tools"><img class="brand-logo-image" src="/shared/images/tile-tools-logo-final.svg?v=20261004-2" alt="Tile Tools"></summary>
+      <summary class="brand brand-stacked" aria-label="Открыть меню Tile Tools"><img class="brand-logo-image" src="/shared/images/tile-tools-logo-final.svg?v=20261008-3" alt="Tile Tools"></summary>
       <div class="header-menu-popover">
         <nav class="header-menu-grid" aria-label="Все разделы Tile Tools">
           <?php foreach ($navigation as $key => [$label, $icon]): ?><a class="<?= $page === $key ? 'is-active' : '' ?>" href="<?= tt_url($key) ?>"><span aria-hidden="true"><?= $icon ?></span><b><?= tt_escape($label) ?></b><small><?= tt_escape(['visualizer'=>'Примерить в интерьере','calculator'=>'Расчёт и раскладка','pdf'=>'Документы и презентации','equipment'=>'Каталог решений','media'=>'Общий каталог плитки','projects'=>'Сохранённые работы','services'=>'Vilray Studio'][$key]) ?></small></a><?php endforeach; ?>
