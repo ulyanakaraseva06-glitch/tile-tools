@@ -596,6 +596,8 @@ body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:vi
 .services-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
 .services-filter-heading h2 { margin:0; font-size:16px; }
 .services-filter-heading span { color:var(--tt-text-secondary); font-size:11px; }
+.services-category-select { display:block; }
+.services-category-select .input { width:100%; min-height:42px; color:var(--tt-text); font-weight:600; }
 .services-rail .services-nav { gap:6px; }
 .services-rail .services-nav button { min-height:40px; padding:9px 10px; }
 .services-links-card { padding:8px 16px; }

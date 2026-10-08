@@ -18,10 +18,13 @@ $categories = [
 
   <aside class="services-rail">
     <section class="services-filter-card panel-card">
-      <div class="services-filter-heading"><h2>Категории услуг</h2><span>Разделы</span></div>
-      <nav class="services-nav" aria-label="Категории услуг">
-        <?php foreach ($categories as $id => [$icon, $label]): ?><button type="button" class="<?= $id === '' ? 'is-active' : '' ?>" data-service-filter="<?= tt_escape($id === '' ? 'all' : $id) ?>"><span><?= tt_escape($icon) ?></span><?= tt_escape($label) ?></button><?php endforeach; ?>
-      </nav>
+      <div class="services-filter-heading"><h2>Категории услуг</h2></div>
+      <label class="services-category-select">
+        <span class="sr-only">Выберите категорию услуг</span>
+        <select class="input" data-service-filter-select aria-label="Выберите категорию услуг">
+          <?php foreach ($categories as $id => [$icon, $label]): ?><option value="<?= tt_escape($id === '' ? 'all' : $id) ?>"><?= tt_escape($label) ?></option><?php endforeach; ?>
+        </select>
+      </label>
     </section>
     <article class="service-ad-card" aria-label="Vilray Studio"><small>VILRAY STUDIO</small><strong>Нужна профессиональная подача проекта?</strong><span>Визуализации, каталоги и материалы для продаж.</span><a href="<?= tt_url('services') ?>">Перейти к услуге →</a></article>
     <section class="services-links-card panel-card">
@@ -35,4 +38,4 @@ $categories = [
 
 <dialog class="service-dialog" data-service-dialog><button class="dialog-close" type="button" data-service-close aria-label="Закрыть">×</button><div data-service-dialog-content></div></dialog>
 <script type="application/json" id="services-data"><?= json_encode($services, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
-<script src="/shared/js/services.js" defer></script>
+<script src="/shared/js/services.js?v=20261008-1" defer></script>

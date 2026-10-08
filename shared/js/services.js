@@ -31,6 +31,12 @@
     `<option value="${escapeHtml(service.id)}"${service.id === selectedId ? ' selected' : ''}>${escapeHtml(service.title)}</option>`
   )).join('');
 
+  const applyCategoryFilter = (category) => {
+    document.querySelectorAll('[data-service-card]').forEach((card) => {
+      card.hidden = category !== 'all' && card.dataset.category !== category;
+    });
+  };
+
   const openService = (serviceId) => {
     const service = services.find((item) => item.id === serviceId);
     if (!service || !dialog || !dialogContent) return;
@@ -73,9 +79,7 @@
     if (filter) {
       const category = filter.dataset.serviceFilter;
       document.querySelectorAll('[data-service-filter]').forEach((button) => button.classList.toggle('is-active', button === filter));
-      document.querySelectorAll('[data-service-card]').forEach((card) => {
-        card.hidden = category !== 'all' && card.dataset.serviceCategory !== category;
-      });
+      applyCategoryFilter(category);
       return;
     }
 
@@ -86,6 +90,11 @@
     }
 
     if (event.target.closest('[data-service-close]')) dialog?.close();
+  });
+
+  document.addEventListener('change', (event) => {
+    const filter = event.target.closest('[data-service-filter-select]');
+    if (filter) applyCategoryFilter(filter.value);
   });
 
   dialog?.addEventListener('click', (event) => {
