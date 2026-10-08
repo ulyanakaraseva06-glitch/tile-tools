@@ -1383,6 +1383,56 @@ export function App() {
     return () => window.removeEventListener('message', receiveTile);
   });
 
+  useEffect(() => {
+    const publishProject = () => {
+      saveProject(project);
+      if (window.parent !== window) {
+        window.parent.postMessage({
+          type: 'tile-tools:project-saved',
+          project: {
+            id: `local:calculation:${project.id}`,
+            type: 'calculation',
+            title: project.name || 'Расчёт плитки',
+            status: 'active',
+            updatedAt: project.updatedAt,
+            metric: `${project.surfaces.length} поверхн. · ${project.materials.length} матер.`,
+            payload: project,
+          },
+        }, '*');
+      }
+    };
+    const handleServiceCommand = (event: MessageEvent) => {
+      if (event.source !== window.parent) return;
+      if (event.data?.type === 'tile-tools:save-project') { publishProject(); return; }
+      if (event.data?.type === 'tile-tools:service-action') {
+        if (event.data.action === 'undo') undoProject();
+        if (event.data.action === 'redo') redoProject();
+        return;
+      }
+      if (event.data?.type === 'tile-tools:export-project') {
+        if (event.data.format === 'pdf') {
+          setCalculationSurfaceIds(new Set(project.surfaces.map((surface) => surface.id)));
+          setCalculationSelecting(false);
+          setCalculationOpen(true);
+        } else {
+          setRoomActionMessage('Для расчёта доступна выгрузка в PDF через окно расчёта.');
+        }
+        return;
+      }
+      if (event.data?.type !== 'tile-tools:resume-project' || !event.data.payload) return;
+      const nextProject = ensureProjectDefaults(event.data.payload as TileProject);
+      setProject(nextProject);
+      historyRef.current = { applying: true, current: nextProject, future: [], past: [] };
+      setSelectedTemplateId(nextProject.room.templateId ?? 'custom');
+      selectSurface(null);
+      setTemplatePickerOpen(false);
+      setHasRoomEdits(true);
+      setRoomActionMessage('Проект открыт. Можно продолжать работу.');
+    };
+    window.addEventListener('message', handleServiceCommand);
+    return () => window.removeEventListener('message', handleServiceCommand);
+  }, [project, additionalRoomDraft, roomDraftActive, manualZoneSurfaceId, additionalRoomHistory, roomDraftHistory, zoneDraftHistory]);
+
   function downloadProjectFile() {
     const blob = new Blob([serializeProjectFile(project)], { type: 'application/json;charset=utf-8' });
     const url = URL.createObjectURL(blob);

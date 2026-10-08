@@ -149,6 +149,9 @@
   const serviceFrame = document.querySelector('.service-frame');
   const serviceToolbarHost = document.querySelector('[data-service-toolbar]');
   const servicePage = ['visualizer', 'calculator', 'pdf'].find((name) => document.body.classList.contains(`page-${name}`));
+  const serviceProjectActions = document.querySelector('[data-service-project-actions]');
+  const serviceProjectsDialog = document.querySelector('[data-service-projects-dialog]');
+  const serviceProjectType = { visualizer: 'visualization', calculator: 'calculation', pdf: 'pdf' }[servicePage];
   const toolbarConfigs = {
     visualizer: {
       selector: '.app-header',
@@ -243,10 +246,68 @@
     });
 
     serviceToolbarHost.replaceChildren(clone);
-    serviceToolbarHost.hidden = false;
+    // У всех трёх рабочих сервисов действия проекта живут в общей верхней панели.
+    // Копия встроенной панели остаётся только техническим мостиком для скрытия старой шапки iframe.
+    serviceToolbarHost.hidden = Boolean(serviceProjectActions);
     serviceToolbarHost.scrollLeft = previousScroll;
-    window.requestAnimationFrame(() => fitMirroredToolbar(clone));
+    if (!serviceProjectActions) window.requestAnimationFrame(() => fitMirroredToolbar(clone));
   }
+
+  function sendServiceCommand(type, extra = {}) {
+    serviceFrame?.contentWindow?.postMessage({ type, ...extra }, '*');
+  }
+
+  function openServiceProjects() {
+    if (!serviceProjectsDialog || !serviceProjectType) return;
+    const list = serviceProjectsDialog.querySelector('[data-service-projects-list]');
+    const empty = serviceProjectsDialog.querySelector('[data-service-projects-empty]');
+    const projects = readProjects()
+      .filter((project) => project.type === serviceProjectType && project.payload)
+      .sort((left, right) => new Date(right.updatedAt || 0) - new Date(left.updatedAt || 0));
+    list?.replaceChildren();
+    if (empty) empty.hidden = projects.length > 0;
+    projects.forEach((project) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      const title = document.createElement('b');
+      title.textContent = project.title || 'Без названия';
+      const meta = document.createElement('small');
+      const updated = project.updatedAt ? new Date(project.updatedAt).toLocaleString('ru-RU', { dateStyle: 'medium', timeStyle: 'short' }) : 'Только что';
+      meta.textContent = `${project.metric || 'Проект'} · ${updated}`;
+      button.append(title, meta);
+      button.addEventListener('click', () => {
+        sessionStorage.setItem(`tile_tools_resume_${project.id}`, JSON.stringify(project.payload));
+        sendServiceCommand('tile-tools:resume-project', {
+          payload: project.payload,
+          projectId: project.id,
+          serverId: project.serverId || null,
+          projectStatus: project.status || 'active',
+          resumedFromProjects: true
+        });
+        serviceProjectsDialog.close();
+        showNotice('Проект открыт. Можно продолжать работу.');
+      });
+      list?.append(button);
+    });
+    serviceProjectsDialog.showModal();
+  }
+
+  serviceProjectActions?.addEventListener('click', (event) => {
+    const action = event.target.closest('[data-service-action]')?.dataset.serviceAction;
+    if (action === 'undo') sendServiceCommand('tile-tools:service-action', { action: 'undo' });
+    if (action === 'redo') sendServiceCommand('tile-tools:service-action', { action: 'redo' });
+    if (action === 'save') {
+      sendServiceCommand('tile-tools:save-project');
+      window.setTimeout(() => showNotice('Проект сохранён в разделе «Проекты».'), 120);
+    }
+    if (action === 'open') openServiceProjects();
+  });
+  document.querySelector('[data-service-export-menu]')?.addEventListener('click', (event) => {
+    const format = event.target.closest('[data-service-export]')?.dataset.serviceExport;
+    if (!format) return;
+    event.currentTarget.open = false;
+    sendServiceCommand('tile-tools:export-project', { format });
+  });
 
   const visualizerRoomMenu = document.querySelector('[data-visualizer-room-menu]');
   if (visualizerRoomMenu && servicePage === 'visualizer') {

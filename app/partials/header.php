@@ -27,7 +27,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261008-4">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261008-5">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-13">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
@@ -145,5 +145,30 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
+    <?php if (in_array($page, ['visualizer', 'calculator', 'pdf'], true)): ?>
+      <div class="service-project-actions" data-service-project-actions aria-label="Действия с проектом">
+        <div class="service-history-actions" aria-label="История изменений">
+          <button type="button" class="service-project-icon" data-service-action="undo" aria-label="Назад">↶</button>
+          <button type="button" class="service-project-icon" data-service-action="redo" aria-label="Вперёд">↷</button>
+        </div>
+        <button type="button" class="service-project-button" data-service-action="save">Сохранить</button>
+        <details class="service-export-menu" data-service-export-menu>
+          <summary class="service-project-button">Выгрузить</summary>
+          <div class="service-export-options" role="menu">
+            <button type="button" data-service-export="image" role="menuitem">Как картинку</button>
+            <button type="button" data-service-export="pdf" role="menuitem">Как PDF</button>
+          </div>
+        </details>
+        <button type="button" class="service-project-button" data-service-action="open">Открыть</button>
+      </div>
+      <dialog class="service-projects-dialog" data-service-projects-dialog>
+        <form method="dialog" class="service-projects-dialog-head">
+          <strong>Проекты сервиса</strong><button aria-label="Закрыть">×</button>
+        </form>
+        <p data-service-projects-empty hidden>Сохранённых проектов пока нет.</p>
+        <div class="service-projects-list" data-service-projects-list></div>
+        <a class="service-projects-all" href="<?= tt_url('projects') ?>">Все проекты</a>
+      </dialog>
+    <?php endif; ?>
   </header>
   <main class="app-main <?= in_array($page, ['visualizer', 'calculator', 'pdf'], true) ? 'app-main-service' : '' ?>">

@@ -532,7 +532,18 @@ export function App() {
   useEffect(() => {
     if (typeof window === 'undefined' || window.parent === window) return;
     const handleResumeProject = (event: MessageEvent) => {
-      if (event.source !== window.parent || event.data?.type !== 'tile-tools:resume-project' || !event.data.payload) return;
+      if (event.source !== window.parent) return;
+      if (event.data?.type === 'tile-tools:save-project') {
+        flushPendingPersistence();
+        setStorageWarning('Проект сохранён в разделе «Проекты».');
+        return;
+      }
+      if (event.data?.type === 'tile-tools:export-project') {
+        if (event.data.format === 'pdf') openExportCheck();
+        else setStorageWarning('Для этого документа доступна выгрузка в PDF.');
+        return;
+      }
+      if (event.data?.type !== 'tile-tools:resume-project' || !event.data.payload) return;
       try {
         const resumedProject = normalizeProject(event.data.payload as Project);
         setProject(resumedProject);
@@ -556,6 +567,17 @@ export function App() {
     window.addEventListener('message', handleResumeProject);
     return () => window.removeEventListener('message', handleResumeProject);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.parent === window) return;
+    const handleHistoryCommand = (event: MessageEvent) => {
+      if (event.source !== window.parent || event.data?.type !== 'tile-tools:service-action') return;
+      if (event.data.action === 'undo') undoProject();
+      if (event.data.action === 'redo') redoProject();
+    };
+    window.addEventListener('message', handleHistoryCommand);
+    return () => window.removeEventListener('message', handleHistoryCommand);
+  }, [history, project]);
 
   useEffect(() => {
     projectRef.current = projectSnapshot;

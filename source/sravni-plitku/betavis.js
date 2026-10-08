@@ -1762,6 +1762,19 @@ function init() {
 
 window.addEventListener('message', event => {
   if (event.source !== window.parent) return;
+  if (event.data?.type === 'tile-tools:save-project') {
+    scheduleVisualizationAutosave();
+    return;
+  }
+  if (event.data?.type === 'tile-tools:export-project') {
+    if (event.data.format === 'image') void onExport();
+    else toast('Для визуализации доступна выгрузка как картинки');
+    return;
+  }
+  if (event.data?.type === 'tile-tools:service-action') {
+    toast('История изменений появится в следующем обновлении визуализатора');
+    return;
+  }
   if (event.data?.type === 'tile-tools:select-room') {
     if (ROOMS.some(room => room.id === event.data.roomId)) selectRoom(event.data.roomId);
     return;

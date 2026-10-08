@@ -6,6 +6,9 @@ import { fileURLToPath } from 'node:url';
 const rootDir = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig({
+  // Редактор публикуется вложенным сервисом, поэтому все итоговые ссылки
+  // должны оставаться внутри /services/pdf/ и не перехватывать главный сайт.
+  base: '/services/pdf/',
   plugins: [react()],
   build: {
     outDir: 'dist',

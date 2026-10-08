@@ -23,7 +23,9 @@ function tt_render_integrated_service(string $service, string $heading): void
     // Визуализатор загружается внутри iframe. Версия в URL не даёт браузеру
     // оставить прежнюю разметку после обновления интерфейса сервиса.
     $revisions = [
-        'visualizer' => '20261008-3',
+        'visualizer' => '20261008-4',
+        'calculator' => '20261008-1',
+        'pdf' => '20261008-1',
     ];
     if (isset($revisions[$service])) {
         $url .= (str_contains($url, '?') ? '&' : '?') . 'ui=' . $revisions[$service];
