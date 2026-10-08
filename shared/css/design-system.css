@@ -572,9 +572,11 @@ body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
 .equipment-topbar-search .button { min-height:30px; padding:6px 12px; font-size:11px; }
 .equipment-topbar-outline { display:flex; flex:0 0 190px; align-items:center; gap:7px; color:var(--tt-text-secondary); font-size:11px; white-space:nowrap; }
 .equipment-topbar-outline .input { width:100%; height:38px; padding:0 10px; border:1px solid var(--tt-border); border-radius:var(--tt-radius-sm); color:var(--tt-text); background:var(--tt-surface); font-size:11px; }
-.equipment-page { grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:start; }
-.equipment-page>.equipment-content { grid-column:1; grid-row:1; min-width:0; }
-.equipment-page>.equipment-rail { grid-column:2; grid-row:1; display:grid; gap:12px; min-width:0; }
+body.page-equipment { height:100dvh; overflow:hidden; }
+body.page-equipment>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
+.equipment-page { height:100%; min-height:0; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); grid-template-rows:minmax(0,1fr); gap:16px; align-items:stretch; }
+.equipment-page>.equipment-content { grid-column:1; grid-row:1; min-width:0; min-height:0; height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; }
+.equipment-page>.equipment-rail { grid-column:2; grid-row:1; display:grid; align-content:start; gap:12px; min-width:0; min-height:0; max-height:100%; overflow:hidden; }
 .equipment-page>.equipment-content>.equipment-heading { padding:0 2px 12px; }
 .equipment-page>.equipment-content>.equipment-heading p { margin:0; }
 .equipment-filter-card { padding:16px; }
@@ -680,6 +682,11 @@ body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
 }
 
 @media (max-width:900px) {
+  body.page-equipment { height:auto; overflow:auto; }
+  body.page-equipment>.app-main { height:auto; overflow:visible; }
+  .equipment-page { height:auto; grid-template-rows:auto; align-items:start; }
+  .equipment-page>.equipment-content { height:auto; overflow:visible; }
+  .equipment-page>.equipment-rail { max-height:none; overflow:visible; }
   body.page-services { height:auto; overflow:auto; }
   body.page-services>.app-main { height:auto; overflow:visible; }
   .vilray-services { height:auto; align-items:start; }
