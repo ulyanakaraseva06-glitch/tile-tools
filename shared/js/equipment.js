@@ -45,7 +45,7 @@
   const render = (items) => {
     latestItems = items;
     list.innerHTML = items.map(card).join('');
-    count.textContent = `${items.length} ${items.length === 1 ? 'товар' : items.length < 5 ? 'товара' : 'товаров'}`;
+    if (count) count.textContent = `${items.length} ${items.length === 1 ? 'товар' : items.length < 5 ? 'товара' : 'товаров'}`;
     empty.hidden = items.length !== 0;
   };
   const load = async () => {

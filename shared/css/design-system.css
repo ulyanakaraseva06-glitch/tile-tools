@@ -580,6 +580,7 @@ body.page-equipment>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
 .equipment-page>.equipment-rail { grid-column:2; grid-row:1; display:grid; align-content:start; gap:12px; min-width:0; min-height:0; max-height:100%; overflow:hidden; }
 .equipment-page>.equipment-content>.equipment-heading { padding:0 2px 12px; }
 .equipment-page>.equipment-content>.equipment-heading p { margin:0; }
+.equipment-page>.equipment-content>.equipment-result-bar>div { margin-left:auto; }
 .equipment-filter-card { padding:16px; }
 .equipment-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
 .equipment-filter-heading h2 { margin:0; font-size:16px; }
