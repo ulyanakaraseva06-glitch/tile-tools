@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-3">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-4">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -83,7 +83,7 @@ $headerUserInitials = tt_user_initials($headerUser);
         </div>
       </div>
     <?php endif; ?>
-    <?php if ($page !== 'about' && $page !== 'help'): ?>
+    <?php if ($page !== 'about' && $page !== 'help' && $page !== 'services'): ?>
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
@@ -129,8 +129,8 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'services'): ?>
-      <div class="services-topbar-title">
-        <strong>Профессиональный контент для ваших продаж</strong>
+      <div class="services-topbar-title" aria-current="page">
+        <strong>Услуги</strong>
       </div>
     <?php endif; ?>
     <?php if ($page === 'about'): ?>

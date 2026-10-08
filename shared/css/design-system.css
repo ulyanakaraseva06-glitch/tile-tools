@@ -586,10 +586,8 @@ body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
 /* Services use the same 60/40 workspace: the service cards stay wide on the
    left, while category filtering and the shared promotion live on the right. */
 body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
-body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
-.services-topbar-title { display:flex; flex:1 1 auto; min-width:0; flex-direction:column; justify-content:center; gap:2px; }
-.services-topbar-title strong { overflow:hidden; color:var(--tt-text); font-size:13px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
-.services-topbar-title span { overflow:hidden; color:var(--tt-text-secondary); font-size:10px; text-overflow:ellipsis; white-space:nowrap; }
+.services-topbar-title { flex:0 0 auto; min-width:0; }
+.services-topbar-title strong { display:block; overflow:hidden; color:var(--tt-text); font-size:18px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
 .vilray-services { grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:start; }
 .vilray-services>.services-content { grid-column:1; grid-row:1; min-width:0; }
 .vilray-services>.services-content>.vilray-service-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -641,8 +639,6 @@ body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
   .equipment-page { grid-template-columns:1fr; }
   .equipment-page>.equipment-content,.equipment-page>.equipment-rail { grid-column:1; grid-row:auto; }
   body.page-services>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
-  body.page-services>.topbar>.topbar-context { flex:0 0 auto; }
-  .services-topbar-title { order:5; flex:1 0 100%; padding:0 3px; }
   .vilray-services { grid-template-columns:1fr; }
   .vilray-services>.services-content,.vilray-services>.services-rail { grid-column:1; grid-row:auto; }
   body.page-favorites>.topbar { align-items:stretch; flex-wrap:wrap; height:auto; min-height:66px; padding-bottom:8px; }
