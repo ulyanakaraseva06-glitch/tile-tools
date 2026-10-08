@@ -2283,12 +2283,6 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px;
-  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
 }
 
 .canvas-zoom-widget .tool,
@@ -2298,10 +2292,12 @@ svg {
   justify-content: center;
   width: 34px;
   min-height: 34px;
-  border: 0;
+  border: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
   border-radius: 8px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.92);
   color: var(--text-muted);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
   cursor: pointer;
 }
 
