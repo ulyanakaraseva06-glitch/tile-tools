@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-2">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-3">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -83,7 +83,7 @@ $headerUserInitials = tt_user_initials($headerUser);
         </div>
       </div>
     <?php endif; ?>
-    <?php if ($page !== 'about'): ?>
+    <?php if ($page !== 'about' && $page !== 'help'): ?>
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
@@ -139,9 +139,8 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'help'): ?>
-      <div class="help-topbar-title" aria-label="Как начать работу">
-        <strong>Как начать работу</strong>
-        <span>Пошаговые ответы по проектам и всем сервисам Tile Tools</span>
+      <div class="help-topbar-title" aria-current="page">
+        <strong>Помощь</strong>
       </div>
     <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>
