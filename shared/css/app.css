@@ -401,6 +401,7 @@ body.page-pdf .service-toolbar button{flex:0 0 auto!important;white-space:nowrap
 body.page-visualizer>.topbar,body.page-calculator>.topbar,body.page-pdf>.topbar{height:72px;padding:0 10px;gap:10px;overflow:visible}
 body.page-visualizer>.topbar .topbar-context,body.page-calculator>.topbar .topbar-context,body.page-pdf>.topbar .topbar-context{display:none}
 body.page-visualizer>.topbar .service-toolbar,body.page-calculator>.topbar .service-toolbar,body.page-pdf>.topbar .service-toolbar{display:block}
+body.page-visualizer>.topbar .service-toolbar[hidden],body.page-calculator>.topbar .service-toolbar[hidden],body.page-pdf>.topbar .service-toolbar[hidden]{display:none!important}
 .service-project-actions{display:flex;align-items:center;gap:7px;margin-left:auto;flex:0 0 auto}
 .service-history-actions{display:flex;align-items:center;gap:3px;margin-right:3px}
 .service-project-icon,.service-project-button{height:42px;border:1px solid #e4dcee;border-radius:9px;background:#fff;color:#6c6880;font:700 13px/1 Manrope,Arial,sans-serif;cursor:pointer;transition:border-color .16s ease,background .16s ease,color .16s ease}
