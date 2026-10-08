@@ -588,10 +588,12 @@ body.page-equipment>.topbar>.topbar-context { flex:0 0 auto; }
 body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:visible; }
 .services-topbar-title { flex:0 0 auto; min-width:0; }
 .services-topbar-title strong { display:block; overflow:hidden; color:var(--tt-text); font-size:18px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
-.vilray-services { grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:start; }
-.vilray-services>.services-content { grid-column:1; grid-row:1; min-width:0; }
+body.page-services { height:100dvh; overflow:hidden; }
+body.page-services>.app-main { height:calc(100dvh - 66px); overflow:hidden; }
+.vilray-services { height:100%; grid-template-columns:minmax(0,3fr) minmax(360px,2fr); gap:16px; align-items:stretch; }
+.vilray-services>.services-content { grid-column:1; grid-row:1; min-width:0; min-height:0; height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; }
 .vilray-services>.services-content>.vilray-service-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-.services-rail { grid-column:2; grid-row:1; display:grid; gap:12px; min-width:0; }
+.services-rail { grid-column:2; grid-row:1; display:grid; align-content:start; gap:12px; min-width:0; max-height:100%; overflow:hidden; }
 .services-filter-card { padding:16px; }
 .services-filter-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
 .services-filter-heading h2 { margin:0; font-size:16px; }
@@ -669,6 +671,14 @@ body.page-services>.topbar { gap:12px; height:66px; min-height:66px; overflow:vi
   .projects-page>.projects-content>.projects-table-wrap { min-height:0; }
   .home-hero { padding:30px 24px; border-radius:var(--tt-radius-lg); }
   .home-hero h1 { font-size:clamp(38px,12vw,52px); }
+}
+
+@media (max-width:900px) {
+  body.page-services { height:auto; overflow:auto; }
+  body.page-services>.app-main { height:auto; overflow:visible; }
+  .vilray-services { height:auto; align-items:start; }
+  .vilray-services>.services-content { height:auto; overflow:visible; }
+  .services-rail { max-height:none; overflow:visible; }
 }
 
 @media (prefers-reduced-motion:reduce) {
