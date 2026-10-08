@@ -28,7 +28,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/app.css?v=20261007-9">
-  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-1">
+  <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-2">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
   <header class="topbar">
@@ -83,10 +83,12 @@ $headerUserInitials = tt_user_initials($headerUser);
         </div>
       </div>
     <?php endif; ?>
-    <div class="topbar-context" aria-current="page">
-      <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
-      <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
-    </div>
+    <?php if ($page !== 'about'): ?>
+      <div class="topbar-context" aria-current="page">
+        <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
+        <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
+      </div>
+    <?php endif; ?>
     <?php if ($page === 'media'): ?>
       <div class="media-topbar-tools" aria-label="Фильтры медиатеки">
         <label class="media-topbar-search"><span aria-hidden="true">⌕</span><input id="media-search" type="search" placeholder="Поиск по названию, бренду или коллекции"></label>
@@ -132,7 +134,7 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'about'): ?>
-      <div class="about-topbar-title">
+      <div class="about-topbar-title" aria-current="page">
         <strong>О сервисе</strong>
       </div>
     <?php endif; ?>
