@@ -312,16 +312,16 @@ body.shared-catalog-open { overflow: hidden; }
 .brand-menu-zone small{font-size:10px;font-weight:700}
 .brand-menu-zone svg{transition:transform .18s ease}
 .header-brand-menu[open] .brand-menu-zone svg{transform:rotate(180deg)}
-.header-brand-menu .header-menu-popover{right:auto;left:0;width:min(880px,calc(100vw - 28px));padding:12px;border-radius:14px;box-shadow:0 18px 44px rgba(31,24,40,.16)}
+.header-brand-menu .header-menu-popover{right:auto;left:0;width:min(850px,calc(100vw - 28px));padding:11px;border-radius:14px;box-shadow:0 18px 44px rgba(31,24,40,.16)}
 .header-menu-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 9px;padding:0 2px;color:var(--ink)}
 .header-menu-heading strong{font-size:14px}
 .header-menu-heading button{width:28px;height:28px;border-radius:7px;color:var(--muted);font-size:21px;line-height:1;cursor:pointer}
 .header-menu-heading button:hover{color:var(--primary-dark);background:var(--primary-light)}
-.header-brand-menu .header-menu-grid{gap:7px}
-.header-brand-menu .header-menu-grid a{min-height:76px;padding:9px;grid-template-columns:28px minmax(0,1fr);border:1px solid var(--line);border-radius:9px}
-.header-brand-menu .header-menu-grid a>span{width:28px;height:28px;background:transparent;font-size:16px}
-.header-brand-menu .header-menu-grid b{font-size:12px}
-.header-brand-menu .header-menu-grid small{font-size:9px}
+.header-brand-menu .header-menu-grid{gap:6px}
+.header-brand-menu .header-menu-grid a{min-height:72px;padding:8px;grid-template-columns:26px minmax(0,1fr);border:1px solid var(--line);border-radius:9px}
+.header-brand-menu .header-menu-grid a>span{width:26px;height:26px;background:transparent;font-size:15px}
+.header-brand-menu .header-menu-grid b{font-size:11px}
+.header-brand-menu .header-menu-grid small{font-size:8.5px}
 .header-menu-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
 .header-help-link,.header-menu-footer .header-account-link{display:flex;align-items:center;gap:8px;min-height:32px;margin:0;padding:0 4px;border:0;color:var(--ink);text-decoration:none}
 .header-help-link span{display:grid;place-items:center;width:18px;height:18px;border:1px solid var(--muted);border-radius:50%;color:var(--muted);font-size:11px;font-weight:800}
