@@ -2278,11 +2278,11 @@ svg {
 .canvas-zoom-widget {
   position: absolute;
   z-index: 7;
-  left: 20px;
-  bottom: 18px;
+  left: 14px;
+  bottom: 14px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .canvas-zoom-widget .tool,

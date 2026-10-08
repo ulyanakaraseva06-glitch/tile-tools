@@ -1,4 +1,4 @@
-import { BadgePercent, BookOpen, FileText, Grid2X2, Layers, Pencil, Quote, RectangleHorizontal, RotateCcw, Save, Star, Trees, ZoomIn, ZoomOut } from 'lucide-react';
+import { BadgePercent, BookOpen, FileText, Grid2X2, Layers, Minus, Pencil, Plus, Quote, RectangleHorizontal, RotateCcw, Save, Star, Trees } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { visiblePresetSummaries } from '../../data/createProject';
 import {
@@ -509,10 +509,10 @@ onZoneDelete={(zoneId) => {
       </div>
       <div className="canvas-zoom-widget" aria-label="Масштаб документа">
         <button className="tool" title="Уменьшить" onClick={() => changeZoom(-1)} disabled={zoom === zoomSteps[0]}>
-          <ZoomOut size={17} />
+          <Minus size={15} strokeWidth={2.5} />
         </button>
         <button className="tool" title="Увеличить" onClick={() => changeZoom(1)} disabled={zoom === zoomSteps[zoomSteps.length - 1]}>
-          <ZoomIn size={17} />
+          <Plus size={15} strokeWidth={2.5} />
         </button>
         <button className="canvas-zoom-value" title="Сбросить масштаб" onClick={() => setZoom(getInitialZoom())}>{zoom}%</button>
       </div>

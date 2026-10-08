@@ -739,14 +739,18 @@ input {
 .canvas-zoom-widget {
   position: absolute;
   z-index: 8;
-  bottom: 18px;
-  left: 18px;
+  bottom: 14px;
+  left: 14px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .canvas-zoom-widget button {
+  width: 34px;
+  min-height: 34px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
 }
 
