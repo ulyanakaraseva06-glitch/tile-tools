@@ -1406,6 +1406,17 @@ export function App() {
       if (event.data?.type === 'tile-tools:service-action') {
         if (event.data.action === 'undo') undoProject();
         if (event.data.action === 'redo') redoProject();
+        if (event.data.action === 'calculate') {
+          setCalculationOpen(false);
+          setLayoutDragEnabled(false);
+          setLayoutRotateEnabled(false);
+          setCalculationSurfaceIds(new Set());
+          if (localStorage.getItem(CALCULATION_HINT_STORAGE_KEY) !== '1') {
+            localStorage.setItem(CALCULATION_HINT_STORAGE_KEY, '1');
+            setCalculationHintVisible(true);
+          }
+          setCalculationSelecting(true);
+        }
         return;
       }
       if (event.data?.type === 'tile-tools:export-project') {

@@ -162,6 +162,9 @@ $headerUserInitials = tt_user_initials($headerUser);
           <button type="button" class="service-project-icon" data-service-action="undo" aria-label="Назад">↶</button>
           <button type="button" class="service-project-icon" data-service-action="redo" aria-label="Вперёд">↷</button>
         </div>
+        <?php if ($page === 'calculator'): ?>
+          <button type="button" class="service-project-button service-project-button--calculate" data-service-action="calculate">Расчёт</button>
+        <?php endif; ?>
         <button type="button" class="service-project-button" data-service-action="save">Сохранить</button>
         <details class="service-export-menu" data-service-export-menu>
           <summary class="service-project-button">Выгрузить</summary>

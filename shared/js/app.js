@@ -296,6 +296,7 @@
     const action = event.target.closest('[data-service-action]')?.dataset.serviceAction;
     if (action === 'undo') sendServiceCommand('tile-tools:service-action', { action: 'undo' });
     if (action === 'redo') sendServiceCommand('tile-tools:service-action', { action: 'redo' });
+    if (action === 'calculate') sendServiceCommand('tile-tools:service-action', { action: 'calculate' });
     if (action === 'save') {
       sendServiceCommand('tile-tools:save-project');
       window.setTimeout(() => showNotice('Проект сохранён в разделе «Проекты».'), 120);
