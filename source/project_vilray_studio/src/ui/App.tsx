@@ -1835,11 +1835,10 @@ export function App() {
           />
           {canvasToolsOpen ? (
             <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
-              <header className="canvas-tools-popover__head">
-                <strong>Инструменты</strong>
+              <header className="canvas-tools-popover__head canvas-tools-popover__head--no-title">
                 <div className="canvas-tools-popover__actions">
                   <button type="button" aria-label={canvasToolsCollapsed ? 'Развернуть инструменты' : 'Свернуть инструменты'} onClick={() => setCanvasToolsCollapsed((current) => !current)}>
-                    {canvasToolsCollapsed ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                   </button>
                   <button type="button" className="canvas-tools-popover__close" aria-label="Закрыть инструменты" onClick={() => setCanvasToolsOpen(false)}>×</button>
                 </div>
@@ -1852,7 +1851,7 @@ export function App() {
               </div>
             </section>
           ) : (
-            <button type="button" className="canvas-tools-reveal" onClick={() => { setCanvasToolsOpen(true); setCanvasToolsCollapsed(false); }}>Инструменты</button>
+            <button type="button" className="canvas-tools-reveal" aria-label="Открыть панель" onClick={() => { setCanvasToolsOpen(true); setCanvasToolsCollapsed(false); }}>Открыть панель</button>
           )}
           {roomActionMessage ? <div className="room-action-message" role="status">{roomActionMessage}</div> : null}
         </section>

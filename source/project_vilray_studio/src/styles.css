@@ -789,26 +789,26 @@ input {
   z-index: 8;
   right: 14px;
   bottom: 14px;
-  width: min(280px, calc(100% - 28px));
+  width: min(400px, calc(100% - 28px));
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: color-mix(in srgb, var(--bg-white) 96%, transparent);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-md);
   backdrop-filter: blur(12px);
 }
 
 .canvas-tools-popover__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 38px; padding: 0 9px 0 13px; border-bottom: 1px solid var(--border); }
-.canvas-tools-popover__head strong { color: var(--text); font-size: 12px; }
+.canvas-tools-popover__head--no-title { justify-content: flex-end; padding-left: 9px; }
 .canvas-tools-popover__actions { display: flex; align-items: center; gap: 4px; }
-.canvas-tools-popover__actions button { display: grid; place-items: center; width: 27px; min-height: 27px; padding: 0; color: var(--text-sec); background: transparent; border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
+.canvas-tools-popover__actions button { display: grid; place-items: center; min-width: 27px; min-height: 27px; padding: 0; color: var(--text-sec); background: transparent; border: 1px solid transparent; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
 .canvas-tools-popover__actions button:hover { color: var(--primary); background: var(--primary-light); }
 .canvas-tools-popover__actions button svg { transition: transform .18s ease; }
 .canvas-tools-popover.is-collapsed .canvas-tools-popover__actions button:first-child svg { transform: rotate(180deg); }
-.canvas-tools-popover__close { font-size: 19px; font-weight: 500; line-height: 1; }
+.canvas-tools-popover__close { width: 27px; font-size: 19px; font-weight: 500; line-height: 1; }
 .canvas-tools-popover__body { display: grid; gap: 6px; padding: 8px; }
 .canvas-tools-popover.is-collapsed .canvas-tools-popover__body { display: none; }
-.canvas-tools-popover__reset { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 32px; color: var(--text-sec); background: var(--bg); border: 1px solid var(--border); border-radius: 7px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.canvas-tools-popover__reset { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: 100%; height: 29px; color: var(--text-sec); background: var(--bg); border: 1px solid var(--border); border-radius: 7px; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
 .canvas-tools-popover__reset:hover { color: var(--primary); border-color: var(--primary); background: var(--primary-light); }
 .canvas-tools-reveal { position: absolute; z-index: 8; right: 14px; bottom: 14px; height: 36px; padding: 0 14px; color: var(--text-sec); background: var(--bg-white); border: 1px solid var(--border); border-radius: 9px; box-shadow: var(--shadow); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 .canvas-tools-reveal:hover { color: var(--primary); border-color: var(--primary); }
