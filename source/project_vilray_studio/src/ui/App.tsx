@@ -316,6 +316,8 @@ export function App() {
   const [layoutRotateEnabled, setLayoutRotateEnabled] = useState(false);
   const [calculationOpen, setCalculationOpen] = useState(false);
   const [calculationSelecting, setCalculationSelecting] = useState(false);
+  const [canvasToolsOpen, setCanvasToolsOpen] = useState(true);
+  const [canvasToolsCollapsed, setCanvasToolsCollapsed] = useState(false);
   const [calculationSurfaceIds, setCalculationSurfaceIds] = useState<Set<string>>(() => new Set());
   const [calculationHintVisible, setCalculationHintVisible] = useState(false);
   const [editTarget, setEditTarget] = useState<EditTarget>(null);
@@ -1682,14 +1684,6 @@ export function App() {
           <button type="button" className="icon-button" aria-label="Повторить" disabled={additionalRoomDraft ? !additionalRoomHistory.canRedo : roomDraftActive ? !roomDraftHistory.canRedo : manualZoneSurfaceId ? !zoneDraftHistory.canRedo : !historyRef.current.future.length} onClick={redoProject}>
             <Redo2 size={18} />
           </button>
-          <button type="button" className={layers.grid ? 'tool-button active' : 'tool-button'} onClick={() => setLayers((current) => ({ ...current, grid: !current.grid }))}>
-            <Grid3X3 size={17} />
-            Сетка
-          </button>
-          <button type="button" className="tool-button danger-lite" onClick={resetProject}>
-            <Trash2 size={17} />
-            Сброс
-          </button>
         </div>
         <div className="topbar-actions">
           <button
@@ -1839,6 +1833,27 @@ export function App() {
             }}
             calculationHintVisible={calculationHintVisible}
           />
+          {canvasToolsOpen ? (
+            <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
+              <header className="canvas-tools-popover__head">
+                <strong>Инструменты</strong>
+                <div className="canvas-tools-popover__actions">
+                  <button type="button" aria-label={canvasToolsCollapsed ? 'Развернуть инструменты' : 'Свернуть инструменты'} onClick={() => setCanvasToolsCollapsed((current) => !current)}>
+                    {canvasToolsCollapsed ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
+                  </button>
+                  <button type="button" className="canvas-tools-popover__close" aria-label="Закрыть инструменты" onClick={() => setCanvasToolsOpen(false)}>×</button>
+                </div>
+              </header>
+              <div className="canvas-tools-popover__body">
+                <button type="button" className="canvas-tools-popover__reset" onClick={resetProject}>
+                  <Trash2 size={15} />
+                  Сбросить проект
+                </button>
+              </div>
+            </section>
+          ) : (
+            <button type="button" className="canvas-tools-reveal" onClick={() => { setCanvasToolsOpen(true); setCanvasToolsCollapsed(false); }}>Инструменты</button>
+          )}
           {roomActionMessage ? <div className="room-action-message" role="status">{roomActionMessage}</div> : null}
         </section>
 
@@ -3298,6 +3313,15 @@ function WorkspaceCanvas({
             <option value="objects">Расстояния между объектами</option>
           </select>
         </div>
+        <button
+          type="button"
+          className={layers.grid ? 'canvas-grid-toggle active' : 'canvas-grid-toggle'}
+          aria-pressed={layers.grid}
+          onClick={() => onLayersChange({ ...layers, grid: !layers.grid })}
+        >
+          <Grid3X3 size={16} />
+          Сетка
+        </button>
         {calculationSelecting ? (
           <div className="canvas-calculation-actions">
             <div className="canvas-calculation-hint">
