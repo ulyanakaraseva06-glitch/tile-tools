@@ -14,6 +14,8 @@ export interface ZoneCalculation {
   fullPieces: number;
   materialId: string;
   minCutMm: number | null;
+  /** How the number of whole tiles was obtained in the first optimisation release. */
+  purchaseMethod: 'area' | 'rectangular-offcuts';
   purchasePieces: number;
   reservePieces: number;
   surfaceId: string;
@@ -59,10 +61,10 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
       if (!material) return [];
       const layout = calculateZoneLayout(project, zone, surface, material);
       const layoutPieceCount = layout.fullCount + layout.cutCount + layout.criticalCount;
-      const purchasePieces = tilesNeededFromArea(layout.usedAreaMm2, material.widthMm, material.heightMm);
+      const purchase = calculatePurchasePlan(layout, material, zone);
       return {
         areaM2: roundM2(layout.usedAreaMm2 / 1_000_000),
-        boxes: calculateBoxes(material, purchasePieces, layout.usedAreaMm2),
+        boxes: calculateBoxes(material, purchase.purchasePieces, layout.usedAreaMm2),
         criticalPieces: layout.criticalCount,
         cutPieces: layout.cutCount,
         edgeCuts: layout.edgeCuts,
@@ -70,13 +72,14 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
         fullPieces: layout.fullCount,
         materialId: material.id,
         minCutMm: layout.minCutMm,
-        purchasePieces,
-        reservePieces: 0,
+        purchaseMethod: purchase.method,
+        purchasePieces: purchase.purchasePieces,
+        reservePieces: purchase.reservePieces,
         surfaceId: surface.id,
         surfaceName: surface.name,
         totalPieces: layoutPieceCount,
         truncated: layout.truncated,
-        warnings: getZoneWarnings(layout.truncated, zone),
+        warnings: [...getZoneWarnings(layout.truncated, zone), ...purchase.warnings],
         zoneId: zone.id,
         zoneName: zone.name,
       };
@@ -94,9 +97,9 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
     const criticalPieces = Math.round(zone.criticalPieces * ratio);
     const totalPieces = fullPieces + cutPieces + criticalPieces;
     const material = project.materials.find((item) => item.id === zone.materialId);
-    const purchasePieces = material
-      ? tilesNeededFromArea(areaM2 * 1_000_000, material.widthMm, material.heightMm)
-      : Math.max(0, Math.ceil(zone.purchasePieces * ratio));
+    const cleanPieces = Math.max(0, Math.ceil((zone.purchasePieces - zone.reservePieces) * ratio));
+    const reservePieces = material ? calculateReservePieces(cleanPieces, material.reservePercent, zone.purchaseMethod === 'area' ? 8 : 0) : Math.max(0, Math.ceil(zone.reservePieces * ratio));
+    const purchasePieces = cleanPieces + reservePieces;
     return {
       ...zone,
       areaM2,
@@ -105,7 +108,7 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
       cutPieces,
       fullPieces,
       purchasePieces,
-      reservePieces: 0,
+      reservePieces,
       totalPieces,
     };
   });
@@ -114,13 +117,13 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
     const materialZones = zones.filter((zone) => zone.materialId === material.id);
     if (!materialZones.length) return [];
     const areaM2 = roundM2(sum(materialZones.map((zone) => zone.areaM2)));
-    const purchasePieces = tilesNeededFromArea(areaM2 * 1_000_000, material.widthMm, material.heightMm);
+    const purchasePieces = sum(materialZones.map((zone) => zone.purchasePieces));
     return {
       areaM2,
       boxes: calculateMaterialBoxes(material, purchasePieces, areaM2),
       material,
       purchasePieces,
-      reservePieces: 0,
+      reservePieces: sum(materialZones.map((zone) => zone.reservePieces)),
       totalPieces: sum(materialZones.map((zone) => zone.totalPieces)),
       zones: materialZones,
     };
@@ -151,7 +154,88 @@ export function calculateProject(project: TileProject, options?: { surfaceIds?: 
   };
 }
 
-/** Packs full tiles and offcuts by area, then rounds up to whole tiles. */
+const CUT_KERF_MM = 3;
+
+type PurchasePlan = {
+  method: 'area' | 'rectangular-offcuts';
+  purchasePieces: number;
+  reservePieces: number;
+  warnings: string[];
+};
+
+/**
+ * First release: only axis-aligned rectangular pieces are reused.  Every cut
+ * consumes a 3 mm saw kerf, so the result deliberately never understates the
+ * purchase quantity.  Complex patterns remain an area calculation by design.
+ */
+function calculatePurchasePlan(
+  layout: ReturnType<typeof calculateZoneLayout>,
+  material: TileMaterial,
+  zone: FinishZone,
+): PurchasePlan {
+  const complexReserve = getComplexPatternReserve(zone);
+  const useRectangularOffcuts = complexReserve === null;
+  const cleanPieces = useRectangularOffcuts
+    ? packRectangularOffcuts(layout.pieces, material.widthMm, material.heightMm)
+    : tilesNeededFromArea(layout.usedAreaMm2, material.widthMm, material.heightMm);
+  const reservePieces = calculateReservePieces(cleanPieces, material.reservePercent, complexReserve ?? 0);
+  const warnings = complexReserve === null
+    ? []
+    : [`${zone.name}: ${zone.layout.pattern === 'herringbone' ? 'ёлочка' : 'диагональная укладка'} посчитана по площади с запасом ${Math.max(material.reservePercent, complexReserve)}%. Повторное использование обрезков для этой схемы не учитывается.`];
+
+  return {
+    method: useRectangularOffcuts ? 'rectangular-offcuts' : 'area',
+    purchasePieces: cleanPieces + reservePieces,
+    reservePieces,
+    warnings,
+  };
+}
+
+function getComplexPatternReserve(zone: FinishZone): number | null {
+  if (zone.layout.pattern === 'herringbone') return 13;
+  if (zone.layout.pattern === 'diagonal' || Math.abs(zone.layout.turnDeg ?? 0) > 0 || zone.layout.angleDeg === 45) return 8;
+  return null;
+}
+
+function calculateReservePieces(cleanPieces: number, configuredPercent: number, minimumPercent: number) {
+  if (configuredPercent <= 0 || cleanPieces <= 0) return 0;
+  return Math.ceil(cleanPieces * Math.max(configuredPercent, minimumPercent) / 100);
+}
+
+function packRectangularOffcuts(
+  pieces: Array<{ kind: string; widthMm: number; heightMm: number }>,
+  tileWidthMm: number,
+  tileHeightMm: number,
+) {
+  const fullPieces = pieces.filter((piece) => piece.kind === 'full').length;
+  const cuts = pieces
+    .filter((piece) => piece.kind !== 'full')
+    .map((piece) => ({ widthMm: Math.min(tileWidthMm, piece.widthMm + CUT_KERF_MM), heightMm: Math.min(tileHeightMm, piece.heightMm + CUT_KERF_MM) }))
+    .sort((a, b) => b.widthMm * b.heightMm - a.widthMm * a.heightMm);
+  const bins: Array<Array<{ widthMm: number; heightMm: number }>> = [];
+
+  for (const cut of cuts) {
+    let target: { bin: number; rect: number; waste: number } | null = null;
+    bins.forEach((freeRects, bin) => freeRects.forEach((free, rect) => {
+      if (cut.widthMm > free.widthMm || cut.heightMm > free.heightMm) return;
+      const waste = free.widthMm * free.heightMm - cut.widthMm * cut.heightMm;
+      if (!target || waste < target.waste) target = { bin, rect, waste };
+    }));
+    if (!target) {
+      bins.push([{ widthMm: tileWidthMm, heightMm: tileHeightMm }]);
+      target = { bin: bins.length - 1, rect: 0, waste: tileWidthMm * tileHeightMm - cut.widthMm * cut.heightMm };
+    }
+    const freeRects = bins[target.bin];
+    const [free] = freeRects.splice(target.rect, 1);
+    const right = { widthMm: free.widthMm - cut.widthMm, heightMm: cut.heightMm };
+    const bottom = { widthMm: free.widthMm, heightMm: free.heightMm - cut.heightMm };
+    if (right.widthMm > 0 && right.heightMm > 0) freeRects.push(right);
+    if (bottom.widthMm > 0 && bottom.heightMm > 0) freeRects.push(bottom);
+  }
+  return fullPieces + bins.length;
+}
+
+/** Area fallback for diagonal and herringbone layouts. */
 export function tilesNeededFromArea(usedAreaMm2: number, tileWidthMm: number, tileHeightMm: number) {
   const tileAreaMm2 = Math.max(1, tileWidthMm * tileHeightMm);
   if (usedAreaMm2 <= 0) return 0;

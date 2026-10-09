@@ -93,4 +93,28 @@ describe('calculateProject', () => {
     expect(wallOnly.wallCount).toBe(1);
     expect(floorOnly.roomCount).toBe(1);
   });
+
+  it('adds reserve after reusing only rectangular offcuts', () => {
+    const project = createProjectFromTemplate(templates[0], [1700, 2000]);
+    const result = calculateProject(project);
+
+    expect(result.zones.some((zone) => zone.purchaseMethod === 'rectangular-offcuts')).toBe(true);
+    expect(result.zones.some((zone) => zone.reservePieces > 0)).toBe(true);
+    expect(result.zones.every((zone) => zone.purchasePieces >= zone.reservePieces)).toBe(true);
+  });
+
+  it('uses an area fallback and a higher reserve for diagonal and herringbone layouts', () => {
+    const project = createProjectFromTemplate(templates[0], [1700, 2000]);
+    const diagonal = {
+      ...project,
+      surfaces: project.surfaces.map((surface) => ({
+        ...surface,
+        zones: surface.zones.map((zone) => ({ ...zone, layout: { ...zone.layout, angleDeg: 45 as const, pattern: 'diagonal' as const } })),
+      })),
+    };
+    const result = calculateProject(diagonal);
+
+    expect(result.zones.every((zone) => zone.purchaseMethod === 'area')).toBe(true);
+    expect(result.warnings.some((warning) => warning.includes('диагональная укладка'))).toBe(true);
+  });
 });
