@@ -1682,6 +1682,14 @@ export function App() {
           <button type="button" className="icon-button" aria-label="Повторить" disabled={additionalRoomDraft ? !additionalRoomHistory.canRedo : roomDraftActive ? !roomDraftHistory.canRedo : manualZoneSurfaceId ? !zoneDraftHistory.canRedo : !historyRef.current.future.length} onClick={redoProject}>
             <Redo2 size={18} />
           </button>
+          <button type="button" className={layers.grid ? 'tool-button active' : 'tool-button'} onClick={() => setLayers((current) => ({ ...current, grid: !current.grid }))}>
+            <Grid3X3 size={17} />
+            Сетка
+          </button>
+          <button type="button" className="tool-button danger-lite" onClick={resetProject}>
+            <Trash2 size={17} />
+            Сброс
+          </button>
         </div>
         <div className="topbar-actions">
           <button
@@ -1823,7 +1831,6 @@ export function App() {
               if (!calculationSurfaceIds.size) return;
               setCalculationOpen(true);
             }}
-            onResetProject={resetProject}
             onCancelCalculation={() => {
               setCalculationSelecting(false);
               setCalculationSurfaceIds(new Set());
@@ -2753,7 +2760,6 @@ interface WorkspaceCanvasProps {
   onToggleCalculationSurface: (surfaceId: string) => void;
   onRunCalculation: () => void;
   onCancelCalculation: () => void;
-  onResetProject: () => void;
   calculationHintVisible: boolean;
 }
 
@@ -2845,7 +2851,6 @@ function WorkspaceCanvas({
   onToggleCalculationSurface,
   onRunCalculation,
   onCancelCalculation,
-  onResetProject,
   calculationHintVisible,
 }: WorkspaceCanvasProps) {
   const holderRef = useRef<HTMLDivElement>(null);
@@ -2854,8 +2859,6 @@ function WorkspaceCanvas({
   const [draftPointer, setDraftPointer] = useState<PointMm | null>(null);
   const [collapsedWallAreaIds, setCollapsedWallAreaIds] = useState<Set<string>>(() => new Set());
   const [measurementMode, setMeasurementMode] = useState<MeasurementMode>('room');
-  const [toolsOpen, setToolsOpen] = useState(true);
-  const [toolsCollapsed, setToolsCollapsed] = useState(false);
   const panRef = useRef<{ active: boolean; x: number; y: number }>({ active: false, x: 0, y: 0 });
   const layoutDragRef = useRef<{ active: boolean; moved: boolean; x: number; y: number }>({ active: false, moved: false, x: 0, y: 0 });
   const layoutDragPendingRef = useRef({ x: 0, y: 0 });
@@ -3295,15 +3298,6 @@ function WorkspaceCanvas({
             <option value="objects">Расстояния между объектами</option>
           </select>
         </div>
-        <button
-          type="button"
-          className={layers.grid ? 'canvas-grid-toggle active' : 'canvas-grid-toggle'}
-          aria-pressed={layers.grid}
-          onClick={() => onLayersChange({ ...layers, grid: !layers.grid })}
-        >
-          <Grid3X3 size={16} />
-          Сетка
-        </button>
         {calculationSelecting ? (
           <div className="canvas-calculation-actions">
             <div className="canvas-calculation-hint">
@@ -3340,27 +3334,6 @@ function WorkspaceCanvas({
           {Math.round(viewport.zoom * 100)}%
         </button>
       </div>
-      {toolsOpen ? (
-        <section className={toolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
-          <header className="canvas-tools-popover__head">
-            <strong>Инструменты</strong>
-            <div className="canvas-tools-popover__actions">
-              <button type="button" aria-label={toolsCollapsed ? 'Развернуть инструменты' : 'Свернуть инструменты'} onClick={() => setToolsCollapsed((current) => !current)}>
-                {toolsCollapsed ? <ArrowUp size={15} /> : <ArrowDown size={15} />}
-              </button>
-              <button type="button" className="canvas-tools-popover__close" aria-label="Закрыть инструменты" onClick={() => setToolsOpen(false)}>×</button>
-            </div>
-          </header>
-          <div className="canvas-tools-popover__body">
-            <button type="button" className="canvas-tools-popover__reset" onClick={onResetProject}>
-              <Trash2 size={15} />
-              Сбросить проект
-            </button>
-          </div>
-        </section>
-      ) : (
-        <button type="button" className="canvas-tools-reveal" onClick={() => { setToolsOpen(true); setToolsCollapsed(false); }}>Инструменты</button>
-      )}
       <div className="canvas-stage-holder" ref={holderRef}>
       <Stage
         width={size.width}
