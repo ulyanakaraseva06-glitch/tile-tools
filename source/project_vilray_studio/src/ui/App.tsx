@@ -3275,16 +3275,8 @@ function WorkspaceCanvas({
 
   return (
     <div className={canvasClassName}>
-      <div className="canvas-top-bar">
-        <button
-          type="button"
-          className={layers.grid ? 'canvas-grid-toggle active' : 'canvas-grid-toggle'}
-          aria-pressed={layers.grid}
-          onClick={() => onLayersChange({ ...layers, grid: !layers.grid })}
-        >
-          <Grid3X3 size={16} />
-          Сетка
-        </button>
+      {calculationSelecting || drawingMode === 'custom-room' || drawingMode === 'custom-room-review' ? (
+        <div className="canvas-context-controls">
         {calculationSelecting ? (
           <div className="canvas-calculation-actions">
             <div className="canvas-calculation-hint">
@@ -3309,7 +3301,8 @@ function WorkspaceCanvas({
             }) ? 'Тяните стены. Прямые углы сохраняются.' : 'Тяните нужную точку. Остальные точки остаются на месте.'}</span>
           </div>
         ) : null}
-      </div>
+        </div>
+      ) : null}
       <div className="canvas-toolbar canvas-zoom-widget" aria-label="Масштаб схемы">
         <button type="button" aria-label="Уменьшить" onClick={() => onViewportChange(constrainWorkspaceViewport(changeCanvasZoom(viewport, viewport.zoom - 0.15)))}>
           <Minus size={16} />
@@ -3604,6 +3597,7 @@ function WorkspaceCanvas({
           </header>
           <div className="canvas-tools-popover__body">
             <div className="canvas-layer-controls canvas-tools-popover__layers">
+              <button type="button" className={layers.grid ? 'canvas-grid-toggle active' : 'canvas-grid-toggle'} aria-pressed={layers.grid} onClick={() => onLayersChange({ ...layers, grid: !layers.grid })}><Grid3X3 size={15} />Сетка</button>
               <label><input type="checkbox" checked={layers.floor} onChange={(event) => onLayersChange({ ...layers, floor: event.target.checked })} />Пол</label>
               <label><input type="checkbox" checked={layers.walls} onChange={(event) => onLayersChange({ ...layers, walls: event.target.checked })} />Стены</label>
               <label><input type="checkbox" checked={layers.dimensions} onChange={(event) => onLayersChange({ ...layers, dimensions: event.target.checked })} />Размеры</label>
