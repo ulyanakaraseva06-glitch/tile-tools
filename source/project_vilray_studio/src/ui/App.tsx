@@ -3585,7 +3585,7 @@ function WorkspaceCanvas({
       ) : null}
       </div>
       {canvasToolsOpen ? (
-        <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
+        <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы и сетка">
           <header className="canvas-tools-popover__head">
             <strong>Инструменты</strong>
             <div className="canvas-tools-popover__actions">
