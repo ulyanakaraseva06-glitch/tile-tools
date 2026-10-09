@@ -254,6 +254,9 @@
   }
 
   function sendServiceCommand(type, extra = {}) {
+    if (type === 'tile-tools:service-action' && extra.action === 'calculate' && serviceFrame?.contentWindow) {
+      serviceFrame.contentWindow.dispatchEvent(new serviceFrame.contentWindow.Event('tile-tools:open-calculation'));
+    }
     serviceFrame?.contentWindow?.postMessage({ type, ...extra }, '*');
   }
 

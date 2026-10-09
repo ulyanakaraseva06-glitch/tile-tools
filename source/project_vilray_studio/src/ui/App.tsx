@@ -380,6 +380,17 @@ export function App() {
     () => calculationOpen ? calculateProject(project, { surfaceIds: calculationSurfaceIds }) : null,
     [calculationOpen, calculationSurfaceIds, project],
   );
+  const openCalculationReport = () => {
+    setTemplatePickerOpen(false);
+    setCalculationSurfaceIds(new Set(project.surfaces.map((surface) => surface.id)));
+    setCalculationSelecting(false);
+    setCalculationHintVisible(false);
+    setCalculationOpen(true);
+  };
+  useEffect(() => {
+    window.addEventListener('tile-tools:open-calculation', openCalculationReport);
+    return () => window.removeEventListener('tile-tools:open-calculation', openCalculationReport);
+  }, [project]);
   useEffect(() => {
     const history = historyRef.current;
     if (history.applying) {
@@ -1409,10 +1420,7 @@ export function App() {
         if (event.data.action === 'calculate') {
           // The shared top-bar opens the familiar report immediately.  The
           // surface picker remains available inside the editor when needed.
-          setCalculationSurfaceIds(new Set(project.surfaces.map((surface) => surface.id)));
-          setCalculationSelecting(false);
-          setCalculationHintVisible(false);
-          setCalculationOpen(true);
+          openCalculationReport();
           return;
         }
         return;
