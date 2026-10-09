@@ -24,7 +24,7 @@ function tt_render_integrated_service(string $service, string $heading): void
     // оставить прежнюю разметку после обновления интерфейса сервиса.
     $revisions = [
         'visualizer' => '20261008-4',
-        'calculator' => '20261008-1',
+        'calculator' => '20261009-1',
         'pdf' => '20261008-1',
     ];
     if (isset($revisions[$service])) {
