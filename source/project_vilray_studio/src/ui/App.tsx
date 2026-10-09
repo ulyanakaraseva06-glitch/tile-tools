@@ -1407,15 +1407,13 @@ export function App() {
         if (event.data.action === 'undo') undoProject();
         if (event.data.action === 'redo') redoProject();
         if (event.data.action === 'calculate') {
-          setCalculationOpen(false);
-          setLayoutDragEnabled(false);
-          setLayoutRotateEnabled(false);
-          setCalculationSurfaceIds(new Set());
-          if (localStorage.getItem(CALCULATION_HINT_STORAGE_KEY) !== '1') {
-            localStorage.setItem(CALCULATION_HINT_STORAGE_KEY, '1');
-            setCalculationHintVisible(true);
-          }
-          setCalculationSelecting(true);
+          // The shared top-bar opens the familiar report immediately.  The
+          // surface picker remains available inside the editor when needed.
+          setCalculationSurfaceIds(new Set(project.surfaces.map((surface) => surface.id)));
+          setCalculationSelecting(false);
+          setCalculationHintVisible(false);
+          setCalculationOpen(true);
+          return;
         }
         return;
       }
@@ -8376,6 +8374,7 @@ function CalculationDialog({
     const areaId = surface.sourceRef?.split(':')[1];
     return project.room.areas?.find((area) => area.id === areaId)?.name ?? (surface.type === 'floor' ? 'Помещение' : null);
   }).filter((name): name is string => Boolean(name)))];
+  const totalReservePieces = calculation.materials.reduce((total, item) => total + item.reservePieces, 0);
 
   function downloadPdf() {
     if (!pdfIncludeFloor && !pdfIncludeWalls) return;
@@ -8403,6 +8402,7 @@ function CalculationDialog({
         <p className="calculation-selected">
           Помещений: {calculation.roomCount}{selectedRooms.length ? ` (${selectedRooms.join(', ')})` : ''} · Полов: {calculation.floorCount} · Стен: {calculation.wallCount}
         </p>
+        <p className="calculation-method-note">Прямая раскладка и смещение: повторно используются только прямоугольные подрезки. Диагональ и ёлочка считаются по площади с повышенным запасом.</p>
 
         <div className="calculation-summary">
           <span>
@@ -8431,7 +8431,7 @@ function CalculationDialog({
                 <span className="calculation-color-chip" style={{ background: item.material.swatch.value }} />
                 <div className="calculation-card-copy">
                   <strong>{item.material.name}</strong>
-                  <small>{item.material.label ?? `${item.material.widthMm} × ${item.material.heightMm} мм`}</small>
+                  <small>{item.material.label ?? `${item.material.widthMm} × ${item.material.heightMm} мм`} · {item.purchasePieces} шт.{item.reservePieces ? `, включая запас ${item.reservePieces} шт.` : ''}</small>
                 </div>
                 <b>{item.areaM2.toFixed(2)} м²</b>
               </article>
@@ -8442,7 +8442,7 @@ function CalculationDialog({
         <div className="calculation-total">
           <div>
             <span>Итого</span>
-            <small>метраж выбранных поверхностей</small>
+            <small>{calculation.totalPurchasePieces} целых плиток{totalReservePieces ? `, запас ${totalReservePieces} шт.` : ''}</small>
           </div>
           <strong>{calculation.totalAreaM2.toFixed(2)} м²</strong>
         </div>

@@ -2621,6 +2621,13 @@ input {
   line-height: 1.4;
 }
 
+.calculation-method-note {
+  margin: -2px 0 2px;
+  color: #7A7690;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
 .calculation-close {
   min-width: 32px;
   min-height: 32px;
