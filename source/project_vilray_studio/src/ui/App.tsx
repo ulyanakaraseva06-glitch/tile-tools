@@ -316,8 +316,6 @@ export function App() {
   const [layoutRotateEnabled, setLayoutRotateEnabled] = useState(false);
   const [calculationOpen, setCalculationOpen] = useState(false);
   const [calculationSelecting, setCalculationSelecting] = useState(false);
-  const [canvasToolsOpen, setCanvasToolsOpen] = useState(true);
-  const [canvasToolsCollapsed, setCanvasToolsCollapsed] = useState(false);
   const [calculationSurfaceIds, setCalculationSurfaceIds] = useState<Set<string>>(() => new Set());
   const [calculationHintVisible, setCalculationHintVisible] = useState(false);
   const [editTarget, setEditTarget] = useState<EditTarget>(null);
@@ -1832,27 +1830,8 @@ export function App() {
               setCalculationHintVisible(false);
             }}
             calculationHintVisible={calculationHintVisible}
+            onResetProject={resetProject}
           />
-          {canvasToolsOpen ? (
-            <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
-              <header className="canvas-tools-popover__head canvas-tools-popover__head--no-title">
-                <div className="canvas-tools-popover__actions">
-                  <button type="button" aria-label={canvasToolsCollapsed ? 'Развернуть инструменты' : 'Свернуть инструменты'} onClick={() => setCanvasToolsCollapsed((current) => !current)}>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
-                  </button>
-                  <button type="button" className="canvas-tools-popover__close" aria-label="Закрыть инструменты" onClick={() => setCanvasToolsOpen(false)}>×</button>
-                </div>
-              </header>
-              <div className="canvas-tools-popover__body">
-                <button type="button" className="canvas-tools-popover__reset" onClick={resetProject}>
-                  <Trash2 size={15} />
-                  Сбросить проект
-                </button>
-              </div>
-            </section>
-          ) : (
-            <button type="button" className="canvas-tools-reveal" aria-label="Открыть панель" onClick={() => { setCanvasToolsOpen(true); setCanvasToolsCollapsed(false); }}>Открыть панель</button>
-          )}
           {roomActionMessage ? <div className="room-action-message" role="status">{roomActionMessage}</div> : null}
         </section>
 
@@ -2775,6 +2754,7 @@ interface WorkspaceCanvasProps {
   onRunCalculation: () => void;
   onCancelCalculation: () => void;
   calculationHintVisible: boolean;
+  onResetProject: () => void;
 }
 
 function WorkspaceCanvas({
@@ -2866,6 +2846,7 @@ function WorkspaceCanvas({
   onRunCalculation,
   onCancelCalculation,
   calculationHintVisible,
+  onResetProject,
 }: WorkspaceCanvasProps) {
   const holderRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(initialCanvasSize);
@@ -2873,6 +2854,8 @@ function WorkspaceCanvas({
   const [draftPointer, setDraftPointer] = useState<PointMm | null>(null);
   const [collapsedWallAreaIds, setCollapsedWallAreaIds] = useState<Set<string>>(() => new Set());
   const [measurementMode, setMeasurementMode] = useState<MeasurementMode>('room');
+  const [canvasToolsOpen, setCanvasToolsOpen] = useState(true);
+  const [canvasToolsCollapsed, setCanvasToolsCollapsed] = useState(false);
   const panRef = useRef<{ active: boolean; x: number; y: number }>({ active: false, x: 0, y: 0 });
   const layoutDragRef = useRef<{ active: boolean; moved: boolean; x: number; y: number }>({ active: false, moved: false, x: 0, y: 0 });
   const layoutDragPendingRef = useRef({ x: 0, y: 0 });
@@ -3293,25 +3276,6 @@ function WorkspaceCanvas({
   return (
     <div className={canvasClassName}>
       <div className="canvas-top-bar">
-        <div className="canvas-layer-controls">
-          <label>
-            <input type="checkbox" checked={layers.floor} onChange={(event) => onLayersChange({ ...layers, floor: event.target.checked })} />
-            Пол
-          </label>
-          <label>
-            <input type="checkbox" checked={layers.walls} onChange={(event) => onLayersChange({ ...layers, walls: event.target.checked })} />
-            Стены
-          </label>
-          <label>
-            <input type="checkbox" checked={layers.dimensions} onChange={(event) => onLayersChange({ ...layers, dimensions: event.target.checked })} />
-            Размеры
-          </label>
-          <select aria-label="Вид размеров" value={measurementMode} disabled={!layers.dimensions} onChange={(event) => setMeasurementMode(event.target.value as MeasurementMode)}>
-            <option value="room">Размеры помещения</option>
-            <option value="tile">Отступы плитки</option>
-            <option value="objects">Расстояния между объектами</option>
-          </select>
-        </div>
         <button
           type="button"
           className={layers.grid ? 'canvas-grid-toggle active' : 'canvas-grid-toggle'}
@@ -3627,6 +3591,34 @@ function WorkspaceCanvas({
         </form>
       ) : null}
       </div>
+      {canvasToolsOpen ? (
+        <section className={canvasToolsCollapsed ? 'canvas-tools-popover is-collapsed' : 'canvas-tools-popover'} aria-label="Инструменты схемы">
+          <header className="canvas-tools-popover__head">
+            <strong>Инструменты</strong>
+            <div className="canvas-tools-popover__actions">
+              <button type="button" aria-label={canvasToolsCollapsed ? 'Развернуть инструменты' : 'Свернуть инструменты'} onClick={() => setCanvasToolsCollapsed((current) => !current)}>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+              </button>
+              <button type="button" className="canvas-tools-popover__close" aria-label="Закрыть инструменты" onClick={() => setCanvasToolsOpen(false)}>×</button>
+            </div>
+          </header>
+          <div className="canvas-tools-popover__body">
+            <div className="canvas-layer-controls canvas-tools-popover__layers">
+              <label><input type="checkbox" checked={layers.floor} onChange={(event) => onLayersChange({ ...layers, floor: event.target.checked })} />Пол</label>
+              <label><input type="checkbox" checked={layers.walls} onChange={(event) => onLayersChange({ ...layers, walls: event.target.checked })} />Стены</label>
+              <label><input type="checkbox" checked={layers.dimensions} onChange={(event) => onLayersChange({ ...layers, dimensions: event.target.checked })} />Размеры</label>
+              <select aria-label="Вид размеров" value={measurementMode} disabled={!layers.dimensions} onChange={(event) => setMeasurementMode(event.target.value as MeasurementMode)}>
+                <option value="room">Размеры помещения</option>
+                <option value="tile">Отступы плитки</option>
+                <option value="objects">Расстояния между объектами</option>
+              </select>
+            </div>
+            <button type="button" className="canvas-tools-popover__reset" onClick={onResetProject}><Trash2 size={15} />Сбросить проект</button>
+          </div>
+        </section>
+      ) : (
+        <button type="button" className="canvas-tools-reveal" aria-label="Открыть панель" onClick={() => { setCanvasToolsOpen(true); setCanvasToolsCollapsed(false); }}>Открыть панель</button>
+      )}
     </div>
   );
 }
