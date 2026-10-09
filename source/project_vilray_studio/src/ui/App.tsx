@@ -388,10 +388,6 @@ export function App() {
     setCalculationOpen(true);
   };
   useEffect(() => {
-    window.addEventListener('tile-tools:open-calculation', openCalculationReport);
-    return () => window.removeEventListener('tile-tools:open-calculation', openCalculationReport);
-  }, [project]);
-  useEffect(() => {
     const history = historyRef.current;
     if (history.applying) {
       history.current = project;
@@ -1706,19 +1702,7 @@ export function App() {
             className={calculationSelecting ? 'primary-button active' : 'primary-button'}
             aria-pressed={calculationSelecting}
             disabled={drawingMode !== 'idle'}
-            onClick={() => {
-              setCalculationOpen(false);
-              setLayoutDragEnabled(false);
-              setLayoutRotateEnabled(false);
-              if (!calculationSelecting) {
-                setCalculationSurfaceIds(new Set());
-                if (localStorage.getItem(CALCULATION_HINT_STORAGE_KEY) !== '1') {
-                  localStorage.setItem(CALCULATION_HINT_STORAGE_KEY, '1');
-                  setCalculationHintVisible(true);
-                }
-              }
-              setCalculationSelecting(true);
-            }}
+            onClick={openCalculationReport}
           >
             <Calculator size={17} />
             Расчёт

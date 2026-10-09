@@ -254,9 +254,6 @@
   }
 
   function sendServiceCommand(type, extra = {}) {
-    if (type === 'tile-tools:service-action' && extra.action === 'calculate' && serviceFrame?.contentWindow) {
-      serviceFrame.contentWindow.dispatchEvent(new serviceFrame.contentWindow.Event('tile-tools:open-calculation'));
-    }
     serviceFrame?.contentWindow?.postMessage({ type, ...extra }, '*');
   }
 
@@ -299,7 +296,11 @@
     const action = event.target.closest('[data-service-action]')?.dataset.serviceAction;
     if (action === 'undo') sendServiceCommand('tile-tools:service-action', { action: 'undo' });
     if (action === 'redo') sendServiceCommand('tile-tools:service-action', { action: 'redo' });
-    if (action === 'calculate') sendServiceCommand('tile-tools:service-action', { action: 'calculate' });
+    if (action === 'calculate') {
+      const calculatorAction = serviceFrame?.contentDocument?.querySelector('.topbar-actions .primary-button');
+      if (calculatorAction && typeof calculatorAction.click === 'function') calculatorAction.click();
+      else sendServiceCommand('tile-tools:service-action', { action: 'calculate' });
+    }
     if (action === 'save') {
       sendServiceCommand('tile-tools:save-project');
       window.setTimeout(() => showNotice('Проект сохранён в разделе «Проекты».'), 120);
