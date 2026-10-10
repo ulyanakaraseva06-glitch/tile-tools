@@ -38,7 +38,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261008-6">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261010-1">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-17">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
@@ -104,20 +104,6 @@ $headerUserInitials = tt_user_initials($headerUser);
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'media'): ?>
-      <div class="media-topbar-tools" aria-label="Фильтры медиатеки">
-        <label class="media-topbar-search"><span aria-hidden="true">⌕</span><input id="media-search" type="search" placeholder="Поиск по названию, бренду или коллекции"></label>
-        <select class="input" id="media-brand"><option value="">Все бренды</option></select>
-        <select class="input" id="media-color"><option value="">Все цвета</option></select>
-        <select class="input" id="media-size"><option value="">Все размеры</option></select>
-        <select class="input" id="media-surface"><option value="">Все поверхности</option></select>
-        <select class="input" id="media-design"><option value="">Все дизайны</option></select>
-        <button class="media-topbar-reset" id="media-reset" type="button">↻</button>
-        <span class="badge" id="media-total">Загрузка…</span>
-        <?php if ($page === 'media' && ($headerUser['role'] ?? '') === 'admin'): ?><button class="button button-primary media-topbar-add" id="media-admin-add" type="button">＋ Добавить</button><?php endif; ?>
-        <button class="media-topbar-search-button" id="media-search-button" type="button" hidden>Найти</button>
       </div>
     <?php endif; ?>
     <?php if ($page === 'projects'): ?>

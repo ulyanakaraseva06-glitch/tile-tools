@@ -1,6 +1,32 @@
 <?php $mediaUser = tt_current_user(); $mediaIsAdmin = ($mediaUser['role'] ?? '') === 'admin'; ?>
 <section class="media-catalog" data-media-catalog>
-  <aside class="panel-card media-sidebar"><h2>Мои подборки</h2><button class="media-nav-button is-active" type="button" data-folder="all"><span>▦</span>Все материалы <b id="media-all-count">0</b></button><button class="media-nav-button" type="button" data-folder="favorites"><span>♡</span>Избранное <b id="media-favorite-count">0</b></button><div class="media-folder-heading"><strong>Папки</strong><button type="button" id="media-add-folder" title="Создать папку">＋</button></div><div class="media-folder-list" id="media-folders"></div><p class="media-sidebar-note">Создавайте подборки «Кухня», «Ванная» или любые другие. После входа они сохраняются в аккаунте.</p></aside>
+  <aside class="panel-card media-sidebar">
+    <div class="media-sidebar-tabs" role="tablist" aria-label="Панель медиатеки">
+      <button class="is-active" type="button" role="tab" aria-selected="true" data-media-panel="filters">Фильтрация</button>
+      <button type="button" role="tab" aria-selected="false" data-media-panel="folders">Папки</button>
+    </div>
+    <section class="media-side-panel is-active" data-media-panel-content="filters">
+      <div class="media-filter-heading"><h2>Фильтрация</h2><button class="filter-reset" id="media-reset" type="button">↻ Сбросить</button></div>
+      <label class="media-sidebar-search"><span aria-hidden="true">⌕</span><input id="media-search" type="search" placeholder="Поиск по названию, бренду или коллекции"></label>
+      <div class="media-sidebar-filters">
+        <select class="input" id="media-brand"><option value="">Все бренды</option></select>
+        <select class="input" id="media-color"><option value="">Все цвета</option></select>
+        <select class="input" id="media-size"><option value="">Все размеры</option></select>
+        <select class="input" id="media-surface"><option value="">Все поверхности</option></select>
+        <select class="input" id="media-design"><option value="">Все дизайны</option></select>
+      </div>
+      <div class="media-filter-footer"><span class="badge" id="media-total">Загрузка…</span><?php if ($mediaIsAdmin): ?><button class="button button-primary" id="media-admin-add" type="button">＋ Добавить</button><?php endif; ?></div>
+      <button class="media-topbar-search-button" id="media-search-button" type="button" hidden>Найти</button>
+    </section>
+    <section class="media-side-panel" data-media-panel-content="folders" hidden>
+      <h2>Мои подборки</h2>
+      <button class="media-nav-button is-active" type="button" data-folder="all"><span>▦</span>Все материалы <b id="media-all-count">0</b></button>
+      <button class="media-nav-button" type="button" data-folder="favorites"><span>♡</span>Избранное <b id="media-favorite-count">0</b></button>
+      <div class="media-folder-heading"><strong>Папки</strong><button type="button" id="media-add-folder" title="Создать папку">＋</button></div>
+      <div class="media-folder-list" id="media-folders"></div>
+      <p class="media-sidebar-note">Создавайте подборки «Кухня», «Ванная» или любые другие. После входа они сохраняются в аккаунте.</p>
+    </section>
+  </aside>
   <div class="media-content"><div class="media-result-row"><p>Найдено: <strong id="media-result-count">0</strong></p><span id="media-active-caption">Все материалы</span></div><div class="media-tile-grid" id="media-grid" aria-live="polite"></div></div>
 </section>
 <dialog class="media-dialog" id="media-folder-dialog"><form method="dialog" id="media-folder-form"><button class="dialog-close" value="cancel" aria-label="Закрыть">×</button><h2>Новая папка</h2><p>Название увидите только вы.</p><label>Название<input class="input" id="media-folder-name" maxlength="120" required placeholder="Например, Ванная"></label><button class="button button-primary" value="default" type="submit">Создать папку</button></form></dialog>
@@ -28,4 +54,4 @@
   </form>
 </dialog>
 <?php endif; ?>
-<script src="/shared/js/media.js?v=20260926-1" defer></script>
+<script src="/shared/js/media.js?v=20261010-1" defer></script>
