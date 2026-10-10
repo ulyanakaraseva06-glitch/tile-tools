@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Download, Files, Paintbrush, Plus, Save, SlidersHorizontal, Star, UserRound } from 'lucide-react';
+import { Download, Files, Paintbrush, Plus, Save, SlidersHorizontal, Star } from 'lucide-react';
 import { track } from '../analytics/analyticsClient';
 import { projectAnalyticsProperties, zoneAnalyticsProperties } from '../analytics/projectAnalytics';
 import { applyCompanyProfileToProject } from './projectContactOperations';
@@ -1290,20 +1290,8 @@ export function App() {
               <Plus size={18} />
               <span>Новый</span>
             </button>
-            <button className="btn btn-ghost top-icon-action" onClick={undoProject} disabled={history.past.length === 0} title="Назад" aria-label="Назад">
-              <ArrowLeft size={19} strokeWidth={2.6} />
-            </button>
-            <button className="btn btn-ghost top-icon-action" onClick={redoProject} disabled={history.future.length === 0} title="Вперёд" aria-label="Вперёд">
-              <ArrowRight size={19} strokeWidth={2.6} />
-            </button>
-            <button className="btn btn-ghost top-icon-action" onClick={saveToLibrary} title="Сохранить" aria-label="Сохранить">
-              <Save size={19} strokeWidth={2.6} />
-            </button>
             <button className="btn btn-ghost top-icon-action" onClick={saveCurrentProjectAsTemplate} title="Сохранить как шаблон" aria-label="Сохранить как шаблон">
               <Star size={19} strokeWidth={2.6} />
-            </button>
-            <button className="btn btn-ghost top-icon-action" onClick={openLibrary} title="Кабинет" aria-label="Кабинет">
-              <UserRound size={19} strokeWidth={2.6} />
             </button>
           </section>
 
