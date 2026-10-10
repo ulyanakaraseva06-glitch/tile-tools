@@ -8,12 +8,12 @@
     <section class="media-side-panel is-active" data-media-panel-content="filters">
       <div class="media-filter-heading"><h2>Фильтрация</h2><button class="filter-reset" id="media-reset" type="button">↻ Сбросить</button></div>
       <label class="media-sidebar-search"><span aria-hidden="true">⌕</span><input id="media-search" type="search" placeholder="Поиск по названию, бренду или коллекции"></label>
-      <div class="media-sidebar-filters">
-        <select class="input" id="media-brand"><option value="">Все бренды</option></select>
-        <select class="input" id="media-color"><option value="">Все цвета</option></select>
-        <select class="input" id="media-size"><option value="">Все размеры</option></select>
-        <select class="input" id="media-surface"><option value="">Все поверхности</option></select>
-        <select class="input" id="media-design"><option value="">Все дизайны</option></select>
+      <div class="media-sidebar-filters" aria-label="Параметры фильтрации">
+        <section class="media-filter-choice" data-media-filter="brand" data-facet="brands"><strong>Бренд</strong><div class="media-filter-options"></div></section>
+        <section class="media-filter-choice" data-media-filter="colors" data-facet="colors"><strong>Цвет</strong><div class="media-filter-options"></div></section>
+        <section class="media-filter-choice" data-media-filter="sizes" data-facet="sizes"><strong>Размер</strong><div class="media-filter-options"></div></section>
+        <section class="media-filter-choice" data-media-filter="surfaces" data-facet="surfaces"><strong>Поверхность</strong><div class="media-filter-options"></div></section>
+        <section class="media-filter-choice" data-media-filter="designs" data-facet="designs"><strong>Дизайн</strong><div class="media-filter-options"></div></section>
       </div>
       <div class="media-filter-footer"><span class="badge" id="media-total">Загрузка…</span><?php if ($mediaIsAdmin): ?><button class="button button-primary" id="media-admin-add" type="button">＋ Добавить</button><?php endif; ?></div>
       <button class="media-topbar-search-button" id="media-search-button" type="button" hidden>Найти</button>
@@ -54,4 +54,4 @@
   </form>
 </dialog>
 <?php endif; ?>
-<script src="/shared/js/media.js?v=20261010-1" defer></script>
+<script src="/shared/js/media.js?v=20261010-2" defer></script>
