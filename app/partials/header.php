@@ -100,7 +100,7 @@ $headerUserInitials = tt_user_initials($headerUser);
         </div>
       </div>
     <?php endif; ?>
-    <?php if ($page !== 'about' && $page !== 'help' && $page !== 'services' && $page !== 'equipment'): ?>
+    <?php if (in_array($page, ['visualizer', 'calculator', 'pdf'], true)): ?>
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
@@ -130,7 +130,6 @@ $headerUserInitials = tt_user_initials($headerUser);
       </div>
     <?php endif; ?>
     <?php if ($page === 'equipment'): ?>
-      <div class="equipment-topbar-title" aria-current="page"><strong>Оборудование</strong></div>
       <div class="equipment-topbar-tools" aria-label="Поиск и оглавление оборудования">
         <form class="equipment-topbar-search" data-equipment-search>
           <label class="sr-only" for="equipment-query">Поиск оборудования</label>
@@ -138,21 +137,6 @@ $headerUserInitials = tt_user_initials($headerUser);
           <input id="equipment-query" name="q" data-equipment-control type="search" placeholder="Поиск оборудования, брендов, категорий...">
           <button class="button button-primary" type="submit">Найти</button>
         </form>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'services'): ?>
-      <div class="services-topbar-title" aria-current="page">
-        <strong>Услуги</strong>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'about'): ?>
-      <div class="about-topbar-title" aria-current="page">
-        <strong>О сервисе</strong>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'help'): ?>
-      <div class="help-topbar-title" aria-current="page">
-        <strong>Помощь</strong>
       </div>
     <?php endif; ?>
     <div class="service-toolbar" data-service-toolbar hidden aria-label="Инструменты текущего сервиса"></div>

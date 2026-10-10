@@ -8362,10 +8362,6 @@ function CalculationDialog({
   const [materialsOpen, setMaterialsOpen] = useState(true);
   const [pdfIncludeFloor, setPdfIncludeFloor] = useState(hasSelectedFloors);
   const [pdfIncludeWalls, setPdfIncludeWalls] = useState(hasSelectedWalls);
-  const selectedRooms = [...new Set(selectedSurfaces.map((surface) => {
-    const areaId = surface.sourceRef?.split(':')[1];
-    return project.room.areas?.find((area) => area.id === areaId)?.name ?? (surface.type === 'floor' ? 'Помещение' : null);
-  }).filter((name): name is string => Boolean(name)))];
   const totalReservePieces = calculation.materials.reduce((total, item) => total + item.reservePieces, 0);
 
   function downloadPdf() {
@@ -8390,11 +8386,6 @@ function CalculationDialog({
           <h2 id="calculation-title">Расчёт плитки</h2>
           <button type="button" className="calculation-close" aria-label="Закрыть" onClick={onClose}>×</button>
         </header>
-
-        <p className="calculation-selected">
-          Помещений: {calculation.roomCount}{selectedRooms.length ? ` (${selectedRooms.join(', ')})` : ''} · Полов: {calculation.floorCount} · Стен: {calculation.wallCount}
-        </p>
-        <p className="calculation-method-note">Прямая раскладка и смещение: повторно используются только прямоугольные подрезки. Диагональ и ёлочка считаются по площади с повышенным запасом.</p>
 
         <div className="calculation-summary">
           <span>
