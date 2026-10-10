@@ -54,4 +54,4 @@
   </form>
 </dialog>
 <?php endif; ?>
-<script src="/shared/js/media.js?v=20261010-2" defer></script>
+<script src="/shared/js/media.js?v=20261010-3" defer></script>
