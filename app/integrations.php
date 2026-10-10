@@ -25,7 +25,7 @@ function tt_render_integrated_service(string $service, string $heading): void
     $revisions = [
         'visualizer' => '20261008-4',
         'calculator' => '20261009-1',
-        'pdf' => '20261010-1',
+        'pdf' => '20261010-2',
     ];
     if (isset($revisions[$service])) {
         $url .= (str_contains($url, '?') ? '&' : '?') . 'ui=' . $revisions[$service];

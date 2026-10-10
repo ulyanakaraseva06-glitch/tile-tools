@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { RectangleHorizontal, RectangleVertical } from 'lucide-react';
 import { Accent, PageFormat, Project, ThemeMode } from '../../types/project';
 import { ColorPickerPopover } from '../ColorPickerPopover/ColorPickerPopover';
@@ -180,25 +180,6 @@ function DesignMenu({
   onDividerColorChange: (color?: string) => void;
   project: Project;
 }) {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    function closeOnOutsideClick(event: MouseEvent) {
-      if (!menuRef.current?.contains(event.target as Node)) setOpen(false);
-    }
-    function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === 'Escape') setOpen(false);
-    }
-    document.addEventListener('mousedown', closeOnOutsideClick);
-    document.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.removeEventListener('mousedown', closeOnOutsideClick);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [open]);
-
   function selectThemeColor(item: ThemePaletteColor) {
     if (item.id) {
       onThemeChange(item.id);
@@ -216,19 +197,9 @@ function DesignMenu({
   }
 
   return (
-    <div className="top-control fixed-control top-design-control">
-      <span>Настроить</span>
-      <div className="top-design-menu" ref={menuRef}>
-        <button
-          type="button"
-          className="top-design-menu-trigger"
-          aria-haspopup="dialog"
-          aria-expanded={open}
-          onClick={() => setOpen((current) => !current)}
-        >
-          <span>Дизайн</span>
-        </button>
-        {open && <div className="top-design-popover">
+    <section className="design-picker" aria-label="Настройка дизайна">
+      <span className="control-card-title">Дизайн</span>
+      <div className="design-picker-grid">
           <section>
             <strong>Фон документа</strong>
             <div className="accent-row accent-panel">
@@ -268,10 +239,8 @@ function DesignMenu({
               <ColorPickerPopover compact showLabelAbove value={dividerColor} recentCustomColors={recentCustomColors} onChange={onDividerColorChange} onRememberCustomColor={onRememberCustomColor} active={Boolean(project.documentDividerColor && !isPresetDividerColor(project.documentDividerColor))} />
             </div>
           </section>
-
-        </div>}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -303,14 +272,21 @@ export function DocumentControls(props: DocumentControlsProps) {
 
   return (
     <div className="document-controls">
-      <label className="top-scheme-select">
-        <span>Дизайн-схема</span>
-        <select value={selectedSchemeId} onChange={(event) => onSchemeChange(event.target.value as DocumentSchemeId)}>
+      <section className="scheme-picker" aria-label="Выбор дизайн-схемы">
+        <span className="control-card-title">Дизайн-схема</span>
+        <div className="scheme-button-grid">
           {documentSchemes.map((scheme) => (
-            <option key={scheme.id} value={scheme.id}>{scheme.label}</option>
+            <button
+              key={scheme.id}
+              type="button"
+              className={`scheme-choice ${selectedSchemeId === scheme.id ? 'active' : ''}`}
+              onClick={() => onSchemeChange(scheme.id)}
+            >
+              {scheme.label}
+            </button>
           ))}
-        </select>
-      </label>
+        </div>
+      </section>
 
       <DesignMenu
         activeThemeColor={activeThemeColor}
@@ -330,28 +306,27 @@ export function DocumentControls(props: DocumentControlsProps) {
         project={project}
       />
 
-      <button className="btn btn-ghost top-design-reset" type="button" onClick={onResetDesignToScheme}>
+      <button className="btn btn-ghost top-design-reset design-reset-card" type="button" onClick={onResetDesignToScheme}>
         Сбросить дизайн
       </button>
 
-      <div className="top-control fixed-control orientation-control">
-        <span>Ориентация</span>
-        <div className="accent-row accent-panel format-dot-panel">
+      <section className="orientation-control orientation-card">
+        <span className="control-card-title">Ориентация</span>
+        <div className="format-choice-grid">
           {formats.map((format) => (
             <button
               key={format.id}
               type="button"
-              className={`format-dot ${project.pageFormat === format.id ? 'active' : ''}`}
+              className={`format-choice ${project.pageFormat === format.id ? 'active' : ''}`}
               onClick={() => onFormatChange(format.id)}
-              title={format.label}
             >
-              {format.icon}
+              {format.icon}<span>{format.label}</span>
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="top-toggle-group">
+      <div className="top-toggle-group control-toggle-card">
         <Toggle label="Логотип" checked={project.showLogos !== false} onChange={onShowLogosChange} />
         <Toggle label="Разделители" checked={project.showDividers !== false} onChange={onShowDividersChange} />
         <Toggle label="Номера страниц" checked={project.showPageNumbers !== false} onChange={onShowPageNumbersChange} />
