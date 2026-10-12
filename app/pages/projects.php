@@ -6,6 +6,16 @@
 </section>
 <?php else: ?>
 <section class="projects-page" data-projects-page>
+  <section class="projects-content">
+    <div class="projects-table-wrap panel-card">
+      <div class="projects-table-head"><span>Проект</span><span>Сервис</span><span>Дата изменения</span><span>Содержимое</span><span>Статус</span><span>Действия</span></div>
+      <div data-project-list></div>
+      <div class="projects-empty" data-project-empty hidden><span>▱</span><h2>Проекты не найдены</h2><p>Создайте работу в одном из сервисов или измените параметры поиска.</p><button class="button button-primary" type="button" data-new-project>Создать проект</button></div>
+      <footer class="projects-table-footer"><span data-project-summary>Показано 0 проектов</span><div><button type="button" disabled>‹</button><button class="is-active" type="button">1</button><button type="button" disabled>›</button></div></footer>
+    </div>
+  </section>
+
+  <div class="projects-right">
   <aside class="projects-sidebar panel-card" aria-label="Разделы проектов">
     <div class="projects-sidebar-tabs" role="tablist" aria-label="Панель проектов">
       <button class="is-active" type="button" role="tab" aria-selected="true" data-project-panel="filters">Фильтрация</button>
@@ -37,19 +47,11 @@
     <div class="projects-help"><span>◉</span><div><strong>Нужна помощь?</strong><small>Проект сохраняет состояние сервиса и позволяет продолжить работу.</small></div></div>
   </aside>
 
-  <section class="projects-content">
-    <div class="projects-table-wrap panel-card">
-      <div class="projects-table-head"><span>Проект</span><span>Сервис</span><span>Дата изменения</span><span>Содержимое</span><span>Статус</span><span>Действия</span></div>
-      <div data-project-list></div>
-      <div class="projects-empty" data-project-empty hidden><span>▱</span><h2>Проекты не найдены</h2><p>Создайте работу в одном из сервисов или измените параметры поиска.</p><button class="button button-primary" type="button" data-new-project>Создать проект</button></div>
-      <footer class="projects-table-footer"><span data-project-summary>Показано 0 проектов</span><div><button type="button" disabled>‹</button><button class="is-active" type="button">1</button><button type="button" disabled>›</button></div></footer>
-    </div>
-  </section>
-
   <aside class="projects-rail" aria-label="Полезная информация">
     <article class="service-ad-card" aria-label="Vilray Studio"><small>VILRAY STUDIO</small><strong>Нужна профессиональная подача проекта?</strong><span>Визуализации, каталоги и материалы для продаж.</span><a href="<?= tt_url('services') ?>">Перейти к услуге →</a></article>
     <article class="projects-tip panel-card"><span>✦</span><div><h2>Все работы в одном месте</h2><p>Статус задаёт пользователь. Кнопка «Вернуться к работе» откроет нужный сервис и восстановит сохранённое состояние.</p></div></article>
   </aside>
+  </div>
 </section>
 
 <dialog class="projects-dialog" data-project-dialog>
