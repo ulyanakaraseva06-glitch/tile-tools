@@ -32,7 +32,6 @@
         <button type="button" data-project-view="done"><span>✓</span>Завершённые <b data-project-count="done">0</b></button>
         <button type="button" data-project-view="archived"><span>▣</span>Архив <b data-project-count="archived">0</b></button>
       </nav>
-      <p class="projects-sidebar-note">Разделите сохранённые работы по этапу, чтобы быстрее находить нужный проект.</p>
     </section>
     <button class="button button-primary projects-new-side" type="button" data-new-project>＋ Новый проект</button>
     <div class="projects-help"><span>◉</span><div><strong>Нужна помощь?</strong><small>Проект сохраняет состояние сервиса и позволяет продолжить работу.</small></div></div>
