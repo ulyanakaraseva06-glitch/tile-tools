@@ -38,7 +38,7 @@ $headerUserInitials = tt_user_initials($headerUser);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared/css/app.css?v=20261011-1">
+  <link rel="stylesheet" href="/shared/css/app.css?v=20261012-1">
   <link rel="stylesheet" href="/shared/css/design-system.css?v=20261008-17">
 </head>
 <body class="page-<?= tt_escape($page) ?>">
@@ -104,15 +104,6 @@ $headerUserInitials = tt_user_initials($headerUser);
       <div class="topbar-context" aria-current="page">
         <?php if ($page !== 'favorites'): ?><span><?= tt_escape($navigation[$page][1] ?? '▦') ?></span><?php endif; ?>
         <strong><?= tt_escape($navigation[$page][0] ?? $title) ?></strong>
-      </div>
-    <?php endif; ?>
-    <?php if ($page === 'projects'): ?>
-      <div class="projects-topbar-tools" aria-label="Фильтры проектов">
-        <label class="projects-topbar-search"><span aria-hidden="true">⌕</span><input type="search" placeholder="Поиск по названию проекта…" data-project-search></label>
-        <select class="input" data-project-status><option value="">Все статусы</option><option value="draft">Черновик</option><option value="active">В работе</option><option value="done">Завершён</option><option value="archived">Архив</option></select>
-        <select class="input" data-project-type><option value="">Все типы</option><option value="visualization">Сравни плитку</option><option value="calculation">Посчитай плитку</option><option value="pdf">PDF и документы</option></select>
-        <select class="input" data-project-sort><option value="updated-desc">Сначала новые</option><option value="updated-asc">Сначала старые</option><option value="title">По названию</option></select>
-        <button class="button button-primary projects-topbar-new" type="button" data-new-project>＋ Новый проект</button>
       </div>
     <?php endif; ?>
     <?php if ($page === 'equipment'): ?>

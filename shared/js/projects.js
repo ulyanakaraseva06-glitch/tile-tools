@@ -102,6 +102,25 @@
   document.addEventListener('input', (event) => { if (event.target.matches('[data-project-search],[data-project-status],[data-project-type],[data-project-sort]')) render(); });
   document.addEventListener('change', (event) => { if (event.target.matches('[data-project-status],[data-project-type],[data-project-sort]')) { render(); return; } if (!event.target.matches('[data-project-status-change]')) return; const project = projects.find((item) => item.id === event.target.closest('[data-project-id]')?.dataset.projectId); if (project) void updateStatus(project, event.target.value); });
   root.addEventListener('click', (event) => {
+    const panelButton = event.target.closest('[data-project-panel]');
+    if (panelButton) {
+      const panel = panelButton.dataset.projectPanel;
+      root.querySelectorAll('[data-project-panel]').forEach((button) => {
+        const active = button === panelButton;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-selected', String(active));
+      });
+      root.querySelectorAll('[data-project-panel-content]').forEach((content) => { content.hidden = content.dataset.projectPanelContent !== panel; });
+      return;
+    }
+    if (event.target.closest('[data-project-filter-reset]')) {
+      if (els.search) els.search.value = '';
+      if (els.status) els.status.value = '';
+      if (els.type) els.type.value = '';
+      if (els.sort) els.sort.value = 'updated-desc';
+      render();
+      return;
+    }
     const viewButton = event.target.closest('[data-project-view]'); if (viewButton) { view = viewButton.dataset.projectView; root.querySelectorAll('[data-project-view]').forEach((button) => button.classList.toggle('is-active', button === viewButton)); render(); return; }
     const row = event.target.closest('[data-project-id]'); const project = row && projects.find((item) => item.id === row.dataset.projectId);
     if (project && event.target.closest('[data-project-resume]')) { void resume(project); return; } if (project && event.target.closest('[data-project-favorite]')) { void toggleProjectFavorite(project); return; } if (project && event.target.closest('[data-project-archive]')) void updateStatus(project, project.status === 'archived' ? 'active' : 'archived');
