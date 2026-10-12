@@ -5,10 +5,6 @@ $categories = [
     '' => ['★', 'Все услуги'], 'visualization' => ['▧', 'Визуализация'], 'product' => ['◇', 'Визуализация товара'],
     'catalogs' => ['▤', 'Каталоги и презентации'], 'marketplaces' => ['▣', 'Инфографика'], 'video' => ['▶', 'Видео и motion'], 'digital' => ['▱', 'Сайты и digital'],
 ];
-$categoryImages = [];
-foreach ($services as $service) {
-    if (!isset($categoryImages[$service['category']])) $categoryImages[$service['category']] = $service['image'];
-}
 ?>
 <section class="vilray-services" data-services-page>
   <main class="services-content">
@@ -26,7 +22,7 @@ foreach ($services as $service) {
       <nav class="services-category-grid" aria-label="Категории услуг">
         <button type="button" class="services-show-all is-active" data-service-filter="all">Показать все</button>
         <?php foreach ($categories as $id => [$icon, $label]): ?><?php if ($id !== ''): ?><button type="button" class="services-category-card" data-service-filter="<?= tt_escape($id) ?>">
-          <img src="<?= tt_escape($categoryImages[$id] ?? '') ?>" alt="" loading="lazy"><span><?= tt_escape($label) ?></span>
+          <span><?= tt_escape($label) ?></span>
         </button><?php endif; ?><?php endforeach; ?>
       </nav>
     </section>
